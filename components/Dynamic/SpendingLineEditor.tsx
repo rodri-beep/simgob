@@ -88,8 +88,10 @@ export function SpendingLineEditor({ policy }: { policy: SpendingPolicy }) {
                 {modified && (
                   <>
                     {" · "}
-                    <b className="text-ink">{formatEur(meanDiff, { sign: true })}/mes</b> por{" "}
-                    {anchor.singular}
+                    <b className={meanDiff > 0 ? "text-moss" : "text-brick"}>
+                      {formatEur(meanDiff, { sign: true })}/mes
+                    </b>{" "}
+                    por {anchor.singular}
                   </>
                 )}
               </span>
