@@ -60,13 +60,13 @@ function buildReasons(s: {
 }
 
 const PROFILES: Record<string, Omit<PoliticsResult, "reasons">> = {
-  centrista: { id: "centrista", label: "Centrista", emoji: "⚖️", blurb: "Ni fu ni fa: dejas casi todo como está." },
-  socialista: { id: "socialista", label: "Socialista", emoji: "🌹", blurb: "Más Estado y más para quien menos tiene." },
-  comunista: { id: "comunista", label: "Comunista peligroso/a", emoji: "☭", blurb: "¡A exprimir a las rentas altas y gasto social a tope!" },
-  liberal: { id: "liberal", label: "Liberal", emoji: "💼", blurb: "Menos impuestos y menos Estado: que lo arregle el mercado." },
-  conservador: { id: "conservador", label: "Conservador/a", emoji: "🎩", blurb: "Bajar impuestos con prudencia y mano firme." },
-  turbofacha: { id: "turbofacha", label: "Turbofacha", emoji: "🦅", blurb: "Más cuarteles y menos subsidios." },
-  populista: { id: "populista", label: "Populista de barra de bar", emoji: "🤡", blurb: "Prometes de todo y que pague otro: déficit por las nubes." },
+  centrista: { id: "centrista", label: "Centrista", emoji: "⚖️", blurb: "Sin ideas, de centro… comercial." },
+  socialista: { id: "socialista", label: "Socialista", emoji: "🌹", blurb: "Contentando a las charos." },
+  comunista: { id: "comunista", label: "Comunista peligroso/a", emoji: "☭", blurb: "A gastar el dinero del resto." },
+  liberal: { id: "liberal", label: "Liberal", emoji: "💼", blurb: "Te crees que tienes la solución porque has visto a Miguel Anxo Bastos en TikTok." },
+  conservador: { id: "conservador", label: "Conservador/a", emoji: "🎩", blurb: "Privatizando un poquito por aquí me bajo los impuestos por allí." },
+  turbofacha: { id: "turbofacha", label: "Turbofacha", emoji: "🦅", blurb: "Menos chiringuitos y más Guardia Civil." },
+  populista: { id: "populista", label: "Cuñao de barra de bar", emoji: "🍺", blurb: "Solucionando el mundo con unos carajillos." },
 };
 
 export function classifyPolitics(i: PoliticsInput): PoliticsResult {
