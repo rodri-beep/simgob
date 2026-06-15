@@ -188,15 +188,45 @@ export function IsometricBoard() {
       })
       .sort((a, b) => a.depth - b.depth);
 
+    // ---- Labels on a top layer, with greedy vertical de-collision ----
+    const labels = buildings.map((b) => ({
+      id: b.plot.id,
+      x: b.box.apex.x,
+      y: b.box.apex.y - 13,
+      name: (buildingById(b.plot.id)?.short ?? b.plot.id).toUpperCase(),
+      amount: b.scen,
+      modified: Math.abs(b.scen - b.baseTotal) > 0.05,
+      modColor: b.scen < b.baseTotal ? "#3f7a32" : "#a83c2e",
+    }));
+    const MINX = 48;
+    const MINY = 17;
+    const byY = [...labels].sort((a, b) => a.y - b.y);
+    const placed: typeof byY = [];
+    for (const l of byY) {
+      let guard = 0;
+      let collides = true;
+      while (collides && guard++ < 60) {
+        collides = false;
+        for (const q of placed) {
+          if (Math.abs(l.x - q.x) < MINX && Math.abs(l.y - q.y) < MINY) {
+            l.y = q.y - MINY;
+            collides = true;
+          }
+        }
+      }
+      placed.push(l);
+    }
+    for (const l of labels) allPts.push({ x: l.x, y: l.y - 12 }, { x: l.x, y: l.y + 10 });
+
     const bb = bounds(allPts);
-    const pad = 28;
+    const pad = 22;
     const viewBox = `${bb.minX - pad} ${bb.minY - pad} ${
       bb.maxX - bb.minX + pad * 2
     } ${bb.maxY - bb.minY + pad * 2}`;
 
     return {
       viewBox,
-      svg: { ground, roadFills, gridLines, buildings },
+      svg: { ground, roadFills, gridLines, buildings, labels },
     };
   }, [scenarioTotals]);
 
@@ -237,7 +267,6 @@ export function IsometricBoard() {
         const meta = buildingById(plot.id);
         const top = isSel ? shade(plot.color, 1.12) : plot.color;
         const modified = Math.abs(scen - baseTotal) > 0.05;
-        const modColor = scen < baseTotal ? "#3f7a32" : "#a83c2e";
         return (
           <g
             key={plot.id}
@@ -293,41 +322,41 @@ export function IsometricBoard() {
                 strokeWidth={3}
               />
             )}
-            {/* "modificado" marker (dot turns green when cut, red when raised) */}
-            {modified && (
+          </g>
+        );
+      })}
+
+      {/* labels — top layer, de-collided, click-through to buildings */}
+      <g style={{ pointerEvents: "none" }} aria-hidden>
+        {svg.labels.map((l) => (
+          <g key={l.id}>
+            {l.modified && (
               <circle
-                cx={box.apex.x}
-                cy={box.apex.y - 21}
+                cx={l.x}
+                cy={l.y - 10}
                 r={2.8}
-                fill={modColor}
+                fill={l.modColor}
                 stroke="#f3ecd4"
                 strokeWidth={1}
               />
             )}
-            {/* label */}
-            <text
-              x={box.apex.x}
-              y={box.apex.y - 11}
-              textAnchor="middle"
-              className="iso-label"
-              fontSize={6.5}
-            >
-              {(meta?.short ?? meta?.label ?? plot.id).toUpperCase()}
+            <text x={l.x} y={l.y} textAnchor="middle" className="iso-label" fontSize={6.5}>
+              {l.name}
             </text>
             <text
-              x={box.apex.x}
-              y={box.apex.y - 2.5}
+              x={l.x}
+              y={l.y + 9}
               textAnchor="middle"
               className="iso-amount"
               fontSize={7.5}
               fontWeight={700}
-              style={modified ? { fill: modColor } : undefined}
+              style={l.modified ? { fill: l.modColor } : undefined}
             >
-              {formatM(scen)}
+              {formatM(l.amount)}
             </text>
           </g>
-        );
-      })}
+        ))}
+      </g>
     </svg>
   );
 }

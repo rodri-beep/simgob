@@ -4,6 +4,7 @@ import { create } from "zustand";
 import type { BuildingId, IrpfScale } from "./engine/types";
 import { cloneScale } from "./engine/irpf";
 import { irpfData, isData } from "./data";
+import type { Scenario } from "./share";
 
 interface SimState {
   // ---- Editable scenario ----
@@ -27,6 +28,8 @@ interface SimState {
   setIsMinimumRate: (rate: number) => void;
   setSpending: (id: string, amount: number) => void;
   resetSpendingLine: (id: string) => void;
+  /** Apply a (partial) scenario, e.g. decoded from a shared URL. */
+  applyScenario: (sc: Partial<Scenario>) => void;
   reset: () => void;
   selectBuilding: (id: BuildingId | null) => void;
   setActiveRevenue: (which: "irpf" | "is") => void;
@@ -80,6 +83,14 @@ export const useSim = create<SimState>((set) => ({
       delete next[id];
       return { spendingOverrides: next };
     }),
+
+  applyScenario: (sc) =>
+    set((s) => ({
+      irpfScale: sc.irpfScale ? cloneScale(sc.irpfScale) : s.irpfScale,
+      isNominalRate: sc.isNominalRate ?? s.isNominalRate,
+      isMinimumRate: sc.isMinimumRate ?? s.isMinimumRate,
+      spendingOverrides: sc.spendingOverrides ?? s.spendingOverrides,
+    })),
 
   reset: () =>
     set({

@@ -8,6 +8,7 @@ import { RevenuePanel } from "@/components/Dynamic/RevenuePanel";
 import { TaxDetail } from "@/components/Dynamic/TaxDetail";
 import { Footer } from "@/components/Footer";
 import { Panel } from "@/components/ui/Panel";
+import { ScenarioUrlSync } from "@/components/ScenarioUrlSync";
 
 export default function Page() {
   return (
@@ -51,6 +52,9 @@ export default function Page() {
 
       {/* Spending editor opens as a modal over the city. */}
       <DistrictModal />
+
+      {/* Keeps the scenario synced with the URL for sharing (no backend). */}
+      <ScenarioUrlSync />
     </main>
   );
 }
