@@ -10,6 +10,7 @@ export function TopBar() {
   const crt = useSim((s) => s.crt);
   const toggleCrt = useSim((s) => s.toggleCrt);
   const reset = useSim((s) => s.reset);
+  const setIntro = useSim((s) => s.setIntro);
   const dirty = useSim(isDirty);
   const [copied, setCopied] = useState(false);
 
@@ -89,6 +90,14 @@ export function TopBar() {
             title="Activar/desactivar el filtro CRT (scanlines)"
           >
             CRT
+          </button>
+          <button
+            type="button"
+            onClick={() => setIntro(true)}
+            className="btn-retro text-[9px] py-1"
+            title="Cómo funciona (tutorial)"
+          >
+            ? Cómo funciona
           </button>
           <Link href="/metodologia" className="btn-retro text-[9px] py-1 no-underline">
             Metodología

@@ -3,12 +3,14 @@ import { StatusBar } from "@/components/StatusBar";
 import { LeftRail } from "@/components/LeftRail";
 import { IsometricBoard } from "@/components/Board/IsometricBoard";
 import { ControlPanel } from "@/components/ControlPanel/ControlPanel";
+import { ProfilePanel } from "@/components/Politics/ProfilePanel";
 import { DistrictModal } from "@/components/Dynamic/DistrictModal";
 import { RevenuePanel } from "@/components/Dynamic/RevenuePanel";
 import { TaxDetail } from "@/components/Dynamic/TaxDetail";
 import { Footer } from "@/components/Footer";
 import { Panel } from "@/components/ui/Panel";
 import { ScenarioUrlSync } from "@/components/ScenarioUrlSync";
+import { IntroModal } from "@/components/Intro/IntroModal";
 
 export default function Page() {
   return (
@@ -39,6 +41,7 @@ export default function Page() {
 
         <div className="flex flex-col gap-2 sm:gap-3">
           <ControlPanel />
+          <ProfilePanel />
         </div>
       </div>
 
@@ -55,6 +58,9 @@ export default function Page() {
 
       {/* Keeps the scenario synced with the URL for sharing (no backend). */}
       <ScenarioUrlSync />
+
+      {/* "¿Cómo funciona?" walkthrough (auto on first visit; "?" to reopen). */}
+      <IntroModal />
     </main>
   );
 }
