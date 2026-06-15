@@ -1,14 +1,38 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useSim, isDirty } from "@/lib/store";
 import { meta } from "@/lib/data";
+import { encodeScenario } from "@/lib/share";
 
 export function TopBar() {
   const crt = useSim((s) => s.crt);
   const toggleCrt = useSim((s) => s.toggleCrt);
   const reset = useSim((s) => s.reset);
+  const setIntro = useSim((s) => s.setIntro);
   const dirty = useSim(isDirty);
+  const [copied, setCopied] = useState(false);
+
+  const share = async () => {
+    const s = useSim.getState();
+    const token = encodeScenario({
+      irpfScale: s.irpfScale,
+      isNominalRate: s.isNominalRate,
+      isMinimumRate: s.isMinimumRate,
+      spendingOverrides: s.spendingOverrides,
+    });
+    const url = new URL(window.location.href);
+    if (token) url.searchParams.set("e", token);
+    else url.searchParams.delete("e");
+    try {
+      await navigator.clipboard.writeText(url.toString());
+    } catch {
+      window.prompt("Copia el enlace del escenario:", url.toString());
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1600);
+  };
 
   return (
     <header className="panel">
@@ -51,12 +75,29 @@ export function TopBar() {
           </button>
           <button
             type="button"
+            onClick={share}
+            data-active={copied}
+            className="btn-retro text-[9px] py-1"
+            title="Copiar un enlace con este escenario"
+          >
+            {copied ? "✓ ¡Copiado!" : "↗ Compartir"}
+          </button>
+          <button
+            type="button"
             onClick={toggleCrt}
             data-active={crt}
             className="btn-retro text-[9px] py-1"
             title="Activar/desactivar el filtro CRT (scanlines)"
           >
             CRT
+          </button>
+          <button
+            type="button"
+            onClick={() => setIntro(true)}
+            className="btn-retro text-[9px] py-1"
+            title="Cómo funciona (tutorial)"
+          >
+            ? Cómo funciona
           </button>
           <Link href="/metodologia" className="btn-retro text-[9px] py-1 no-underline">
             Metodología
