@@ -3,6 +3,7 @@ import { StatusBar } from "@/components/StatusBar";
 import { LeftRail } from "@/components/LeftRail";
 import { IsometricBoard } from "@/components/Board/IsometricBoard";
 import { ControlPanel } from "@/components/ControlPanel/ControlPanel";
+import { ProfilePanel } from "@/components/Politics/ProfilePanel";
 import { DistrictModal } from "@/components/Dynamic/DistrictModal";
 import { RevenuePanel } from "@/components/Dynamic/RevenuePanel";
 import { TaxDetail } from "@/components/Dynamic/TaxDetail";
@@ -40,6 +41,7 @@ export default function Page() {
 
         <div className="flex flex-col gap-2 sm:gap-3">
           <ControlPanel />
+          <ProfilePanel />
         </div>
       </div>
 
