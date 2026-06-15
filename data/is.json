@@ -1,0 +1,17 @@
+{
+  "baseYear": 2023,
+  "officialRevenue": 35060,
+  "cuotaLiquida": 32142,
+  "baseImponible": 146424,
+  "nominalRate": 0.25,
+  "minimumRate": 0.15,
+  "minimumRateBaseShare": 0.5,
+  "stateDeltaShare": 1.0,
+  "notes": [
+    "Recaudación de caja IS 2023 = 35.060 M€ (Informe Anual de Recaudación, AEAT). Es el ancla de la simulación.",
+    "Base imponible positiva 32.142 M€ de cuota líquida sobre 146.424 M€ de base (Cuentas anuales consolidadas del IS, último ejercicio con liquidación completa).",
+    "Tipo efectivo sobre base imponible ≈ 21,9 %, por debajo del 25 % nominal: deducciones por doble imposición, bonificaciones y la consolidación de grupos (modelo 220).",
+    "El tipo mínimo del 15 % (art. 30 bis LIS) ya aporta recaudación; con datos agregados su palanca es una aproximación gruesa: solo añade ingresos si supera el tipo efectivo medio.",
+    "El IS es un tributo estatal: el cambio se traslada íntegramente al saldo del Estado."
+  ]
+}

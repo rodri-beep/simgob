@@ -1,0 +1,36 @@
+import Link from "next/link";
+import { meta } from "@/lib/data";
+
+export function Footer() {
+  return (
+    <footer className="panel">
+      <div className="bg-olive-dark text-parchment titlebar px-2 py-1 text-[9px]">
+        Aviso · proyecto no oficial
+      </div>
+      <div className="p-3 text-[10px] text-ink-soft leading-snug space-y-2">
+        <p>
+          <b>Presupuestópolis</b> es un simulador divulgativo y <b>no oficial</b>. Sin
+          relación con la AEAT ni con el Gobierno de España. Todas las cifras simuladas
+          son <b>estimaciones ilustrativas</b> con datos agregados (no individuales) y
+          sin respuesta de comportamiento. Año base {meta.baseYear}.
+        </p>
+        <p>
+          Datos de fuentes públicas (AEAT, Hacienda, INE) y de{" "}
+          <a
+            className="underline"
+            href="https://github.com/civio/presupuesto"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Civio · ¿Dónde van mis impuestos?
+          </a>
+          . Detalle y limitaciones en la{" "}
+          <Link href="/metodologia" className="underline">
+            metodología
+          </Link>
+          .
+        </p>
+      </div>
+    </footer>
+  );
+}

@@ -1,0 +1,195 @@
+{
+  "baseYear": 2023,
+  "source": "Civio — ¿Dónde van mis impuestos? (PGE, perímetro estatal, presupuesto inicial).",
+  "policies": [
+    {
+      "id": "p21",
+      "label": "Pensiones",
+      "amount": 190684.2,
+      "building": "pensiones",
+      "description": "Pensiones contributivas y no contributivas de la Seguridad Social y Clases Pasivas."
+    },
+    {
+      "id": "p94",
+      "label": "Transferencias a otras admones. públicas",
+      "amount": 66457.3,
+      "building": "hacienda",
+      "description": "Sistema de financiación de CCAA y entidades locales."
+    },
+    {
+      "id": "p95",
+      "label": "Deuda pública",
+      "amount": 31275.1,
+      "building": "deuda",
+      "description": "Intereses de la deuda del Estado."
+    },
+    {
+      "id": "p22",
+      "label": "Otras prestaciones económicas",
+      "amount": 22299.2,
+      "building": "desempleo",
+      "description": "Incapacidad temporal, nacimiento y otras prestaciones."
+    },
+    {
+      "id": "p25",
+      "label": "Desempleo",
+      "amount": 21277.4,
+      "building": "desempleo",
+      "description": "Prestaciones por desempleo."
+    },
+    {
+      "id": "p12",
+      "label": "Defensa",
+      "amount": 12313.9,
+      "building": "defensa",
+      "description": "Fuerzas Armadas y gasto en defensa."
+    },
+    {
+      "id": "p45",
+      "label": "Infraestructuras",
+      "amount": 10869.6,
+      "building": "infraestructuras",
+      "description": "Carreteras, ferrocarril y obra pública."
+    },
+    {
+      "id": "p13",
+      "label": "Seguridad ciudadana e instituciones penitenciarias",
+      "amount": 10718.2,
+      "building": "defensa",
+      "description": "Policía Nacional, Guardia Civil e instituciones penitenciarias."
+    },
+    {
+      "id": "p46",
+      "label": "Investigación, desarrollo e innovación",
+      "amount": 10449.2,
+      "building": "otros",
+      "description": "I+D+i civil y militar."
+    },
+    {
+      "id": "p92",
+      "label": "Servicios de carácter general",
+      "amount": 9657.9,
+      "building": "moncloa",
+      "description": "Servicios generales de la Administración del Estado."
+    },
+    {
+      "id": "p42",
+      "label": "Industria y energía",
+      "amount": 9002.4,
+      "building": "transicion",
+      "description": "Industria, energía y transición energética."
+    },
+    {
+      "id": "p41",
+      "label": "Agricultura, pesca y alimentación",
+      "amount": 8511.3,
+      "building": "otros",
+      "description": "Incluye la PAC gestionada por el Estado."
+    },
+    {
+      "id": "p24",
+      "label": "Fomento del empleo",
+      "amount": 8028.6,
+      "building": "desempleo",
+      "description": "Políticas activas de empleo."
+    },
+    {
+      "id": "p23",
+      "label": "Servicios sociales y promoción social",
+      "amount": 7113.8,
+      "building": "desempleo",
+      "description": "Incluye el Ingreso Mínimo Vital y dependencia (parte estatal)."
+    },
+    {
+      "id": "p31",
+      "label": "Sanidad",
+      "amount": 7048.5,
+      "building": "sanidad",
+      "description": "Parte estatal. El grueso del gasto sanitario lo ejecutan las CCAA (fuera del perímetro)."
+    },
+    {
+      "id": "p32",
+      "label": "Educación",
+      "amount": 4922.7,
+      "building": "educacion",
+      "description": "Parte estatal. El grueso del gasto educativo lo ejecutan las CCAA (fuera del perímetro)."
+    },
+    {
+      "id": "p44",
+      "label": "Subvenciones al transporte",
+      "amount": 3447.7,
+      "building": "infraestructuras",
+      "description": "Subvenciones al transporte terrestre, aéreo y marítimo."
+    },
+    {
+      "id": "p11",
+      "label": "Justicia",
+      "amount": 2290.7,
+      "building": "defensa",
+      "description": "Administración de Justicia (parte estatal)."
+    },
+    {
+      "id": "p29",
+      "label": "Gestión y administración de la Seguridad Social",
+      "amount": 2259.3,
+      "building": "hacienda",
+      "description": "Funcionamiento del sistema de Seguridad Social."
+    },
+    {
+      "id": "p14",
+      "label": "Política exterior",
+      "amount": 2190.3,
+      "building": "defensa",
+      "description": "Acción exterior y cooperación al desarrollo."
+    },
+    {
+      "id": "p26",
+      "label": "Acceso a la vivienda y fomento de la edificación",
+      "amount": 2116.8,
+      "building": "otros",
+      "description": "Política estatal de vivienda."
+    },
+    {
+      "id": "p33",
+      "label": "Cultura",
+      "amount": 1790.7,
+      "building": "educacion",
+      "description": "Patrimonio, museos, bibliotecas y promoción cultural."
+    },
+    {
+      "id": "p93",
+      "label": "Administración financiera y tributaria",
+      "amount": 1752.7,
+      "building": "hacienda",
+      "description": "AEAT, Tesoro y administración financiera."
+    },
+    {
+      "id": "p43",
+      "label": "Comercio, turismo y PYMES",
+      "amount": 1669.3,
+      "building": "otros",
+      "description": "Apoyo al comercio, turismo y pequeñas empresas."
+    },
+    {
+      "id": "p49",
+      "label": "Otras actuaciones de carácter económico",
+      "amount": 1448.4,
+      "building": "otros",
+      "description": "Resto de actuaciones económicas."
+    },
+    {
+      "id": "p91",
+      "label": "Alta dirección",
+      "amount": 932.7,
+      "building": "moncloa",
+      "description": "Casa del Rey, Cortes, Gobierno y alta dirección del Estado."
+    },
+    {
+      "id": "p28",
+      "label": "Gestión y administración de Trabajo y Economía Social",
+      "amount": 193.4,
+      "building": "desempleo",
+      "description": "Funcionamiento de los servicios de empleo."
+    }
+  ]
+}

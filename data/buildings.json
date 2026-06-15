@@ -1,0 +1,15 @@
+{
+  "buildings": [
+    { "id": "pensiones", "label": "Pensiones", "short": "Pensiones", "blurb": "La mayor partida del Estado: pensiones contributivas y no contributivas de la Seguridad Social." },
+    { "id": "hacienda", "label": "Hacienda y Transferencias", "short": "Hacienda", "blurb": "Transferencias a CCAA y entidades locales, AEAT y administración financiera." },
+    { "id": "desempleo", "label": "Prestaciones y Empleo", "short": "Prestaciones", "blurb": "Desempleo, otras prestaciones económicas, servicios sociales y fomento del empleo." },
+    { "id": "deuda", "label": "Deuda Pública", "short": "Deuda", "blurb": "Intereses de la deuda del Estado." },
+    { "id": "defensa", "label": "Defensa y Seguridad", "short": "Defensa", "blurb": "Defensa, seguridad ciudadana, instituciones penitenciarias, justicia y exterior." },
+    { "id": "infraestructuras", "label": "Infraestructuras", "short": "Infraest.", "blurb": "Carreteras, ferrocarril, obra pública y subvenciones al transporte." },
+    { "id": "sanidad", "label": "Sanidad", "short": "Sanidad", "blurb": "Parte estatal. El grueso lo ejecutan las CCAA (fuera del perímetro)." },
+    { "id": "educacion", "label": "Educación y Cultura", "short": "Educación", "blurb": "Parte estatal. El grueso de educación lo ejecutan las CCAA (fuera del perímetro)." },
+    { "id": "transicion", "label": "Industria y Energía", "short": "Industria", "blurb": "Industria, energía y transición energética." },
+    { "id": "moncloa", "label": "Servicios Generales", "short": "Serv. grales.", "blurb": "Alta dirección del Estado y servicios de carácter general." },
+    { "id": "otros", "label": "Otras políticas", "short": "Otras", "blurb": "I+D+i, agricultura, vivienda, comercio, turismo y resto de gasto económico." }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "baseYear": 2023,
+  "source": "Civio — ¿Dónde van mis impuestos? (PGE, perímetro estatal).",
+  "lines": [
+    {
+      "id": "cotizaciones",
+      "label": "Cotizaciones sociales",
+      "category": "cotizaciones",
+      "editable": false,
+      "note": "Cuotas a la Seguridad Social. Solo lectura en v1.",
+      "amount": 184521.8
+    },
+    {
+      "id": "irpf",
+      "label": "IRPF (parte estatal)",
+      "category": "tributos",
+      "editable": true,
+      "note": "Parte estatal del IRPF. La recaudación nacional bruta (120.280 M€) se simula en el panel de IRPF; ~50 % se cede a las CCAA.",
+      "amount": 51629.2
+    },
+    {
+      "id": "iva",
+      "label": "IVA (parte estatal)",
+      "category": "tributos",
+      "editable": false,
+      "note": "Parte estatal del IVA. Solo lectura en v1.",
+      "amount": 42491.5
+    },
+    {
+      "id": "is",
+      "label": "Impuesto sobre Sociedades",
+      "category": "tributos",
+      "editable": true,
+      "note": "Editable: tipo general y tipo mínimo. La simulación se ancla a la recaudación de caja (35.060 M€).",
+      "amount": 28518.6
+    },
+    {
+      "id": "otros_impuestos",
+      "label": "Otros impuestos (IRNR, tráfico exterior, energía…)",
+      "category": "tributos",
+      "editable": false,
+      "amount": 10249.9
+    },
+    {
+      "id": "iiee",
+      "label": "Impuestos especiales (parte estatal)",
+      "category": "tributos",
+      "editable": false,
+      "note": "Hidrocarburos, tabaco, electricidad, alcohol. Solo lectura en v1.",
+      "amount": 9398.7
+    },
+    {
+      "id": "transferencias",
+      "label": "Transferencias recibidas (UE y otras AAPP)",
+      "category": "otros",
+      "editable": false,
+      "amount": 46347.6
+    },
+    {
+      "id": "operaciones_financieras",
+      "label": "Operaciones financieras (préstamos, remanente)",
+      "category": "otros",
+      "editable": false,
+      "amount": 16838.1
+    },
+    {
+      "id": "patrimoniales",
+      "label": "Ingresos patrimoniales (dividendos, concesiones…)",
+      "category": "otros",
+      "editable": false,
+      "amount": 6574.3
+    },
+    {
+      "id": "tasas",
+      "label": "Tasas y precios públicos",
+      "category": "otros",
+      "editable": false,
+      "amount": 3439.8
+    }
+  ]
+}

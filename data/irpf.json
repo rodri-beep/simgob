@@ -1,0 +1,43 @@
+{
+  "baseYear": 2023,
+  "officialRevenue": 120280,
+  "personalMinimum": 5550,
+  "stateDeltaShare": 0.5,
+  "scale": {
+    "general": [
+      { "threshold": 0, "rate": 0.19 },
+      { "threshold": 12450, "rate": 0.24 },
+      { "threshold": 20200, "rate": 0.3 },
+      { "threshold": 35200, "rate": 0.37 },
+      { "threshold": 60000, "rate": 0.45 },
+      { "threshold": 300000, "rate": 0.47 }
+    ],
+    "savings": [
+      { "threshold": 0, "rate": 0.19 },
+      { "threshold": 6000, "rate": 0.21 },
+      { "threshold": 50000, "rate": 0.23 },
+      { "threshold": 200000, "rate": 0.27 },
+      { "threshold": 300000, "rate": 0.28 }
+    ]
+  },
+  "brackets": [
+    { "id": "t0", "label": "Renta negativa o cero", "lower": 0, "upper": 0, "declarantes": 1270127, "baseGeneral": -688.4, "baseSavings": 0, "cuotaLiquida": 0 },
+    { "id": "t1", "label": "Hasta 1.500 €", "lower": 0, "upper": 1500, "declarantes": 1691865, "baseGeneral": 361.5, "baseSavings": 85.3, "cuotaLiquida": 0.1 },
+    { "id": "t2", "label": "1.500 – 6.000 €", "lower": 1500, "upper": 6000, "declarantes": 3127766, "baseGeneral": 10540.4, "baseSavings": 426.4, "cuotaLiquida": 4.5 },
+    { "id": "t3", "label": "6.000 – 12.000 €", "lower": 6000, "upper": 12000, "declarantes": 2688297, "baseGeneral": 21994.5, "baseSavings": 620.3, "cuotaLiquida": 754.3 },
+    { "id": "t4", "label": "12.000 – 21.000 €", "lower": 12000, "upper": 21000, "declarantes": 4302709, "baseGeneral": 70058.7, "baseSavings": 1134.1, "cuotaLiquida": 7274.1 },
+    { "id": "t5", "label": "21.000 – 30.000 €", "lower": 21000, "upper": 30000, "declarantes": 4277053, "baseGeneral": 103032.9, "baseSavings": 1723.4, "cuotaLiquida": 15899.6 },
+    { "id": "t6", "label": "30.000 – 60.000 €", "lower": 30000, "upper": 60000, "declarantes": 5282994, "baseGeneral": 202862.1, "baseSavings": 6307.5, "cuotaLiquida": 44230.5 },
+    { "id": "t7", "label": "60.000 – 150.000 €", "lower": 60000, "upper": 150000, "declarantes": 1170735, "baseGeneral": 87309.7, "baseSavings": 9601.9, "cuotaLiquida": 28548.5 },
+    { "id": "t8", "label": "150.000 – 601.000 €", "lower": 150000, "upper": 601000, "declarantes": 160927, "baseGeneral": 28234.9, "baseSavings": 10113.9, "cuotaLiquida": 13227.1 },
+    { "id": "t9", "label": "Más de 601.000 €", "lower": 601000, "upper": null, "declarantes": 14738, "baseGeneral": 11073.2, "baseSavings": 12258.3, "cuotaLiquida": 8204.1 }
+  ],
+  "notes": [
+    "Distribución por tramos de rendimientos e imputaciones (Estadística de los declarantes del IRPF 2023, AEAT). 23.987.211 declaraciones.",
+    "Importes en millones de euros. Base liquidable general, base del ahorro y cuota líquida agregadas por tramo.",
+    "La escala general combina el tramo estatal y la escala autonómica supletoria (= estatal × 2: 19/24/30/37/45/47 %). Los tipos reales variaron por CCAA en 2023.",
+    "El mínimo personal y familiar general (5.550 €) se modela según la ley: tributa a la escala y se resta.",
+    "El IRPF se reparte aproximadamente al 50 % entre el Estado y las CCAA; en el saldo del Estado se refleja la mitad del cambio nacional.",
+    "Datos agrupados por tramo (no individuales): el error es mayor en el tramo superior (cola larga). Sin respuesta de comportamiento."
+  ]
+}

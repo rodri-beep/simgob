@@ -1,0 +1,54 @@
+{
+  "baseYear": 2023,
+  "gdp": 1498324,
+  "totalRevenueOfficial": 400009.3,
+  "totalSpendingOfficial": 450721.5,
+  "officialDeficitAapp": 53556,
+  "officialDeficitAappPct": 3.6,
+  "perimeter": "Perímetro PGE (criterio Civio): Estado + organismos autónomos + agencias + Seguridad Social + entidades con presupuesto limitativo. No incluye el gasto ejecutado por CCAA ni entidades locales.",
+  "lastUpdated": "2026-06-15",
+  "sources": [
+    {
+      "id": "aeat-recaudacion-2023",
+      "label": "AEAT — Informe Anual de Recaudación Tributaria 2023",
+      "url": "https://sede.agenciatributaria.gob.es/Sede/estadisticas/recaudacion-tributaria/informe-anual/ejercicio-2023.html",
+      "note": "Ancla de recaudación real por figura: IRPF 120.280, IVA 83.909, IS 35.060, IIEE 20.757 M€. Total 271.935 M€."
+    },
+    {
+      "id": "aeat-irpf-declarantes-2023",
+      "label": "AEAT — Estadística de los declarantes del IRPF 2023",
+      "url": "https://sede.agenciatributaria.gob.es/Sede/datosabiertos/catalogo/hacienda/Estadistica_de_los_declarantes_del_IRPF.shtml",
+      "note": "Distribución por tramos de rendimientos: 23.987.211 declaraciones; base liquidable general 534.780 M€, ahorro 42.271 M€."
+    },
+    {
+      "id": "aeat-is-cuentas",
+      "label": "AEAT — Cuentas anuales consolidadas del Impuesto sobre Sociedades",
+      "url": "https://sede.agenciatributaria.gob.es/Sede/datosabiertos/catalogo/hacienda/Cuentas_anuales_en_el_Impuesto_sobre_Sociedades.shtml",
+      "note": "Base imponible positiva 146.424 M€ y cuota líquida 32.142 M€ (último ejercicio con liquidación completa)."
+    },
+    {
+      "id": "civio-presupuesto",
+      "label": "Civio — ¿Dónde van mis impuestos? (PGE 2023)",
+      "url": "https://dondevanmisimpuestos.es/",
+      "note": "Estructura de ingresos (400.009 M€) y gastos por política (450.721 M€) del perímetro estatal. Datos abiertos."
+    },
+    {
+      "id": "civio-repo",
+      "label": "Civio — repositorio civio/presupuesto",
+      "url": "https://github.com/civio/presupuesto",
+      "note": "Pipeline de datos de código abierto. Atribución."
+    },
+    {
+      "id": "ine-pib-2023",
+      "label": "INE — Contabilidad Nacional, PIB 2023",
+      "url": "https://ine.es/dyngs/Prensa/CNA2023.htm",
+      "note": "PIB nominal a precios corrientes 2023 = 1.498.324 M€."
+    },
+    {
+      "id": "hacienda-deficit-2023",
+      "label": "Ministerio de Hacienda / IGAE — Déficit de las AAPP 2023",
+      "url": "https://www.hacienda.gob.es/",
+      "note": "Déficit del conjunto de las Administraciones Públicas 2023 = 53.556 M€ (≈ 3,6 % del PIB)."
+    }
+  ]
+}

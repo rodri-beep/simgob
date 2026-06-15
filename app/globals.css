@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bevel-light: #fbf6e2;
+  --bevel-dark: #8a7f5d;
+  --parchment: #e7dec3;
+  --font-data: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--parchment);
+  /* Subtle dithered paper texture (no smooth gradients). */
+  background-image:
+    radial-gradient(rgba(138, 127, 93, 0.16) 1px, transparent 1px),
+    radial-gradient(rgba(138, 127, 93, 0.1) 1px, transparent 1px);
+  background-size: 6px 6px, 6px 6px;
+  background-position: 0 0, 3px 3px;
+  color: #211f18;
+  font-family: var(--font-data), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Numbers must always be legible and aligned. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+@layer components {
+  /* ---- Win95 / console beveled chrome ---- */
+  .bevel-out {
+    box-shadow:
+      inset 2px 2px 0 0 var(--bevel-light),
+      inset -2px -2px 0 0 var(--bevel-dark);
+  }
+  .bevel-in {
+    box-shadow:
+      inset -2px -2px 0 0 var(--bevel-light),
+      inset 2px 2px 0 0 var(--bevel-dark);
+  }
+  .bevel-thin {
+    box-shadow:
+      inset 1px 1px 0 0 var(--bevel-light),
+      inset -1px -1px 0 0 var(--bevel-dark);
+  }
+
+  .panel {
+    @apply bg-panel bevel-out border border-bevel-dark/40;
+  }
+
+  .panel-inset {
+    @apply bg-parchment bevel-in border border-bevel-dark/30;
+  }
+
+  /* Title bar like a 90s window caption. */
+  .titlebar {
+    @apply bg-teal-dark text-parchment font-chrome uppercase tracking-wide;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .pixel-title {
+    font-family: var(--font-pixel), monospace;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+    line-height: 1.4;
+  }
+
+  /* Retro pressable button. */
+  .btn-retro {
+    @apply bg-panel bevel-out border border-bevel-dark/50 font-chrome uppercase
+      text-ink px-3 py-1.5 tracking-wide select-none cursor-pointer
+      transition-[box-shadow,transform] duration-75;
+  }
+  .btn-retro:hover {
+    @apply bg-parchment-dark;
+  }
+  .btn-retro:active {
+    @apply bevel-in translate-x-px translate-y-px;
+  }
+  .btn-retro[data-active="true"] {
+    @apply bevel-in bg-amber/30;
+  }
+
+  /* Toolbar icon button (left rail). */
+  .rail-btn {
+    @apply w-full flex items-center gap-2 px-2 py-2 bg-panel bevel-out
+      border border-bevel-dark/40 text-left font-chrome uppercase text-[11px]
+      tracking-wide text-ink-soft cursor-pointer;
+  }
+  .rail-btn:hover {
+    @apply bg-parchment-dark text-ink;
+  }
+  .rail-btn[data-active="true"] {
+    @apply bevel-in bg-amber/25 text-ink;
+  }
+}
+
+/* ---- Retro range sliders ---- */
+input[type="range"].slider-retro {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 16px;
+  background: #c6bb95;
+  box-shadow:
+    inset -2px -2px 0 0 var(--bevel-light),
+    inset 2px 2px 0 0 var(--bevel-dark);
+  cursor: pointer;
+}
+input[type="range"].slider-retro::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 24px;
+  background: #e09a2d;
+  box-shadow:
+    inset 2px 2px 0 0 var(--bevel-light),
+    inset -2px -2px 0 0 var(--bevel-dark);
+  border: 1px solid #8a7f5d;
+}
+input[type="range"].slider-retro::-moz-range-thumb {
+  width: 16px;
+  height: 24px;
+  background: #e09a2d;
+  border: 1px solid #8a7f5d;
+  box-shadow:
+    inset 2px 2px 0 0 var(--bevel-light),
+    inset -2px -2px 0 0 var(--bevel-dark);
+}
+
+/* ---- Optional CRT / scanline overlay (toggle) ---- */
+.crt-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.07) 0px,
+      rgba(0, 0, 0, 0.07) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  mix-blend-mode: multiply;
+}
+
+/* Number "blip" feedback when a counter updates. */
+@keyframes counter-blip {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.counter-blip {
+  animation: counter-blip 220ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .counter-blip {
+    animation: none;
+  }
+}
+
+/* ---- Isometric board ---- */
+.iso-bld {
+  cursor: pointer;
+}
+.iso-bld:focus {
+  outline: none;
+}
+.iso-bld:hover .iso-top {
+  filter: brightness(1.12);
+}
+.iso-label {
+  paint-order: stroke;
+  stroke: #f3ecd4;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  font-family: var(--font-chrome), monospace;
+  fill: #211f18;
+}
+.iso-amount {
+  paint-order: stroke;
+  stroke: #f3ecd4;
+  stroke-width: 3px;
+  font-family: var(--font-data), sans-serif;
+  fill: #4a4636;
+  font-variant-numeric: tabular-nums;
+}
