@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useSim } from "@/lib/store";
-import { buildingById, buildingTotal } from "@/lib/data";
+import { buildingById, buildingTotal, spendingPolicies } from "@/lib/data";
 import type { BuildingId } from "@/lib/engine/types";
 import { isoBox, project, poly, shade, bounds, type Pt } from "@/lib/iso";
 import { formatM } from "@/lib/engine/format";
@@ -105,6 +105,17 @@ function windowsFor(plot: Plot, h: number, seed: number): Window[] {
 export function IsometricBoard() {
   const selected = useSim((s) => s.selectedBuilding);
   const select = useSim((s) => s.selectBuilding);
+  const overrides = useSim((s) => s.spendingOverrides);
+
+  // Scenario spending per building (geometry stays fixed; only the € label and
+  // a "modificado" marker react to edits).
+  const scenarioTotals = useMemo(() => {
+    const m: Record<string, number> = {};
+    for (const p of spendingPolicies) {
+      m[p.building] = (m[p.building] ?? 0) + (overrides[p.id] ?? p.amount);
+    }
+    return m;
+  }, [overrides]);
 
   const { svg, viewBox } = useMemo(() => {
     const totals = PLOTS.map((p) => buildingTotal(p.id));
@@ -231,13 +242,19 @@ export function IsometricBoard() {
         const isSel = selected === plot.id;
         const meta = buildingById(plot.id);
         const top = isSel ? shade(plot.color, 1.12) : plot.color;
+        // Scenario € label (geometry stays fixed; only the number reacts).
+        const scen = scenarioTotals[plot.id] ?? total;
+        const modified = Math.abs(scen - total) > 0.05;
+        const modColor = scen < total ? "#3f7a32" : "#a83c2e";
         return (
           <g
             key={plot.id}
             className="iso-bld"
             role="button"
             tabIndex={0}
-            aria-label={`${meta?.label ?? plot.id}: ${formatM(total)}`}
+            aria-label={`${meta?.label ?? plot.id}: ${formatM(scen)}${
+              modified ? " (modificado)" : ""
+            }`}
             onClick={() => select(isSel ? null : plot.id)}
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
@@ -284,6 +301,17 @@ export function IsometricBoard() {
                 strokeWidth={3}
               />
             )}
+            {/* "modificado" marker (dot turns green when cut, red when raised) */}
+            {modified && (
+              <circle
+                cx={box.apex.x}
+                cy={box.apex.y - 21}
+                r={2.8}
+                fill={modColor}
+                stroke="#f3ecd4"
+                strokeWidth={1}
+              />
+            )}
             {/* label */}
             <text
               x={box.apex.x}
@@ -301,8 +329,9 @@ export function IsometricBoard() {
               className="iso-amount"
               fontSize={7.5}
               fontWeight={700}
+              style={modified ? { fill: modColor } : undefined}
             >
-              {formatM(total)}
+              {formatM(scen)}
             </text>
           </g>
         );
