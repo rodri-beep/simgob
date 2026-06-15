@@ -34,14 +34,14 @@ const POSITIONS: Omit<Plot, "color">[] = [
 
 const PLOTS: Plot[] = POSITIONS.map((p) => ({ ...p, color: BUILDING_COLORS[p.id] }));
 
-// Map a € amount to a building height. Roughly ordered by magnitude (a gentle
-// hint only — sizes are not to scale; the real figure is printed on each block).
-function heightFor(amount: number, min: number, max: number): number {
-  const s = Math.sqrt(Math.max(amount, 1));
-  const sMin = Math.sqrt(Math.max(min, 1));
-  const sMax = Math.sqrt(Math.max(max, 1));
-  const t = sMax > sMin ? (s - sMin) / (sMax - sMin) : 0.5;
-  return 28 + t * 70;
+// Building height = whole floors, ~proportional to spending. Editing a policy
+// changes the floor count (with quantization: small edits inside a floor's
+// worth do nothing). One floor ≈ PER_FLOOR_M millones de euros.
+const PER_FLOOR_M = 10000;
+const FLOOR_PX = 11;
+
+function floorsFor(amountM: number): number {
+  return Math.max(1, Math.round(amountM / PER_FLOOR_M));
 }
 
 interface Window {
@@ -56,44 +56,39 @@ function rng(seed: number) {
   return () => (s = (s * 16807) % 2147483647) / 2147483647;
 }
 
-function windowsFor(plot: Plot, h: number, seed: number): Window[] {
+// One row of windows per floor, so the floor count is readable on the building.
+function windowsFor(plot: Plot, floors: number, seed: number): Window[] {
   const out: Window[] = [];
   const rand = rng(seed);
   const cols = 3;
-  const rows = Math.max(1, Math.floor(h / 22));
-  const sw = 0.18;
-  const sh = 6;
-  // Front-left face (plane y = y1).
+  const sw = 0.16;
+  const sh = FLOOR_PX * 0.3;
   const y1 = plot.y + plot.d;
-  for (let c = 0; c < cols; c++) {
-    const xw = plot.x + ((c + 1) / (cols + 1)) * plot.w;
-    for (let rIdx = 0; rIdx < rows; rIdx++) {
-      const zw = 12 + rIdx * 20;
-      if (zw + sh > h - 4) continue;
+  const x1 = plot.x + plot.w;
+  for (let f = 0; f < floors; f++) {
+    const zc = (f + 0.5) * FLOOR_PX;
+    // Front-left face (plane y = y1).
+    for (let c = 0; c < cols; c++) {
+      const xw = plot.x + ((c + 1) / (cols + 1)) * plot.w;
       out.push({
         pts: poly([
-          project(xw - sw, y1, zw - sh),
-          project(xw + sw, y1, zw - sh),
-          project(xw + sw, y1, zw + sh),
-          project(xw - sw, y1, zw + sh),
+          project(xw - sw, y1, zc - sh),
+          project(xw + sw, y1, zc - sh),
+          project(xw + sw, y1, zc + sh),
+          project(xw - sw, y1, zc + sh),
         ]),
         lit: rand() > 0.5,
       });
     }
-  }
-  // Front-right face (plane x = x1).
-  const x1 = plot.x + plot.w;
-  for (let c = 0; c < cols; c++) {
-    const yw = plot.y + ((c + 1) / (cols + 1)) * plot.d;
-    for (let rIdx = 0; rIdx < rows; rIdx++) {
-      const zw = 12 + rIdx * 20;
-      if (zw + sh > h - 4) continue;
+    // Front-right face (plane x = x1).
+    for (let c = 0; c < cols; c++) {
+      const yw = plot.y + ((c + 1) / (cols + 1)) * plot.d;
       out.push({
         pts: poly([
-          project(x1, yw - sw, zw - sh),
-          project(x1, yw + sw, zw - sh),
-          project(x1, yw + sw, zw + sh),
-          project(x1, yw - sw, zw + sh),
+          project(x1, yw - sw, zc - sh),
+          project(x1, yw + sw, zc - sh),
+          project(x1, yw + sw, zc + sh),
+          project(x1, yw - sw, zc + sh),
         ]),
         lit: rand() > 0.55,
       });
@@ -118,10 +113,6 @@ export function IsometricBoard() {
   }, [overrides]);
 
   const { svg, viewBox } = useMemo(() => {
-    const totals = PLOTS.map((p) => buildingTotal(p.id));
-    const min = Math.min(...totals);
-    const max = Math.max(...totals);
-
     const allPts: Pt[] = [];
 
     // ---- Ground (grass diamond) ----
@@ -176,19 +167,22 @@ export function IsometricBoard() {
       gridLines.push({ x1: a.x, y1: a.y, x2: b.x, y2: b.y });
     }
 
-    // ---- Buildings (back-to-front) ----
+    // ---- Buildings (back-to-front) — floors react to spending edits ----
     const buildings = [...PLOTS]
       .map((p, i) => {
-        const total = totals[i];
-        const h = heightFor(total, min, max);
+        const baseTotal = buildingTotal(p.id);
+        const scen = scenarioTotals[p.id] ?? baseTotal;
+        const floors = floorsFor(scen);
+        const h = floors * FLOOR_PX;
         const box = isoBox(p.x, p.y, p.x + p.w, p.y + p.d, h);
         allPts.push(...box.top, ...box.left, ...box.right);
         return {
           plot: p,
-          total,
-          h,
+          baseTotal,
+          scen,
+          floors,
           box,
-          windows: windowsFor(p, h, i + 7),
+          windows: windowsFor(p, floors, i + 7),
           depth: p.x + p.y,
         };
       })
@@ -204,7 +198,7 @@ export function IsometricBoard() {
       viewBox,
       svg: { ground, roadFills, gridLines, buildings },
     };
-  }, []);
+  }, [scenarioTotals]);
 
   return (
     <svg
@@ -238,14 +232,12 @@ export function IsometricBoard() {
       ))}
 
       {/* buildings */}
-      {svg.buildings.map(({ plot, total, box, windows }) => {
+      {svg.buildings.map(({ plot, baseTotal, scen, box, windows }) => {
         const isSel = selected === plot.id;
         const meta = buildingById(plot.id);
         const top = isSel ? shade(plot.color, 1.12) : plot.color;
-        // Scenario € label (geometry stays fixed; only the number reacts).
-        const scen = scenarioTotals[plot.id] ?? total;
-        const modified = Math.abs(scen - total) > 0.05;
-        const modColor = scen < total ? "#3f7a32" : "#a83c2e";
+        const modified = Math.abs(scen - baseTotal) > 0.05;
+        const modColor = scen < baseTotal ? "#3f7a32" : "#a83c2e";
         return (
           <g
             key={plot.id}
