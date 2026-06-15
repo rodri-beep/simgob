@@ -37,7 +37,7 @@ export function ProfilePanel() {
   });
 
   return (
-    <Panel tone="teal" title="Tu perfil político · con humor">
+    <Panel tone="teal" title="Tu perfil político">
       <div className="flex items-center gap-3">
         <span aria-hidden className="text-[34px] leading-none">
           {profile.emoji}
