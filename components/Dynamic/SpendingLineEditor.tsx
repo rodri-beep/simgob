@@ -65,14 +65,14 @@ export function SpendingLineEditor({ policy }: { policy: SpendingPolicy }) {
         </button>
       </div>
 
-      <div className="h-3">
-        {modified && (
+      {modified && (
+        <div className="mt-1 leading-tight">
           <span className={`tnum font-data text-[10px] ${deltaColor}`}>
             {delta < 0 ? "Recorte " : "Aumento "}
             {formatMDecimal(delta, { sign: true })} · saldo {formatMDecimal(-delta, { sign: true })}
           </span>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Human story */}
       <div className="mt-0.5 text-[9px] text-ink-soft leading-snug">

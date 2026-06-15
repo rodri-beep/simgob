@@ -9,10 +9,12 @@ import { formatM, formatMDecimal, formatGdpPct, formatEur } from "@/lib/engine/f
 function Stat({
   label,
   children,
+  base,
   tone = "ink",
 }: {
   label: string;
   children: React.ReactNode;
+  base: string;
   tone?: "ink" | "moss" | "brick";
 }) {
   const color =
@@ -22,9 +24,10 @@ function Stat({
       <div className="font-chrome uppercase text-[9px] text-ink-soft tracking-wide">
         {label}
       </div>
-      <div className={`tnum font-data font-bold text-[15px] sm:text-[19px] ${color}`}>
+      <div className={`tnum font-data font-bold text-[15px] sm:text-[19px] leading-tight ${color}`}>
         {children}
       </div>
+      <div className="tnum font-data text-[9px] text-ink-soft">orig. {base}</div>
     </div>
   );
 }
@@ -40,19 +43,27 @@ export function StatusBar() {
         <EstimateBadge />
       </div>
       <div className="p-2 grid grid-cols-2 lg:grid-cols-4 gap-2">
-        <Stat label="Ingresos" tone="moss">
+        <Stat label="Ingresos" tone="moss" base={formatM(totals.baseRevenue)}>
           <AnimatedNumber value={totals.revenue} format={(n) => formatM(n)} />
         </Stat>
-        <Stat label="Gastos" tone="brick">
+        <Stat label="Gastos" tone="brick" base={formatM(totals.baseSpending)}>
           <AnimatedNumber value={totals.spending} format={(n) => formatM(n)} />
         </Stat>
-        <Stat label={deficit ? "Saldo (déficit)" : "Saldo (superávit)"} tone={deficit ? "brick" : "moss"}>
+        <Stat
+          label={deficit ? "Saldo (déficit)" : "Saldo (superávit)"}
+          tone={deficit ? "brick" : "moss"}
+          base={formatM(totals.baseBalance, { sign: true })}
+        >
           <AnimatedNumber
             value={totals.balance}
             format={(n) => formatM(n, { sign: true })}
           />
         </Stat>
-        <Stat label="Saldo / PIB" tone={deficit ? "brick" : "moss"}>
+        <Stat
+          label="Saldo / PIB"
+          tone={deficit ? "brick" : "moss"}
+          base={formatGdpPct(totals.baseBalance, meta.gdp)}
+        >
           <AnimatedNumber
             value={totals.balance}
             format={(n) => formatGdpPct(n, meta.gdp)}
