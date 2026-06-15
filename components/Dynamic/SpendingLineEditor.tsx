@@ -79,18 +79,19 @@ export function SpendingLineEditor({ policy }: { policy: SpendingPolicy }) {
         {anchor ? (
           (() => {
             const meanNow = beneficiaryMonthlyScaled(anchor.baseMonthly, base, amount);
+            const meanDiff = meanNow - anchor.baseMonthly;
             return (
               <span>
                 ≈ {(anchor.count / 1e6).toFixed(1)} M {anchor.noun} · {anchor.meanLabel}{" "}
-                {modified ? (
-                  <b className={deltaColor}>
-                    {formatEur(meanNow)}/mes
-                  </b>
-                ) : (
-                  <b className="text-ink">{formatEur(anchor.baseMonthly)}/mes</b>
-                )}
+                <b className="text-ink">{formatEur(modified ? meanNow : anchor.baseMonthly)}/mes</b>
                 {anchor.payments === 14 ? " (14 pagas)" : ""}
-                {modified ? ` (base ${formatEur(anchor.baseMonthly)})` : ""}
+                {modified && (
+                  <>
+                    {" · "}
+                    <b className="text-ink">{formatEur(meanDiff, { sign: true })}/mes</b> por{" "}
+                    {anchor.singular}
+                  </>
+                )}
               </span>
             );
           })()

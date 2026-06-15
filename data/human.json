@@ -21,6 +21,7 @@
       "baseMonthly": 1198.7,
       "payments": 14,
       "noun": "pensiones",
+      "singular": "pensión",
       "meanLabel": "pensión media",
       "note": "10.111.991 pensiones contributivas; pensión media del sistema 1.198,7 €/mes (14 pagas), dic. 2023. El recorte/aumento se reparte de forma lineal."
     },
@@ -29,6 +30,7 @@
       "baseMonthly": 958.6,
       "payments": 12,
       "noun": "perceptores",
+      "singular": "perceptor",
       "meanLabel": "prestación media",
       "note": "1.774.534 perceptores medios de prestaciones por desempleo; prestación contributiva media 958,6 €/mes (SEPE, 2023)."
     }

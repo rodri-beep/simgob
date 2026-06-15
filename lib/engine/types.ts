@@ -192,6 +192,8 @@ export interface BeneficiaryAnchor {
   payments: number;
   /** Noun for the count, e.g. "pensiones", "perceptores". */
   noun: string;
+  /** Singular noun for the per-person diff, e.g. "pensión", "perceptor". */
+  singular: string;
   /** Label for the mean, e.g. "pensión media". */
   meanLabel: string;
   note?: string;
