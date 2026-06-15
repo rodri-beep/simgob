@@ -1,10 +1,10 @@
 "use client";
 
 import { useSimResults } from "@/lib/useSimResults";
-import { meta } from "@/lib/data";
+import { meta, human } from "@/lib/data";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { EstimateBadge } from "@/components/ui/EstimateBadge";
-import { formatM, formatMDecimal, formatGdpPct } from "@/lib/engine/format";
+import { formatM, formatMDecimal, formatGdpPct, formatEur } from "@/lib/engine/format";
 
 function Stat({
   label,
@@ -59,15 +59,24 @@ export function StatusBar() {
           />
         </Stat>
       </div>
-      {dirty && (
-        <div className="px-3 pb-2 -mt-1 font-chrome uppercase text-[9px] text-orange tracking-wide">
-          Cambio vs. escenario real:{" "}
+      <div className="px-3 pb-2 -mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5">
+        <span className="font-chrome uppercase text-[9px] text-ink-soft tracking-wide">
+          Saldo ≈{" "}
           <span className="tnum font-data font-bold">
-            {formatMDecimal(totals.balanceDelta, { sign: true })}
+            {formatEur((totals.balance * 1e6) / human.constants.population, { sign: true })}
           </span>{" "}
-          de saldo
-        </div>
-      )}
+          por habitante
+        </span>
+        {dirty && (
+          <span className="font-chrome uppercase text-[9px] text-orange tracking-wide">
+            · cambio vs. real:{" "}
+            <span className="tnum font-data font-bold">
+              {formatMDecimal(totals.balanceDelta, { sign: true })}
+            </span>{" "}
+            de saldo
+          </span>
+        )}
+      </div>
     </div>
   );
 }

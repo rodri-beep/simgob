@@ -5,6 +5,7 @@ import { Panel } from "@/components/ui/Panel";
 import { EstimateBadge } from "@/components/ui/EstimateBadge";
 import { IrpfControls } from "./IrpfControls";
 import { IsControls } from "./IsControls";
+import { TuPanel } from "@/components/Stories/TuPanel";
 
 export function ControlPanel() {
   const active = useSim((s) => s.activeRevenue);
@@ -35,7 +36,16 @@ export function ControlPanel() {
           Sociedades
         </button>
       </div>
-      <div className="p-2">{active === "irpf" ? <IrpfControls /> : <IsControls />}</div>
+      <div className="p-2">
+        {active === "irpf" ? (
+          <>
+            <IrpfControls />
+            <TuPanel />
+          </>
+        ) : (
+          <IsControls />
+        )}
+      </div>
     </Panel>
   );
 }

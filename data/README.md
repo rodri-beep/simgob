@@ -14,6 +14,7 @@ actualizaciones.
 | `irpf.json` | Distribución por tramos (declarantes, base, cuota), escala y ancla | AEAT |
 | `is.json` | Recaudación, base imponible, cuota líquida, tipos | AEAT |
 | `buildings.json` | Metadatos de los distritos del tablero | — |
+| `human.json` | "Historias": población, hogares, modelo bruto→neto, anclas por beneficiario (pensiones, desempleo) | INE, Seg. Social, SEPE, AEAT/BOE |
 | `raw/` | Ficheros oficiales descargados (trazabilidad) | — |
 
 ## Cifras clave 2023 (verificadas)

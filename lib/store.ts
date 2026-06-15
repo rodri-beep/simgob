@@ -17,6 +17,8 @@ interface SimState {
   selectedBuilding: BuildingId | null;
   activeRevenue: "irpf" | "is";
   crt: boolean;
+  /** "¿y a ti?" personal gross annual salary (€), or null if not entered. */
+  grossSalary: number | null;
 
   // ---- Actions ----
   setIrpfGeneralRate: (index: number, rate: number) => void;
@@ -29,6 +31,7 @@ interface SimState {
   selectBuilding: (id: BuildingId | null) => void;
   setActiveRevenue: (which: "irpf" | "is") => void;
   toggleCrt: () => void;
+  setGrossSalary: (gross: number | null) => void;
 }
 
 const baseIrpfScale = irpfData.scale;
@@ -44,6 +47,7 @@ export const useSim = create<SimState>((set) => ({
   selectedBuilding: null,
   activeRevenue: "irpf",
   crt: false,
+  grossSalary: null,
 
   setIrpfGeneralRate: (index, rate) =>
     set((s) => {
@@ -88,6 +92,8 @@ export const useSim = create<SimState>((set) => ({
   selectBuilding: (id) => set({ selectedBuilding: id }),
   setActiveRevenue: (which) => set({ activeRevenue: which }),
   toggleCrt: () => set((s) => ({ crt: !s.crt })),
+  setGrossSalary: (gross) =>
+    set({ grossSalary: gross == null ? null : Math.max(0, gross) }),
 }));
 
 /** True when the scenario differs from the official base scenario. */

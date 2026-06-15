@@ -155,3 +155,53 @@ export interface SourceRef {
   url: string;
   note?: string;
 }
+
+// ---- "Stories" / human-anchor data ----
+
+/** Tax-law constants to turn a gross salary into a net one (FY-specific). */
+export interface NetSalaryModel {
+  ssWorkerRate: number;
+  ssMaxBaseAnnual: number;
+  otherDeductible: number;
+  personalMinimum: number;
+  workReduction: {
+    max: number;
+    fullUpTo: number;
+    zeroFrom: number;
+    slope: number;
+  };
+}
+
+export interface HumanConstants {
+  population: number;
+  households: number;
+  declarantes: number;
+  /** INE gross annual salary references (EAES). */
+  salaryMean: number;
+  salaryMedian: number;
+  salaryModal: number;
+}
+
+/** Per-policy beneficiary anchor. */
+export interface BeneficiaryAnchor {
+  /** Number of beneficiaries (e.g. nº de pensiones). */
+  count: number;
+  /** Official mean monthly amount (€), scaled linearly when the policy is edited. */
+  baseMonthly: number;
+  /** Payments per year (14 for pensions, 12 otherwise) — shown as context. */
+  payments: number;
+  /** Noun for the count, e.g. "pensiones", "perceptores". */
+  noun: string;
+  /** Label for the mean, e.g. "pensión media". */
+  meanLabel: string;
+  note?: string;
+}
+
+export interface HumanData {
+  baseYear: number;
+  constants: HumanConstants;
+  netSalaryModel: NetSalaryModel;
+  /** Beneficiary anchors keyed by spending-policy id. */
+  anchors: Record<string, BeneficiaryAnchor>;
+  sources: SourceRef[];
+}
