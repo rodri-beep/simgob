@@ -20,6 +20,8 @@ interface SimState {
   crt: boolean;
   /** "¿y a ti?" personal gross annual salary (€), or null if not entered. */
   grossSalary: number | null;
+  /** Whether the "¿cómo funciona?" walkthrough is open. */
+  introOpen: boolean;
 
   // ---- Actions ----
   setIrpfGeneralRate: (index: number, rate: number) => void;
@@ -35,6 +37,7 @@ interface SimState {
   setActiveRevenue: (which: "irpf" | "is") => void;
   toggleCrt: () => void;
   setGrossSalary: (gross: number | null) => void;
+  setIntro: (open: boolean) => void;
 }
 
 const baseIrpfScale = irpfData.scale;
@@ -51,6 +54,7 @@ export const useSim = create<SimState>((set) => ({
   activeRevenue: "irpf",
   crt: false,
   grossSalary: null,
+  introOpen: false,
 
   setIrpfGeneralRate: (index, rate) =>
     set((s) => {
@@ -105,6 +109,7 @@ export const useSim = create<SimState>((set) => ({
   toggleCrt: () => set((s) => ({ crt: !s.crt })),
   setGrossSalary: (gross) =>
     set({ grossSalary: gross == null ? null : Math.max(0, gross) }),
+  setIntro: (open) => set({ introOpen: open }),
 }));
 
 /** True when the scenario differs from the official base scenario. */

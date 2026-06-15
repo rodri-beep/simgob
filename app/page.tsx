@@ -9,6 +9,7 @@ import { TaxDetail } from "@/components/Dynamic/TaxDetail";
 import { Footer } from "@/components/Footer";
 import { Panel } from "@/components/ui/Panel";
 import { ScenarioUrlSync } from "@/components/ScenarioUrlSync";
+import { IntroModal } from "@/components/Intro/IntroModal";
 
 export default function Page() {
   return (
@@ -55,6 +56,9 @@ export default function Page() {
 
       {/* Keeps the scenario synced with the URL for sharing (no backend). */}
       <ScenarioUrlSync />
+
+      {/* "¿Cómo funciona?" walkthrough (auto on first visit; "?" to reopen). */}
+      <IntroModal />
     </main>
   );
 }
