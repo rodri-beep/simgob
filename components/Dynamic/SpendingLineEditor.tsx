@@ -2,7 +2,14 @@
 
 import { useSim } from "@/lib/store";
 import type { SpendingPolicy } from "@/lib/engine/types";
-import { formatM, formatMDecimal, formatPctValue } from "@/lib/engine/format";
+import { anchorFor, human } from "@/lib/data";
+import {
+  beneficiaryMonthlyScaled,
+  perHabitante,
+  perHogar,
+  perDay,
+} from "@/lib/engine/stories";
+import { formatM, formatMDecimal, formatPctValue, formatEur } from "@/lib/engine/format";
 
 export function SpendingLineEditor({ policy }: { policy: SpendingPolicy }) {
   const override = useSim((s) => s.spendingOverrides[policy.id]);
@@ -17,6 +24,10 @@ export function SpendingLineEditor({ policy }: { policy: SpendingPolicy }) {
 
   // Cutting spending improves the balance (moss); increasing worsens it (brick).
   const deltaColor = delta < 0 ? "text-moss" : delta > 0 ? "text-brick" : "text-ink-soft";
+
+  // Human story (beneficiary anchor where available, else universal anchors).
+  const anchor = anchorFor(policy.id);
+  const { population, households } = human.constants;
 
   return (
     <div className="panel-inset px-2 py-1.5">
@@ -54,11 +65,42 @@ export function SpendingLineEditor({ policy }: { policy: SpendingPolicy }) {
         </button>
       </div>
 
-      <div className="h-3">
-        {modified && (
+      {modified && (
+        <div className="mt-1 leading-tight">
           <span className={`tnum font-data text-[10px] ${deltaColor}`}>
             {delta < 0 ? "Recorte " : "Aumento "}
             {formatMDecimal(delta, { sign: true })} · saldo {formatMDecimal(-delta, { sign: true })}
+          </span>
+        </div>
+      )}
+
+      {/* Human story */}
+      <div className="mt-0.5 text-[9px] text-ink-soft leading-snug">
+        {anchor ? (
+          (() => {
+            const meanNow = beneficiaryMonthlyScaled(anchor.baseMonthly, base, amount);
+            const meanDiff = meanNow - anchor.baseMonthly;
+            return (
+              <span>
+                ≈ {(anchor.count / 1e6).toFixed(1)} M {anchor.noun} · {anchor.meanLabel}{" "}
+                <b className="text-ink">{formatEur(modified ? meanNow : anchor.baseMonthly)}/mes</b>
+                {anchor.payments === 14 ? " (14 pagas)" : ""}
+                {modified && (
+                  <>
+                    {" · "}
+                    <b className={meanDiff > 0 ? "text-moss" : "text-brick"}>
+                      {formatEur(meanDiff, { sign: true })}/mes
+                    </b>{" "}
+                    por {anchor.singular}
+                  </>
+                )}
+              </span>
+            );
+          })()
+        ) : (
+          <span>
+            ≈ <b className="text-ink">{formatEur(perHabitante(amount, population))}</b>/hab·año ·{" "}
+            {formatEur(perHogar(amount, households))}/hogar · {formatMDecimal(perDay(amount))}/día
           </span>
         )}
       </div>

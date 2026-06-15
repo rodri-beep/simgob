@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { meta } from "@/lib/data";
+import { meta, human } from "@/lib/data";
 import { Panel } from "@/components/ui/Panel";
 
 export const metadata: Metadata = {
@@ -96,6 +96,34 @@ export default function Metodologia() {
         </P>
       </Panel>
 
+      <Panel title="Historias: de los € a las personas">
+        <div className="space-y-2">
+          <P>
+            Para que las cifras se entiendan, cada número se acompaña de una traducción humana
+            que reacciona al mover las palancas. Son <b>estimaciones ilustrativas</b>.
+          </P>
+          <P>
+            <b>Salario bruto → neto (&ldquo;¿y a ti?&rdquo; y renta por tramo).</b> Modelo
+            simplificado para un contribuyente soltero con solo rendimientos del trabajo, 12 pagas:
+            cotización del trabajador 6,45 % (hasta la base máxima de 53.946 €/año), &ldquo;otros
+            gastos&rdquo; 2.000 €, reducción por rendimientos del trabajo (6.498 €, factor 1,14) y
+            la escala combinada del IRPF menos el mínimo personal (5.550 €). Reacciona al escenario.
+          </P>
+          <P>
+            <b>Gasto por persona.</b> Donde hay un colectivo claro usamos anclas por beneficiario:
+            Pensiones (10,1 M de pensiones, media 1.199 €/mes en 14 pagas) y Desempleo (1,77 M de
+            perceptores, prestación media 959 €/mes); al recortar o ampliar la partida, la media se
+            ajusta <b>de forma lineal</b>. Para el resto usamos anclas universales: € por habitante
+            (48,1 M), por hogar (19,1 M) y M€ por día.
+          </P>
+          <P>
+            <b>Mediana y tramo más numeroso del IRPF</b> se calculan a partir de la estadística de
+            declarantes: la mediana es el tramo donde cae el declarante del percentil 50, y el
+            &ldquo;tramo más numeroso&rdquo;, el de mayor número de declarantes.
+          </P>
+        </div>
+      </Panel>
+
       <Panel title="Limitaciones declaradas">
         <ul className="text-[12px] text-ink-soft leading-relaxed list-disc pl-5 space-y-1">
           <li>Datos agrupados por tramo (no individuales): mayor error en el tramo superior (cola larga).</li>
@@ -108,7 +136,7 @@ export default function Metodologia() {
 
       <Panel title="Fuentes">
         <ul className="space-y-2">
-          {meta.sources.map((s) => (
+          {[...meta.sources, ...human.sources].map((s) => (
             <li key={s.id} className="text-[12px]">
               <a
                 href={s.url}

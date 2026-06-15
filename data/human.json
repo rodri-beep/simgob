@@ -1,0 +1,47 @@
+{
+  "baseYear": 2023,
+  "constants": {
+    "population": 48085361,
+    "households": 19102518,
+    "declarantes": 23987211,
+    "salaryMean": 28049.94,
+    "salaryMedian": 23349,
+    "salaryModal": 15574.85
+  },
+  "netSalaryModel": {
+    "ssWorkerRate": 0.0645,
+    "ssMaxBaseAnnual": 53946,
+    "otherDeductible": 2000,
+    "personalMinimum": 5550,
+    "workReduction": { "max": 6498, "fullUpTo": 14047.5, "zeroFrom": 19747.5, "slope": 1.14 }
+  },
+  "anchors": {
+    "p21": {
+      "count": 10111991,
+      "baseMonthly": 1198.7,
+      "payments": 14,
+      "noun": "pensiones",
+      "singular": "pensión",
+      "meanLabel": "pensión media",
+      "note": "10.111.991 pensiones contributivas; pensión media del sistema 1.198,7 €/mes (14 pagas), dic. 2023. El recorte/aumento se reparte de forma lineal."
+    },
+    "p25": {
+      "count": 1774534,
+      "baseMonthly": 958.6,
+      "payments": 12,
+      "noun": "perceptores",
+      "singular": "perceptor",
+      "meanLabel": "prestación media",
+      "note": "1.774.534 perceptores medios de prestaciones por desempleo; prestación contributiva media 958,6 €/mes (SEPE, 2023)."
+    }
+  },
+  "sources": [
+    { "id": "ine-poblacion", "label": "INE — Población 1 enero 2023", "url": "https://www.ine.es/dyngs/Prensa/es/CENSO2023.htm", "note": "48.085.361 habitantes." },
+    { "id": "ine-hogares", "label": "INE — Hogares (ECP) 2023", "url": "https://www.ine.es/dyngs/Prensa/es/ECP4T23.htm", "note": "19.102.518 hogares; tamaño medio 2,5." },
+    { "id": "ine-salarios", "label": "INE — Encuesta Anual de Estructura Salarial 2023", "url": "https://www.ine.es/dyngs/Prensa/EAES2023.htm", "note": "Salario medio 28.050 €, mediano 23.349 €, más frecuente 15.575 €." },
+    { "id": "ss-pensiones", "label": "Seguridad Social — Pensiones 2023", "url": "https://www.seg-social.es/wps/portal/wss/internet/EstadisticasPresupuestosEstudios/Estadisticas/EST23", "note": "Número de pensiones y pensión media." },
+    { "id": "sepe-desempleo", "label": "SEPE — Prestaciones por desempleo 2023", "url": "https://www.sepe.es/HomeSepe/que-es-el-sepe/estadisticas/estadisticas-prestaciones/informe-prestaciones", "note": "1.774.534 beneficiarios medios." },
+    { "id": "boe-cotizacion", "label": "Orden PCM/74/2023 — bases y tipos de cotización 2023", "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2023-2472", "note": "Tipo trabajador 6,45 %; base máx. 4.495,50 €/mes." },
+    { "id": "aeat-trabajo", "label": "AEAT — IRPF rendimientos del trabajo 2023", "url": "https://sede.agenciatributaria.gob.es/Sede/irpf/novedades-impuesto/novedades-normativa-2023/principales-novedades-ley-presupuestos-generales-2023.html", "note": "Otros gastos 2.000 €; reducción trabajo 6.498 € (factor 1,14)." }
+  ]
+}
