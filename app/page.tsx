@@ -3,7 +3,7 @@ import { StatusBar } from "@/components/StatusBar";
 import { LeftRail } from "@/components/LeftRail";
 import { IsometricBoard } from "@/components/Board/IsometricBoard";
 import { ControlPanel } from "@/components/ControlPanel/ControlPanel";
-import { DistrictPanel } from "@/components/Dynamic/DistrictPanel";
+import { DistrictModal } from "@/components/Dynamic/DistrictModal";
 import { RevenuePanel } from "@/components/Dynamic/RevenuePanel";
 import { TaxDetail } from "@/components/Dynamic/TaxDetail";
 import { Footer } from "@/components/Footer";
@@ -20,21 +20,20 @@ export default function Page() {
           <LeftRail />
         </div>
 
-        <div className="flex flex-col gap-2 sm:gap-3 min-w-0">
+        <div className="min-w-0">
           <Panel
             title="Mapa del gasto público · pulsa un edificio"
             right={
               <span className="font-chrome text-[8px] normal-case">
-                tamaños orientativos, no a escala
+                altura ≈ gasto (por plantas)
               </span>
             }
             bodyClassName="p-0"
           >
-            <div className="h-[340px] sm:h-[420px] lg:h-[480px] overflow-hidden bevel-in">
+            <div className="h-[380px] sm:h-[460px] lg:h-[540px] overflow-hidden bevel-in">
               <IsometricBoard />
             </div>
           </Panel>
-          <DistrictPanel />
         </div>
 
         <div className="flex flex-col gap-2 sm:gap-3">
@@ -49,6 +48,9 @@ export default function Page() {
       </div>
 
       <Footer />
+
+      {/* Spending editor opens as a modal over the city. */}
+      <DistrictModal />
     </main>
   );
 }
