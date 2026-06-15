@@ -44,7 +44,7 @@ export function StatusBar() {
           <AnimatedNumber value={totals.revenue} format={(n) => formatM(n)} />
         </Stat>
         <Stat label="Gastos" tone="brick">
-          {formatM(totals.spending)}
+          <AnimatedNumber value={totals.spending} format={(n) => formatM(n)} />
         </Stat>
         <Stat label={deficit ? "Saldo (déficit)" : "Saldo (superávit)"} tone={deficit ? "brick" : "moss"}>
           <AnimatedNumber

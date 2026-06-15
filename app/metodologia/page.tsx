@@ -32,9 +32,9 @@ export default function Metodologia() {
           <P>
             <b>Presupuestópolis</b> es un simulador <b>divulgativo y no oficial</b> de los
             Presupuestos Generales del Estado (PGE) y de dos impuestos. Permite mover los
-            tipos del <b>IRPF</b> y del <b>Impuesto sobre Sociedades (IS)</b> y ver el
-            efecto sobre la recaudación, el saldo y quién gana o pierde por tramo de renta.
-            No tiene relación con la AEAT ni con el Gobierno.
+            tipos del <b>IRPF</b> y del <b>Impuesto sobre Sociedades (IS)</b> y ajustar las
+            <b> partidas de gasto</b>, y ver el efecto sobre la recaudación, el saldo y quién
+            gana o pierde por tramo de renta. No tiene relación con la AEAT ni con el Gobierno.
           </P>
           <P>
             No es un microsimulador oficial: no usa microdatos individuales (EUROMOD / IEF-AEAT)
@@ -102,7 +102,7 @@ export default function Metodologia() {
           <li>Sin respuesta de comportamiento (elasticidades, deslocalización, economía sumergida).</li>
           <li>El IS no consolidado no refleja la cuota real de los grupos; se ancla a la recaudación.</li>
           <li>Ingresos (recaudación / presupuesto) y gastos (presupuesto inicial) usan criterios distintos: el saldo es una aproximación. El déficit real de las AAPP en 2023 fue de {new Intl.NumberFormat("es-ES").format(meta.officialDeficitAapp)} M€ (≈ {meta.officialDeficitAappPct} % del PIB).</li>
-          <li>En v1 solo el IRPF y el IS son editables; el resto de ingresos y todo el gasto son de solo lectura.</li>
+          <li>Son editables el IRPF, el IS y las partidas de gasto; el resto de ingresos es de solo lectura. El gasto solo afecta al saldo (sin efectos de segundo orden: recortar una partida no cambia la recaudación).</li>
         </ul>
       </Panel>
 

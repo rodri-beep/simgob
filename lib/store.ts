@@ -6,10 +6,12 @@ import { cloneScale } from "./engine/irpf";
 import { irpfData, isData } from "./data";
 
 interface SimState {
-  // ---- Editable scenario (the only things that recalculate in v1) ----
+  // ---- Editable scenario ----
   irpfScale: IrpfScale;
   isNominalRate: number;
   isMinimumRate: number;
+  /** Per-policy spending overrides (M€), keyed by policy id. Absent = official base. */
+  spendingOverrides: Record<string, number>;
 
   // ---- UI state (not part of the simulation) ----
   selectedBuilding: BuildingId | null;
@@ -21,6 +23,8 @@ interface SimState {
   setIrpfSavingsRate: (index: number, rate: number) => void;
   setIsNominalRate: (rate: number) => void;
   setIsMinimumRate: (rate: number) => void;
+  setSpending: (id: string, amount: number) => void;
+  resetSpendingLine: (id: string) => void;
   reset: () => void;
   selectBuilding: (id: BuildingId | null) => void;
   setActiveRevenue: (which: "irpf" | "is") => void;
@@ -35,6 +39,7 @@ export const useSim = create<SimState>((set) => ({
   irpfScale: cloneScale(baseIrpfScale),
   isNominalRate: baseIsNominal,
   isMinimumRate: baseIsMinimum,
+  spendingOverrides: {},
 
   selectedBuilding: null,
   activeRevenue: "irpf",
@@ -59,11 +64,25 @@ export const useSim = create<SimState>((set) => ({
   setIsNominalRate: (rate) => set({ isNominalRate: rate }),
   setIsMinimumRate: (rate) => set({ isMinimumRate: rate }),
 
+  setSpending: (id, amount) =>
+    set((s) => ({
+      spendingOverrides: { ...s.spendingOverrides, [id]: Math.max(0, amount) },
+    })),
+
+  resetSpendingLine: (id) =>
+    set((s) => {
+      if (!(id in s.spendingOverrides)) return s;
+      const next = { ...s.spendingOverrides };
+      delete next[id];
+      return { spendingOverrides: next };
+    }),
+
   reset: () =>
     set({
       irpfScale: cloneScale(baseIrpfScale),
       isNominalRate: baseIsNominal,
       isMinimumRate: baseIsMinimum,
+      spendingOverrides: {},
     }),
 
   selectBuilding: (id) => set({ selectedBuilding: id }),
@@ -75,6 +94,7 @@ export const useSim = create<SimState>((set) => ({
 export function isDirty(state: SimState): boolean {
   if (state.isNominalRate !== baseIsNominal) return true;
   if (state.isMinimumRate !== baseIsMinimum) return true;
+  if (Object.keys(state.spendingOverrides).length > 0) return true;
   for (let i = 0; i < state.irpfScale.general.length; i++) {
     if (state.irpfScale.general[i].rate !== baseIrpfScale.general[i].rate)
       return true;

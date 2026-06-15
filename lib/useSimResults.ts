@@ -16,6 +16,7 @@ export function useSimResults() {
   const irpfScale = useSim((s) => s.irpfScale);
   const isNominalRate = useSim((s) => s.isNominalRate);
   const isMinimumRate = useSim((s) => s.isMinimumRate);
+  const spendingOverrides = useSim((s) => s.spendingOverrides);
   const dirty = useSim(isDirty);
 
   const irpf = useMemo(() => simulateIrpf(irpfData, irpfScale), [irpfScale]);
@@ -25,11 +26,15 @@ export function useSimResults() {
   );
   const totals = useMemo(
     () =>
-      computeTotals(revenueLines, spendingPolicies, irpf, is, {
-        irpf: irpfData.stateDeltaShare,
-        is: isData.stateDeltaShare,
-      }),
-    [irpf, is],
+      computeTotals(
+        revenueLines,
+        spendingPolicies,
+        irpf,
+        is,
+        { irpf: irpfData.stateDeltaShare, is: isData.stateDeltaShare },
+        spendingOverrides,
+      ),
+    [irpf, is, spendingOverrides],
   );
 
   return { irpf, is, totals, dirty };

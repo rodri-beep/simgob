@@ -7,8 +7,10 @@ export interface BudgetTotals {
   revenue: number;
   /** Total revenue in the base (official) scenario, in M€. */
   baseRevenue: number;
-  /** Total spending, in M€ (read-only in v1). */
+  /** Total spending under the current scenario, in M€. */
   spending: number;
+  /** Total spending in the base (official) scenario, in M€. */
+  baseSpending: number;
   /** revenue − spending, in M€ (negative = deficit). */
   balance: number;
   baseBalance: number;
@@ -38,6 +40,7 @@ export function computeTotals(
   irpf: IrpfResult,
   is: IsResult,
   shares: StateShares,
+  spendingOverrides: Record<string, number> = {},
 ): BudgetTotals {
   let revenue = 0;
   let baseRevenue = 0;
@@ -48,14 +51,24 @@ export function computeTotals(
     else revenue += line.amount;
   }
 
-  const spendingTotal = spending.reduce((a, s) => a + s.amount, 0);
-  const balance = revenue - spendingTotal;
-  const baseBalance = baseRevenue - spendingTotal;
+  // Spending edits (P1) flow straight to the balance, with no second-order
+  // effects (cutting a policy does not change tax revenue).
+  let baseSpending = 0;
+  let scenarioSpending = 0;
+  for (const p of spending) {
+    baseSpending += p.amount;
+    const override = spendingOverrides[p.id];
+    scenarioSpending += override ?? p.amount;
+  }
+
+  const balance = revenue - scenarioSpending;
+  const baseBalance = baseRevenue - baseSpending;
 
   return {
     revenue,
     baseRevenue,
-    spending: spendingTotal,
+    spending: scenarioSpending,
+    baseSpending,
     balance,
     baseBalance,
     balanceDelta: balance - baseBalance,
