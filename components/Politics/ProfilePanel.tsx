@@ -62,11 +62,6 @@ export function ProfilePanel() {
           ))}
         </div>
       )}
-
-      <p className="mt-2 text-[8px] text-ink-soft/80 leading-snug">
-        Etiqueta satírica según cómo reformas ingresos y gasto. Es una broma, no un
-        análisis. Viaja en tu enlace de «Compartir».
-      </p>
     </Panel>
   );
 }
