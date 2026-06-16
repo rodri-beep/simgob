@@ -24,6 +24,8 @@ interface SimState {
   introOpen: boolean;
   /** Whether the taxes ("Impuestos") modal is open. */
   impuestosOpen: boolean;
+  /** Whether the "Compartir" (share card) modal is open. */
+  shareOpen: boolean;
   /** Last loaded country template id (for highlighting), or null. */
   countryTemplate: string | null;
 
@@ -48,6 +50,7 @@ interface SimState {
   setGrossSalary: (gross: number | null) => void;
   setIntro: (open: boolean) => void;
   setImpuestosOpen: (open: boolean) => void;
+  setShareOpen: (open: boolean) => void;
 }
 
 const baseIrpfScale = irpfData.scale;
@@ -66,6 +69,7 @@ export const useSim = create<SimState>((set) => ({
   grossSalary: null,
   introOpen: false,
   impuestosOpen: false,
+  shareOpen: false,
   countryTemplate: null,
 
   setIrpfGeneralRate: (index, rate) =>
@@ -137,6 +141,7 @@ export const useSim = create<SimState>((set) => ({
     set({ grossSalary: gross == null ? null : Math.max(0, gross) }),
   setIntro: (open) => set({ introOpen: open }),
   setImpuestosOpen: (open) => set({ impuestosOpen: open }),
+  setShareOpen: (open) => set({ shareOpen: open }),
 }));
 
 /** Average uniform shift (pp, as a fraction) of the general scale vs base. */
