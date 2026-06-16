@@ -60,13 +60,13 @@ function buildReasons(s: {
 }
 
 const PROFILES: Record<string, Omit<PoliticsResult, "reasons">> = {
-  centrista: { id: "centrista", label: "Centrista", emoji: "⚖️", blurb: "Sin ideas, de centro… comercial." },
-  socialista: { id: "socialista", label: "Socialista", emoji: "🌹", blurb: "Contentando a las charos." },
-  comunista: { id: "comunista", label: "Comunista peligroso/a", emoji: "☭", blurb: "A gastar el dinero del resto." },
-  liberal: { id: "liberal", label: "Liberal", emoji: "💼", blurb: "Te crees que tienes la solución porque has visto a Miguel Anxo Bastos en TikTok." },
-  conservador: { id: "conservador", label: "Conservador/a", emoji: "🎩", blurb: "Privatizando un poquito por aquí me bajo los impuestos por allí." },
-  turbofacha: { id: "turbofacha", label: "Turbofacha", emoji: "🦅", blurb: "Menos chiringuitos y más Guardia Civil." },
-  populista: { id: "populista", label: "Cuñao de barra de bar", emoji: "🍺", blurb: "Solucionando el mundo con unos carajillos." },
+  centrista: { id: "centrista", label: "Centrista", emoji: "⚖️", blurb: "El «depende» hecho presupuesto." },
+  socialista: { id: "socialista", label: "Socialista", emoji: "🌹", blurb: "Repartiendo lo que aún no has recaudado." },
+  comunista: { id: "comunista", label: "Comunista peligroso/a", emoji: "☭", blurb: "Esta vez sí va a salir bien." },
+  liberal: { id: "liberal", label: "Liberal", emoji: "💼", blurb: "Le has visto dos vídeos a Milei y ya lo tienes claro." },
+  conservador: { id: "conservador", label: "Conservador/a", emoji: "🎩", blurb: "Se vivía mejor antes. Y con menos impuestos." },
+  turbofacha: { id: "turbofacha", label: "Turbofacha", emoji: "🦅", blurb: "Recortas en todo menos en banderas." },
+  populista: { id: "populista", label: "Cuñao", emoji: "🍺", blurb: "Yo esto lo arreglaba en una tarde." },
 };
 
 export function classifyPolitics(i: PoliticsInput): PoliticsResult {

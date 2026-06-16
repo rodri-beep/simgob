@@ -6,8 +6,12 @@ import { useSimResults } from "@/lib/useSimResults";
 import { usePolitics } from "@/lib/usePolitics";
 import { meta } from "@/lib/data";
 import { encodeScenario } from "@/lib/share";
-import { renderShareCard, canvasToBlob } from "@/lib/shareCard";
+import { renderShareCard, canvasToBlob, type ShareFormat } from "@/lib/shareCard";
+import { SITE_URL } from "@/lib/seo";
 import { track } from "@/lib/analytics";
+
+/** Brand host for the card CTA — always the canonical domain, never the (long) preview host. */
+const CARD_HOST = SITE_URL.replace(/^https?:\/\//, "");
 import { Modal } from "@/components/ui/Modal";
 import { EstimateBadge } from "@/components/ui/EstimateBadge";
 
@@ -26,6 +30,7 @@ export function ShareModal() {
   const [failed, setFailed] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copiedImg, setCopiedImg] = useState(false);
+  const [format, setFormat] = useState<ShareFormat>("square");
   const blobRef = useRef<Blob | null>(null);
 
   // Share link reproducing the current scenario (same token as the URL bar).
@@ -55,8 +60,7 @@ export function ShareModal() {
     (async () => {
       try {
         const { profile: p, totals: t } = dataRef.current;
-        const host = window.location.host || "simgob";
-        const canvas = await renderShareCard({ profile: p, totals: t, gdp: meta.gdp, baseYear: meta.baseYear, host });
+        const canvas = await renderShareCard({ profile: p, totals: t, gdp: meta.gdp, baseYear: meta.baseYear, host: CARD_HOST }, format);
         const blob = await canvasToBlob(canvas);
         if (cancelled) return;
         blobRef.current = blob;
@@ -70,11 +74,11 @@ export function ShareModal() {
       cancelled = true;
       if (url) URL.revokeObjectURL(url);
     };
-  }, [open, sig]);
+  }, [open, sig, format]);
 
   if (!open) return null;
 
-  const fileName = `simgob-${profile.id}.png`;
+  const fileName = `simgob-${profile.id}-${format}.png`;
 
   const download = () => {
     const b = blobRef.current;
@@ -139,13 +143,43 @@ export function ShareModal() {
 
   return (
     <Modal title="Comparte tu plan" onClose={() => setOpen(false)} right={<EstimateBadge />} maxWidth="max-w-xl">
+      {/* Format toggle — square is the primary share; landscape suits link unfurls. */}
+      <div className="flex gap-1 mb-2">
+        <button
+          type="button"
+          onClick={() => setFormat("square")}
+          data-active={format === "square"}
+          className="btn-retro flex-1 text-[10px] justify-center flex"
+          title="Ideal para Instagram, Stories y WhatsApp"
+        >
+          ◻ Cuadrada
+        </button>
+        <button
+          type="button"
+          onClick={() => setFormat("landscape")}
+          data-active={format === "landscape"}
+          className="btn-retro flex-1 text-[10px] justify-center flex"
+          title="Ideal para X/Twitter y vistas previas de enlace"
+        >
+          ▭ Horizontal
+        </button>
+      </div>
+
       {/* Card preview */}
-      <div className="bevel-in bg-parchment-dark/40 p-1.5 mb-3">
+      <div className="bevel-in bg-parchment-dark/40 p-1.5 mb-3 grid place-items-center">
         {imgUrl ? (
           // eslint-disable-next-line @next/next/no-img-element -- generated PNG (blob URL); next/image can't optimize it
-          <img src={imgUrl} alt={`Tarjeta de SimGob: ${profile.label}`} className="w-full block" />
+          <img
+            src={imgUrl}
+            alt={`Tarjeta de SimGob: ${profile.label}`}
+            className="block w-full max-h-[58vh] object-contain"
+          />
         ) : (
-          <div className="aspect-[1200/630] w-full grid place-items-center text-ink-soft font-chrome uppercase text-[10px]">
+          <div
+            className={`${
+              format === "square" ? "aspect-square max-h-[58vh]" : "aspect-[1200/630]"
+            } w-full grid place-items-center text-ink-soft font-chrome uppercase text-[10px]`}
+          >
             {failed ? "No se pudo generar la imagen — usa el enlace ↓" : "Generando imagen…"}
           </div>
         )}

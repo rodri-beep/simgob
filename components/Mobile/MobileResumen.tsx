@@ -7,6 +7,7 @@ import { revenueLines, meta, human } from "@/lib/data";
 import { REPO_URL } from "@/lib/seo";
 import { formatM, formatPctValue, formatEur } from "@/lib/engine/format";
 import { useAreas, MAX_BASE, signNum } from "./model";
+import { ProfileIcon } from "@/components/Politics/ProfileIcon";
 import type { BuildingId } from "@/lib/engine/types";
 
 const CITY_BG = "linear-gradient(#bcd6e2,#cfe0d2)";
@@ -86,6 +87,31 @@ export function MobileResumen({
         <b className="font-data">{formatEur(perHab, { sign: true })}</b> por habitante
       </div>
 
+      {/* Political profile — surfaced near the top so it's visible without scrolling. */}
+      <div className="mt-3.5 bg-panel bevel-out border border-bevel-dark/40">
+        <div className="bg-teal-dark text-parchment font-chrome uppercase text-[10px] tracking-wide px-2.5 py-1.5">
+          Tu perfil político
+        </div>
+        <div className="px-3 py-2.5 flex gap-3 items-start">
+          <ProfileIcon id={profile.id} emoji={profile.emoji} size={38} className="shrink-0" />
+          <div className="min-w-0">
+            <div className="font-chrome uppercase text-[13px] leading-tight">{profile.label}</div>
+            {profile.reasons.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-1.5">
+                {profile.reasons.map((r) => (
+                  <span
+                    key={r}
+                    className="font-chrome uppercase text-[8px] tracking-wide bg-parchment-dark text-ink-soft border border-bevel-dark/40 px-1.5 py-[3px] leading-none"
+                  >
+                    {r}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* City of spending — height ≈ spend, tap a building to adjust it. */}
       <div className="mt-3.5">
         <div className="flex items-baseline justify-between mb-2">
@@ -157,34 +183,6 @@ export function MobileResumen({
         <p className="text-[11.5px] text-ink-soft leading-relaxed mt-2 mx-0.5">
           Toca un edificio para ir a ajustarlo. La altura se actualiza con tus recortes y subidas.
         </p>
-      </div>
-
-      {/* Political profile — above the P/L (per the user's brief). */}
-      <div className="mt-3.5 bg-panel bevel-out border border-bevel-dark/40">
-        <div className="bg-teal-dark text-parchment font-chrome uppercase text-[10px] tracking-wide px-2.5 py-1.5">
-          Tu perfil político
-        </div>
-        <div className="px-3 py-2.5 flex gap-3 items-start">
-          <span aria-hidden className="text-[32px] leading-none">
-            {profile.emoji}
-          </span>
-          <div className="min-w-0">
-            <div className="font-chrome uppercase text-[13px] leading-tight">{profile.label}</div>
-            <p className="text-[11.5px] text-ink-soft leading-snug mt-0.5">{profile.blurb}</p>
-            {profile.reasons.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mt-1.5">
-                {profile.reasons.map((r) => (
-                  <span
-                    key={r}
-                    className="font-chrome uppercase text-[8px] tracking-wide bg-parchment-dark text-ink-soft border border-bevel-dark/40 px-1.5 py-[3px] leading-none"
-                  >
-                    {r}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
       </div>
 
       {/* P/L summary. */}

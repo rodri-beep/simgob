@@ -12,7 +12,7 @@ export function TopBar() {
   const dirty = useSim(isDirty);
 
   const share = () => {
-    track("scenario_shared", { dirty });
+    track("scenario_shared", { dirty, source: "desktop" });
     setShare(true);
   };
 
