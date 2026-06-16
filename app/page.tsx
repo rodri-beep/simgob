@@ -2,10 +2,10 @@ import { TopBar } from "@/components/TopBar";
 import { StatusBar } from "@/components/StatusBar";
 import { LeftRail } from "@/components/LeftRail";
 import { IsometricBoard } from "@/components/Board/IsometricBoard";
-import { ControlPanel } from "@/components/ControlPanel/ControlPanel";
 import { ProfilePanel } from "@/components/Politics/ProfilePanel";
+import { PLPanel } from "@/components/Economy/PLPanel";
 import { DistrictModal } from "@/components/Dynamic/DistrictModal";
-import { TaxEditModal } from "@/components/Dynamic/TaxEditModal";
+import { ImpuestosModal } from "@/components/Impuestos/ImpuestosModal";
 import { RevenuePanel } from "@/components/Dynamic/RevenuePanel";
 import { BudgetColumnsChart } from "@/components/Dynamic/BudgetColumnsChart";
 import { TaxDetail } from "@/components/Dynamic/TaxDetail";
@@ -21,11 +21,14 @@ export default function Page() {
       <TopBar />
       <StatusBar />
 
-      <div className="grid lg:grid-cols-[168px_1fr_344px] gap-2 sm:gap-3 items-start">
-        <div className="hidden lg:block">
+      <div className="grid lg:grid-cols-[200px_1fr_320px] gap-2 sm:gap-3 items-start">
+        {/* Left: political profile (top) + navigation menu. */}
+        <div className="flex flex-col gap-2 sm:gap-3">
+          <ProfilePanel />
           <LeftRail />
         </div>
 
+        {/* Center: the city. */}
         <div className="min-w-0">
           <Panel
             title="Mapa del gasto público · pulsa un edificio"
@@ -42,14 +45,16 @@ export default function Page() {
           </Panel>
         </div>
 
+        {/* Right: P/L summary. */}
         <div className="flex flex-col gap-2 sm:gap-3">
-          <CountryTemplatePanel />
-          <ControlPanel />
-          <ProfilePanel />
+          <PLPanel />
         </div>
       </div>
 
-      {/* Dynamic layer — the part that reacts to the levers (spec §4 focus). */}
+      {/* Country templates — full-width module under the map. */}
+      <CountryTemplatePanel />
+
+      {/* Detail (collapsed by default to keep the main screen calm). */}
       <div className="grid lg:grid-cols-2 gap-2 sm:gap-3 items-start">
         <BudgetColumnsChart />
         <RevenuePanel />
@@ -58,9 +63,9 @@ export default function Page() {
 
       <Footer />
 
-      {/* Spending + tax editors open as modals over the city. */}
+      {/* Modals over the city. */}
       <DistrictModal />
-      <TaxEditModal />
+      <ImpuestosModal />
 
       {/* Keeps the scenario synced with the URL for sharing (no backend). */}
       <ScenarioUrlSync />

@@ -11,7 +11,7 @@ import {
   buildings,
 } from "@/lib/data";
 import { BUILDING_COLORS } from "@/lib/buildingColors";
-import { Panel } from "@/components/ui/Panel";
+import { CollapsiblePanel } from "@/components/ui/CollapsiblePanel";
 import { EstimateBadge } from "@/components/ui/EstimateBadge";
 import { formatM } from "@/lib/engine/format";
 
@@ -119,7 +119,11 @@ export function BudgetColumnsChart() {
   const deficit = totalSpend > totalRev;
 
   return (
-    <Panel title="Ingresos vs. gastos · a la misma escala" right={<EstimateBadge />}>
+    <CollapsiblePanel
+      title="Ingresos vs. gastos · a la misma escala"
+      subtitle="Dos columnas comparables: la diferencia entre ingresos y gastos es el saldo."
+      right={<EstimateBadge />}
+    >
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full" preserveAspectRatio="xMidYMid meet">
         {/* baseline */}
         <line x1={20} y1={BASE_Y} x2={W - 10} y2={BASE_Y} stroke="#8a7f5d" strokeWidth={1} />
@@ -176,6 +180,6 @@ export function BudgetColumnsChart() {
         </b>
         .
       </p>
-    </Panel>
+    </CollapsiblePanel>
   );
 }

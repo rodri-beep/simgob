@@ -2,7 +2,7 @@
 
 import { useSimResults } from "@/lib/useSimResults";
 import { isData } from "@/lib/data";
-import { Panel } from "@/components/ui/Panel";
+import { CollapsiblePanel } from "@/components/ui/CollapsiblePanel";
 import { EstimateBadge } from "@/components/ui/EstimateBadge";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { formatM, formatMDecimal, formatPct } from "@/lib/engine/format";
@@ -28,11 +28,12 @@ export function IsDetail() {
   const tone = is.delta > 0 ? "moss" : is.delta < 0 ? "brick" : "ink";
 
   return (
-    <Panel
+    <CollapsiblePanel
       title="Sociedades · recaudación y tipos"
+      subtitle="Recaudación del Impuesto de Sociedades, tipo efectivo vs. nominal y componentes."
       right={<EstimateBadge />}
-      bodyClassName="space-y-3"
     >
+      <div className="space-y-3">
       <div className="grid grid-cols-3 gap-2">
         <Stat
           label="Recaudación IS"
@@ -90,6 +91,7 @@ export function IsDetail() {
           <li key={i}>{n}</li>
         ))}
       </ul>
-    </Panel>
+      </div>
+    </CollapsiblePanel>
   );
 }

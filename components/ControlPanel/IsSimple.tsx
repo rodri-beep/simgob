@@ -9,7 +9,6 @@ import { formatMDecimal, formatPct } from "@/lib/engine/format";
 export function IsSimple() {
   const nominal = useSim((s) => s.isNominalRate);
   const setNominal = useSim((s) => s.setIsNominalRate);
-  const setEditTax = useSim((s) => s.setEditTax);
   const { is } = useSimResults();
 
   return (
@@ -46,14 +45,6 @@ export function IsSimple() {
         El tipo <b>efectivo</b> ({formatPct(is.effectiveRate, 1)}) es menor que el nominal
         ({formatPct(isData.nominalRate, 0)}) por deducciones y la consolidación de grupos.
       </p>
-
-      <button
-        type="button"
-        className="btn-retro w-full mt-2 text-[10px] justify-center flex"
-        onClick={() => setEditTax("is")}
-      >
-        ✎ Editar detalle (tipo mínimo)
-      </button>
     </div>
   );
 }

@@ -144,6 +144,10 @@ export interface DatasetMeta {
   officialDeficitAapp: number;
   /** General-government deficit as % of GDP (context). */
   officialDeficitAappPct: number;
+  /** General-government gross public debt, in M€ (context). */
+  publicDebt: number;
+  /** Public debt as % of GDP (context). */
+  publicDebtPct: number;
   perimeter: string;
   sources: SourceRef[];
   lastUpdated: string;
