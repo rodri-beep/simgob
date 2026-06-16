@@ -4,6 +4,7 @@ import { useSim } from "@/lib/store";
 import { buildingById, spendingForBuilding, buildingTotal, meta } from "@/lib/data";
 import { Modal } from "@/components/ui/Modal";
 import { EstimateBadge } from "@/components/ui/EstimateBadge";
+import { BudgetImpactBar } from "@/components/ui/BudgetImpactBar";
 import { SpendingLineEditor } from "./SpendingLineEditor";
 import { formatM, formatMDecimal, formatPctValue } from "@/lib/engine/format";
 
@@ -29,6 +30,7 @@ export function DistrictModal() {
       right={<EstimateBadge />}
       onClose={() => select(null)}
     >
+      <BudgetImpactBar />
       <div className="space-y-2">
         <div className="flex items-end justify-between gap-3">
           <p className="text-[11px] text-ink-soft leading-snug max-w-[60%]">

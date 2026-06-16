@@ -22,10 +22,14 @@ interface SimState {
   grossSalary: number | null;
   /** Whether the "¿cómo funciona?" walkthrough is open. */
   introOpen: boolean;
+  /** Which tax editor modal is open ("irpf"/"is" detail), or null. */
+  editTax: "irpf" | "is" | null;
 
   // ---- Actions ----
   setIrpfGeneralRate: (index: number, rate: number) => void;
   setIrpfSavingsRate: (index: number, rate: number) => void;
+  /** Simple mode: shift ALL general brackets uniformly by `delta` (from base). */
+  setIrpfUniformRate: (delta: number) => void;
   setIsNominalRate: (rate: number) => void;
   setIsMinimumRate: (rate: number) => void;
   setSpending: (id: string, amount: number) => void;
@@ -38,6 +42,7 @@ interface SimState {
   toggleCrt: () => void;
   setGrossSalary: (gross: number | null) => void;
   setIntro: (open: boolean) => void;
+  setEditTax: (which: "irpf" | "is" | null) => void;
 }
 
 const baseIrpfScale = irpfData.scale;
@@ -55,6 +60,7 @@ export const useSim = create<SimState>((set) => ({
   crt: false,
   grossSalary: null,
   introOpen: false,
+  editTax: null,
 
   setIrpfGeneralRate: (index, rate) =>
     set((s) => {
@@ -70,6 +76,15 @@ export const useSim = create<SimState>((set) => ({
         i === index ? { ...b, rate } : b,
       );
       return { irpfScale: { ...s.irpfScale, savings } };
+    }),
+
+  setIrpfUniformRate: (delta) =>
+    set((s) => {
+      const general = baseIrpfScale.general.map((b) => ({
+        ...b,
+        rate: Math.min(0.9, Math.max(0, b.rate + delta)),
+      }));
+      return { irpfScale: { ...s.irpfScale, general } };
     }),
 
   setIsNominalRate: (rate) => set({ isNominalRate: rate }),
@@ -110,7 +125,25 @@ export const useSim = create<SimState>((set) => ({
   setGrossSalary: (gross) =>
     set({ grossSalary: gross == null ? null : Math.max(0, gross) }),
   setIntro: (open) => set({ introOpen: open }),
+  setEditTax: (which) => set({ editTax: which }),
 }));
+
+/** Average uniform shift (pp, as a fraction) of the general scale vs base. */
+export function irpfUniformDelta(state: SimState): number {
+  const g = state.irpfScale.general;
+  const b = baseIrpfScale.general;
+  let sum = 0;
+  for (let i = 0; i < g.length; i++) sum += g[i].rate - b[i].rate;
+  return sum / g.length;
+}
+
+/** True when every general bracket is shifted by the same amount vs base. */
+export function irpfIsUniform(state: SimState): boolean {
+  const g = state.irpfScale.general;
+  const b = baseIrpfScale.general;
+  const d0 = g[0].rate - b[0].rate;
+  return g.every((x, i) => Math.abs(x.rate - b[i].rate - d0) < 1e-6);
+}
 
 /** True when the scenario differs from the official base scenario. */
 export function isDirty(state: SimState): boolean {

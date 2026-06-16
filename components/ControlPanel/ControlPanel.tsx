@@ -3,9 +3,8 @@
 import { useSim } from "@/lib/store";
 import { Panel } from "@/components/ui/Panel";
 import { EstimateBadge } from "@/components/ui/EstimateBadge";
-import { IrpfControls } from "./IrpfControls";
-import { IsControls } from "./IsControls";
-import { TuPanel } from "@/components/Stories/TuPanel";
+import { IrpfSimple } from "./IrpfSimple";
+import { IsSimple } from "./IsSimple";
 
 export function ControlPanel() {
   const active = useSim((s) => s.activeRevenue);
@@ -14,7 +13,7 @@ export function ControlPanel() {
   return (
     <Panel
       tone="olive"
-      title="Panel de control · palancas"
+      title="Impuestos · palancas"
       right={<EstimateBadge />}
       bodyClassName="p-0"
     >
@@ -36,16 +35,7 @@ export function ControlPanel() {
           Sociedades
         </button>
       </div>
-      <div className="p-2">
-        {active === "irpf" ? (
-          <>
-            <IrpfControls />
-            <TuPanel />
-          </>
-        ) : (
-          <IsControls />
-        )}
-      </div>
+      <div className="p-2">{active === "irpf" ? <IrpfSimple /> : <IsSimple />}</div>
     </Panel>
   );
 }
