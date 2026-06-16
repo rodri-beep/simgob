@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { meta } from "@/lib/data";
+import { REPO_URL } from "@/lib/seo";
 
 export function Footer() {
   return (
@@ -38,6 +39,14 @@ export function Footer() {
           <Link href="/faq" className="underline font-chrome uppercase text-[8px] tracking-wide">
             Preguntas frecuentes
           </Link>
+          <a
+            href={REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline font-chrome uppercase text-[8px] tracking-wide"
+          >
+            Código en GitHub
+          </a>
         </nav>
         <p className="font-chrome uppercase text-[8px] tracking-wide text-ink-soft/80">
           SimGob · un proyecto de Desvent

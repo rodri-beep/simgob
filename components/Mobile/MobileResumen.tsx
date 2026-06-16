@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSimResults } from "@/lib/useSimResults";
 import { usePolitics } from "@/lib/usePolitics";
 import { revenueLines, meta, human } from "@/lib/data";
+import { REPO_URL } from "@/lib/seo";
 import { formatM, formatPctValue, formatEur } from "@/lib/engine/format";
 import { useAreas, MAX_BASE, signNum } from "./model";
 import type { BuildingId } from "@/lib/engine/types";
@@ -258,6 +259,14 @@ export function MobileResumen({
           >
             Preguntas frecuentes
           </Link>
+          <a
+            href={REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-chrome uppercase text-[9px] tracking-wide text-teal-dark underline"
+          >
+            GitHub
+          </a>
         </div>
         <p className="text-[9px] text-ink-soft/70 leading-relaxed mt-2">
           Proyecto no oficial · estimaciones ilustrativas · datos AAPP {meta.baseYear} · un proyecto

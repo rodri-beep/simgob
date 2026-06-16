@@ -31,6 +31,9 @@ export const SITE_KEYWORDS = [
 
 export const ORG_NAME = "Desvent";
 
+/** Public source repository — a corroboration surface for the entity. */
+export const REPO_URL = "https://github.com/rodri-beep/simgob";
+
 /** Absolute URL for a path (e.g. "/faq" -> "https://simgob.com/faq"). */
 export function absoluteUrl(path = "/"): string {
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
@@ -74,6 +77,7 @@ function webApplicationLd() {
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
     creator: { "@id": ORG_ID },
     publisher: { "@id": ORG_ID },
+    sameAs: [REPO_URL],
   };
 }
 
