@@ -79,7 +79,8 @@ export function IntlComparePanel() {
         </select>
         {country && (
           <span className="font-chrome uppercase text-[9px] text-ink-soft">
-            presión fiscal {formatPct(country.revenuePctGdp, 0)} del PIB
+            ingresos públicos {formatPct(country.revenuePctGdp, 0)} del PIB · impuestos{" "}
+            {formatPct(country.taxToGdp, 0)}
           </span>
         )}
       </div>
@@ -140,7 +141,8 @@ export function IntlComparePanel() {
       <p className="mt-1.5 text-[9px] text-ink-soft leading-snug">
         Administraciones Públicas (todos los niveles), no el perímetro PGE editable. El gasto es el
         total español repartido como en el país elegido (misma tarta, otras porciones); los ingresos
-        son el PIB español × su presión fiscal. Estimación ilustrativa · COFOG (Eurostat) y OCDE.
+        son el PIB español × sus ingresos públicos (% PIB). Estimación ilustrativa · COFOG
+        (Eurostat) y OCDE, 2023.
       </p>
     </Panel>
   );
