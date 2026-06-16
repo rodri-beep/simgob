@@ -12,6 +12,7 @@ import { MobileGastos } from "./MobileGastos";
 import { MobileIngresos } from "./MobileIngresos";
 import { MobileModelos } from "./MobileModelos";
 import { MobileSheet } from "./MobileSheet";
+import { MobileIntro } from "./MobileIntro";
 import type { MobileTab, SheetState } from "./model";
 import type { BuildingId } from "@/lib/engine/types";
 
@@ -36,6 +37,7 @@ export function MobileApp() {
   const countryTemplate = useSim((s) => s.countryTemplate);
   const reset = useSim((s) => s.reset);
   const setShareOpen = useSim((s) => s.setShareOpen);
+  const setIntro = useSim((s) => s.setIntro);
 
   const deficit = totals.balance < 0;
   const balColor = deficit ? "#e8a89b" : "#bfe0a8";
@@ -84,6 +86,17 @@ export function MobileApp() {
             <span className="font-chrome uppercase text-[8.5px] tracking-wide bg-amber text-ink px-1.5 py-1 bevel-out-thin">
               ▲ Ilustrativa
             </span>
+            <button
+              type="button"
+              onClick={() => {
+                track("help_opened", { surface: "mobile" });
+                setIntro(true);
+              }}
+              aria-label="Cómo funciona"
+              className="font-chrome text-[12px] w-7 h-7 grid place-items-center bg-teal text-parchment border border-teal-dark bevel-out-thin cursor-pointer"
+            >
+              ?
+            </button>
           </div>
         </div>
 
@@ -153,6 +166,9 @@ export function MobileApp() {
 
         {/* Adjustment sheet over the app. */}
         {sheet && <MobileSheet sheet={sheet} onClose={() => setSheet(null)} />}
+
+        {/* Phone-native onboarding (auto on first visit; "?" to reopen). */}
+        <MobileIntro />
       </div>
     </div>
   );

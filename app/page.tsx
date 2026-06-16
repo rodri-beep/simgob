@@ -69,20 +69,21 @@ export default function Page() {
         <TaxDetail />
 
         <Footer />
+
+        {/* "¿Cómo funciona?" walkthrough — desktop copy/layout (auto on first
+            visit; "?" to reopen). The phone has its own MobileIntro. */}
+        <IntroModal />
       </main>
 
       {/* Modals over the app — shared by both layouts. On mobile only the share
-          card and the intro walkthrough are triggered; the district/taxes modals
-          stay dormant (mobile uses its own bottom sheet instead). */}
+          card is triggered; the district/taxes modals stay dormant (mobile uses
+          its own bottom sheet), and onboarding is handled by MobileIntro. */}
       <DistrictModal />
       <ImpuestosModal />
       <ShareModal />
 
       {/* Keeps the scenario synced with the URL for sharing (no backend). */}
       <ScenarioUrlSync />
-
-      {/* "¿Cómo funciona?" walkthrough (auto on first visit; "?" to reopen). */}
-      <IntroModal />
     </>
   );
 }
