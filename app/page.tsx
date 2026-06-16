@@ -7,6 +7,7 @@ import { ProfilePanel } from "@/components/Politics/ProfilePanel";
 import { DistrictModal } from "@/components/Dynamic/DistrictModal";
 import { TaxEditModal } from "@/components/Dynamic/TaxEditModal";
 import { RevenuePanel } from "@/components/Dynamic/RevenuePanel";
+import { BudgetColumnsChart } from "@/components/Dynamic/BudgetColumnsChart";
 import { TaxDetail } from "@/components/Dynamic/TaxDetail";
 import { Footer } from "@/components/Footer";
 import { Panel } from "@/components/ui/Panel";
@@ -48,9 +49,10 @@ export default function Page() {
 
       {/* Dynamic layer — the part that reacts to the levers (spec §4 focus). */}
       <div className="grid lg:grid-cols-2 gap-2 sm:gap-3 items-start">
+        <BudgetColumnsChart />
         <RevenuePanel />
-        <TaxDetail />
       </div>
+      <TaxDetail />
 
       <Footer />
 
