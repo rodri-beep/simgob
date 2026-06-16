@@ -15,7 +15,6 @@ export function IrpfSimple() {
   const delta = useSim(irpfUniformDelta);
   const uniform = useSim(irpfIsUniform);
   const setUniform = useSim((s) => s.setIrpfUniformRate);
-  const setEditTax = useSim((s) => s.setEditTax);
   const { irpf } = useSimResults();
 
   const tipoMedio = irpf.scenarioRevenue / TOTAL_BASE;
@@ -83,14 +82,6 @@ export function IrpfSimple() {
           <div className="text-[8px] text-ink-soft">≈ 50 % al Estado</div>
         </div>
       </div>
-
-      <button
-        type="button"
-        className="btn-retro w-full mt-2 text-[10px] justify-center flex"
-        onClick={() => setEditTax("irpf")}
-      >
-        ✎ Editar por tramo
-      </button>
 
       <TuPanel />
     </div>

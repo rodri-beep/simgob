@@ -22,8 +22,8 @@ interface SimState {
   grossSalary: number | null;
   /** Whether the "¿cómo funciona?" walkthrough is open. */
   introOpen: boolean;
-  /** Which tax editor modal is open ("irpf"/"is" detail), or null. */
-  editTax: "irpf" | "is" | null;
+  /** Whether the taxes ("Impuestos") modal is open. */
+  impuestosOpen: boolean;
   /** Last loaded country template id (for highlighting), or null. */
   countryTemplate: string | null;
 
@@ -47,7 +47,7 @@ interface SimState {
   toggleCrt: () => void;
   setGrossSalary: (gross: number | null) => void;
   setIntro: (open: boolean) => void;
-  setEditTax: (which: "irpf" | "is" | null) => void;
+  setImpuestosOpen: (open: boolean) => void;
 }
 
 const baseIrpfScale = irpfData.scale;
@@ -65,7 +65,7 @@ export const useSim = create<SimState>((set) => ({
   crt: false,
   grossSalary: null,
   introOpen: false,
-  editTax: null,
+  impuestosOpen: false,
   countryTemplate: null,
 
   setIrpfGeneralRate: (index, rate) =>
@@ -136,7 +136,7 @@ export const useSim = create<SimState>((set) => ({
   setGrossSalary: (gross) =>
     set({ grossSalary: gross == null ? null : Math.max(0, gross) }),
   setIntro: (open) => set({ introOpen: open }),
-  setEditTax: (which) => set({ editTax: which }),
+  setImpuestosOpen: (open) => set({ impuestosOpen: open }),
 }));
 
 /** Average uniform shift (pp, as a fraction) of the general scale vs base. */
