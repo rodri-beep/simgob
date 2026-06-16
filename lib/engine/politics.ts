@@ -66,7 +66,7 @@ const PROFILES: Record<string, Omit<PoliticsResult, "reasons">> = {
   liberal: { id: "liberal", label: "Liberal", emoji: "💼", blurb: "Le has visto dos vídeos a Milei y ya lo tienes claro." },
   conservador: { id: "conservador", label: "Conservador/a", emoji: "🎩", blurb: "Se vivía mejor antes. Y con menos impuestos." },
   turbofacha: { id: "turbofacha", label: "Turbofacha", emoji: "🦅", blurb: "Recortas en todo menos en banderas." },
-  populista: { id: "populista", label: "Cuñao de barra de bar", emoji: "🍺", blurb: "Yo esto lo arreglaba en una tarde." },
+  populista: { id: "populista", label: "Cuñao", emoji: "🍺", blurb: "Yo esto lo arreglaba en una tarde." },
 };
 
 export function classifyPolitics(i: PoliticsInput): PoliticsResult {
