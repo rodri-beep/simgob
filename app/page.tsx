@@ -5,6 +5,7 @@ import { IsometricBoard } from "@/components/Board/IsometricBoard";
 import { ControlPanel } from "@/components/ControlPanel/ControlPanel";
 import { ProfilePanel } from "@/components/Politics/ProfilePanel";
 import { DistrictModal } from "@/components/Dynamic/DistrictModal";
+import { TaxEditModal } from "@/components/Dynamic/TaxEditModal";
 import { RevenuePanel } from "@/components/Dynamic/RevenuePanel";
 import { TaxDetail } from "@/components/Dynamic/TaxDetail";
 import { Footer } from "@/components/Footer";
@@ -53,8 +54,9 @@ export default function Page() {
 
       <Footer />
 
-      {/* Spending editor opens as a modal over the city. */}
+      {/* Spending + tax editors open as modals over the city. */}
       <DistrictModal />
+      <TaxEditModal />
 
       {/* Keeps the scenario synced with the URL for sharing (no backend). */}
       <ScenarioUrlSync />
