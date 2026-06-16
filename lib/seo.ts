@@ -102,6 +102,37 @@ export function faqJsonLd(items: { q: string; a: string }[]) {
   };
 }
 
+/** Article structured data for a guide/explainer page. */
+export function articleJsonLd(g: { slug: string; h1: string; description: string }) {
+  const url = absoluteUrl(`/guias/${g.slug}`);
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: g.h1,
+    description: g.description,
+    inLanguage: "es-ES",
+    url,
+    mainEntityOfPage: url,
+    author: { "@id": ORG_ID },
+    publisher: { "@id": ORG_ID },
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+  };
+}
+
+/** ItemList structured data (used by the guides index). */
+export function itemListJsonLd(items: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      url: absoluteUrl(it.path),
+    })),
+  };
+}
+
 /** BreadcrumbList structured data. */
 export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
   return {

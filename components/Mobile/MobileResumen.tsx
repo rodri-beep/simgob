@@ -246,7 +246,13 @@ export function MobileResumen({
 
       {/* About / methodology — mirrors the desktop footer links. */}
       <div className="mt-4 pt-3 border-t border-bevel-dark/30 text-center">
-        <div className="flex justify-center gap-4">
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+          <Link
+            href="/guias"
+            className="font-chrome uppercase text-[9px] tracking-wide text-teal-dark underline"
+          >
+            Guías
+          </Link>
           <Link
             href="/metodologia"
             className="font-chrome uppercase text-[9px] tracking-wide text-teal-dark underline"

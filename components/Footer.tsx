@@ -33,6 +33,9 @@ export function Footer() {
           .
         </p>
         <nav className="flex flex-wrap gap-x-3 gap-y-1 pt-1">
+          <Link href="/guias" className="underline font-chrome uppercase text-[8px] tracking-wide">
+            Guías
+          </Link>
           <Link href="/metodologia" className="underline font-chrome uppercase text-[8px] tracking-wide">
             Metodología
           </Link>
