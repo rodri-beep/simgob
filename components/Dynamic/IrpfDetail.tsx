@@ -56,7 +56,7 @@ export function IrpfDetail() {
           <div className="text-[9px] text-ink-soft">nacional (Estado + CCAA)</div>
         </div>
         <div className="panel-inset px-2 py-1.5">
-          <div className="font-chrome uppercase text-[8px] text-ink-soft">Efecto saldo Estado</div>
+          <div className="font-chrome uppercase text-[8px] text-ink-soft">Efecto en el saldo</div>
           <AnimatedNumber
             value={stateEffect}
             format={(n) => formatMDecimal(n, { sign: true })}
@@ -64,7 +64,7 @@ export function IrpfDetail() {
               stateEffect > 0 ? "text-moss" : stateEffect < 0 ? "text-brick" : "text-ink"
             }`}
           />
-          <div className="text-[9px] text-ink-soft">≈ 50 % del cambio</div>
+          <div className="text-[9px] text-ink-soft">íntegro en las AAPP</div>
         </div>
       </div>
 

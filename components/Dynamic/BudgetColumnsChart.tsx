@@ -17,15 +17,10 @@ import { formatM } from "@/lib/engine/format";
 
 const REV_META: Record<string, { color: string; short: string }> = {
   cotizaciones: { color: "#236a6a", short: "Cotiz." },
+  otros_impuestos: { color: "#cf6b2c", short: "Otros imp." },
   irpf: { color: "#e09a2d", short: "IRPF" },
-  iva: { color: "#cf6b2c", short: "IVA" },
+  otros_ingresos: { color: "#7fb0c4", short: "Otros ing." },
   is: { color: "#5b6a3f", short: "IS" },
-  otros_impuestos: { color: "#a83c2e", short: "Otros imp." },
-  iiee: { color: "#4e7d3a", short: "IIEE" },
-  transferencias: { color: "#7fb0c4", short: "Transf." },
-  operaciones_financieras: { color: "#9a9078", short: "Financ." },
-  patrimoniales: { color: "#cdbf90", short: "Patrim." },
-  tasas: { color: "#8a7f5d", short: "Tasas" },
 };
 
 interface Seg {

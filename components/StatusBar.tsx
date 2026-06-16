@@ -39,7 +39,7 @@ export function StatusBar() {
   return (
     <div className="panel">
       <div className="bg-olive-dark text-parchment titlebar px-2 py-1 text-[10px] flex items-center justify-between">
-        <span>Situación presupuestaria · perímetro PGE {meta.baseYear}</span>
+        <span>Situación presupuestaria · Administraciones Públicas {meta.baseYear}</span>
         <EstimateBadge />
       </div>
       <div className="p-2 grid grid-cols-2 lg:grid-cols-4 gap-2">

@@ -1,30 +1,38 @@
 {
   "baseYear": 2023,
-  "source": "Civio — ¿Dónde van mis impuestos? (PGE, perímetro estatal).",
+  "source": "Eurostat — Ingresos de las Administraciones Públicas (gov_10a_main), 2023. IRPF e IS anclados a la recaudación AEAT.",
   "lines": [
+    {
+      "id": "otros_impuestos",
+      "label": "Otros impuestos (IVA, especiales, patrimonio…)",
+      "category": "tributos",
+      "editable": false,
+      "note": "Resto de impuestos de todas las administraciones: IVA, impuestos especiales, patrimonio, IRNR, sucesiones, tráfico exterior, etc. Solo lectura.",
+      "amount": 199195
+    },
     {
       "id": "cotizaciones",
       "label": "Cotizaciones sociales",
       "category": "cotizaciones",
       "editable": false,
-      "note": "Cuotas a la Seguridad Social. Solo lectura en v1.",
-      "amount": 184521.8
+      "note": "Cotizaciones sociales netas a la Seguridad Social (D.61). Solo lectura.",
+      "amount": 197003
     },
     {
       "id": "irpf",
-      "label": "IRPF (parte estatal)",
+      "label": "IRPF",
       "category": "tributos",
       "editable": true,
-      "note": "Parte estatal del IRPF. La recaudación nacional bruta (120.280 M€) se simula en el panel de IRPF; ~50 % se cede a las CCAA.",
-      "amount": 51629.2
+      "note": "Recaudación del IRPF de todas las administraciones (Estado + CCAA). Editable: mueve la escala por tramos. Se ancla a la recaudación real (120.280 M€).",
+      "amount": 120280
     },
     {
-      "id": "iva",
-      "label": "IVA (parte estatal)",
-      "category": "tributos",
+      "id": "otros_ingresos",
+      "label": "Otros ingresos (ventas, tasas, transferencias…)",
+      "category": "otros",
       "editable": false,
-      "note": "Parte estatal del IVA. Solo lectura en v1.",
-      "amount": 42491.5
+      "note": "Ventas y tasas, rentas de la propiedad y transferencias corrientes y de capital recibidas. Solo lectura.",
+      "amount": 78660
     },
     {
       "id": "is",
@@ -32,50 +40,7 @@
       "category": "tributos",
       "editable": true,
       "note": "Editable: tipo general y tipo mínimo. La simulación se ancla a la recaudación de caja (35.060 M€).",
-      "amount": 28518.6
-    },
-    {
-      "id": "otros_impuestos",
-      "label": "Otros impuestos (IRNR, tráfico exterior, energía…)",
-      "category": "tributos",
-      "editable": false,
-      "amount": 10249.9
-    },
-    {
-      "id": "iiee",
-      "label": "Impuestos especiales (parte estatal)",
-      "category": "tributos",
-      "editable": false,
-      "note": "Hidrocarburos, tabaco, electricidad, alcohol. Solo lectura en v1.",
-      "amount": 9398.7
-    },
-    {
-      "id": "transferencias",
-      "label": "Transferencias recibidas (UE y otras AAPP)",
-      "category": "otros",
-      "editable": false,
-      "amount": 46347.6
-    },
-    {
-      "id": "operaciones_financieras",
-      "label": "Operaciones financieras (préstamos, remanente)",
-      "category": "otros",
-      "editable": false,
-      "amount": 16838.1
-    },
-    {
-      "id": "patrimoniales",
-      "label": "Ingresos patrimoniales (dividendos, concesiones…)",
-      "category": "otros",
-      "editable": false,
-      "amount": 6574.3
-    },
-    {
-      "id": "tasas",
-      "label": "Tasas y precios públicos",
-      "category": "otros",
-      "editable": false,
-      "amount": 3439.8
+      "amount": 35060
     }
   ]
 }

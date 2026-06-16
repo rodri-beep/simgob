@@ -51,7 +51,7 @@ export function IsDetail() {
               format={(n) => formatMDecimal(n, { sign: true })}
             />
           }
-          sub="al saldo del Estado"
+          sub="al saldo (AAPP)"
         />
         <Stat
           label="Tipo efectivo"

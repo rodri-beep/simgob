@@ -33,23 +33,23 @@ describe("base scenario reproduces official figures (real data)", () => {
     expect(is.effectiveRate).toBeLessThan(0.23);
   });
 
-  // Per-line values are the official figures to 1 decimal, so aggregate sums
-  // carry sub-0.5 M€ rounding (immaterial on a €400 bn base).
-  it("budget totals reproduce the perimeter (400.009 / 450.721 / −50.712)", () => {
-    expect(totals.revenue).toBeCloseTo(400009.3, 0);
-    expect(totals.spending).toBeCloseTo(450721.5, 0);
-    expect(totals.balance).toBeCloseTo(-50712, 0);
+  // AAPP perimeter: revenue 630.198, spending 680.952, balance −50.754
+  // (≈ −3,4 % del PIB). The base reproduces the official Eurostat figures.
+  it("budget totals reproduce the perimeter (630.198 / 680.952 / −50.754)", () => {
+    expect(totals.revenue).toBeCloseTo(630198, 0);
+    expect(totals.spending).toBeCloseTo(680952, 0);
+    expect(totals.balance).toBeCloseTo(-50754, 0);
     expect(totals.balanceDelta).toBeCloseTo(0, 6);
   });
 
   it("revenue lines sum to the official total", () => {
     const sum = revenueLines.reduce((a, l) => a + l.amount, 0);
-    expect(sum).toBeCloseTo(400009.3, 0);
+    expect(sum).toBeCloseTo(630198, 0);
   });
 
   it("spending policies sum to the official total", () => {
     const sum = spendingPolicies.reduce((a, p) => a + p.amount, 0);
-    expect(sum).toBeCloseTo(450721.5, 0);
+    expect(sum).toBeCloseTo(680952, 0);
   });
 
   it("raising the top IRPF brackets increases revenue and flags top brackets as losers", () => {

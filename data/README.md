@@ -1,60 +1,53 @@
-# Datos — Presupuestópolis
+# Datos — SimGob
 
 Todos los datos están anclados al ejercicio **2023** y proceden de fuentes
-públicas. El año está parametrizado (`BASE_YEAR`) para facilitar futuras
-actualizaciones.
+públicas. El perímetro es el de las **Administraciones Públicas** (AAPP, sector
+S.13 de la contabilidad nacional): Estado, CCAA, entidades locales y Seguridad
+Social, consolidados.
 
 ## Ficheros
 
 | Fichero | Contenido | Fuente |
 |---|---|---|
-| `meta.json` | Año base, PIB, totales del perímetro, déficit AAPP de contexto, fuentes | INE, Hacienda, AEAT, Civio |
-| `revenue.json` | Ingresos del perímetro estatal por línea (suma 400.009,3 M€) | Civio (PGE 2023) |
-| `spending.json` | Gasto por política (27 políticas, suma 450.721,5 M€) | Civio (PGE 2023) |
+| `meta.json` | Año base, PIB, totales del perímetro AAPP, déficit, fuentes | Eurostat, AEAT, INE, IGAE |
+| `revenue.json` | Ingresos de las AAPP por tipo (suma 630.198 M€) | Eurostat `gov_10a_main`; IRPF/IS anclados a AEAT |
+| `spending.json` | Gasto por función COFOG (12 líneas en 10 funciones, suma 680.952 M€) | Eurostat `gov_10a_exp` |
 | `irpf.json` | Distribución por tramos (declarantes, base, cuota), escala y ancla | AEAT |
 | `is.json` | Recaudación, base imponible, cuota líquida, tipos | AEAT |
-| `buildings.json` | Metadatos de los distritos del tablero | — |
+| `buildings.json` | Metadatos de las funciones del tablero + reparto por subsector ("de lo cual CCAA/Seg. Social") | Eurostat `gov_10a_exp` |
 | `human.json` | "Historias": población, hogares, modelo bruto→neto, anclas por beneficiario (pensiones, desempleo) | INE, Seg. Social, SEPE, AEAT/BOE |
 | `raw/` | Ficheros oficiales descargados (trazabilidad) | — |
 
 ## Cifras clave 2023 (verificadas)
 
-- Recaudación tributaria total: **271.935 M€** (IRPF 120.280 · IVA 83.909 · IS 35.060 · IIEE 20.757).
-- IRPF: 23.987.211 declaraciones; base liquidable general 534.780 M€, ahorro 42.271 M€; cuota líquida 118.143 M€.
+- Recaudación tributaria total (AEAT): IRPF 120.280 · IVA 83.909 · IS 35.060 · IIEE 20.757.
+- IRPF: 23.987.211 declaraciones; base liquidable general 534.780 M€, ahorro 42.271 M€.
 - IS: base imponible positiva 146.424 M€, cuota líquida 32.142 M€ → tipo efectivo ≈ 22 %.
-- PGE perímetro estatal (Civio): ingresos 400.009 M€, gasto 450.721 M€ → saldo −50.712 M€.
-- PIB nominal 2023 (INE): 1.498.324 M€. Déficit AAPP: 53.556 M€ (≈ 3,6 % PIB).
+- **AAPP (Eurostat)**: ingresos 630.198 M€, gasto 680.952 M€ → saldo −50.754 M€ (≈ −3,4 % PIB).
+- Gasto por función (COFOG, gov_10a_exp): Protección social 277.327 · Sanidad 98.630
+  (CCAA 92.287) · Educación 62.532 (CCAA 56.688) · Servicios generales 84.425 ·
+  Asuntos económicos 74.851 · Orden 27.414 · Cultura 18.638 · Medio ambiente 14.579 ·
+  Defensa 14.008 · Vivienda 7.821. Suma 680.225; al total AAPP (680.952) se le imputa
+  un ajuste de conciliación de ≈ 727 M€ a Servicios generales.
+- PIB nominal 2023 (Eurostat/INE): 1.497.761 M€.
 
-## Flujo de actualización anual
+## Actualización anual
 
-```
-data/raw/        <- ficheros oficiales descargados (AEAT, Hacienda, Civio)
-scripts/ingest   <- transforma raw -> JSON de la app
-data/*.json      <- datos consumidos por la app (committeados)
-```
-
-1. Cuando se publiquen nuevos PGE/estadísticas, ejecuta:
-   ```bash
-   npm run ingest            # descarga fuentes, valida y muestra un informe
-   npm run ingest -- --write # además regenera revenue.json y spending.json
-   # o para otro año:
-   BASE_YEAR=2024 npm run ingest -- --write
-   ```
-2. `revenue.json` y `spending.json` se regeneran automáticamente desde los CSV de
-   Civio (perímetro estatal). Las líneas de ingresos se agrupan y las políticas de
-   gasto se mapean a los distritos del tablero según el mapa del script.
-3. `irpf.json`, `is.json` y `meta.json` se curan a mano a partir de las
-   estadísticas de la AEAT (la ingesta los **valida** e imprime sus totales, pero
-   no los reescribe, porque requieren transcripción de Excel/HTML oficiales).
-4. Revisa los cambios y haz commit.
+`npm run ingest` carga los JSON committeados y **valida** que los totales cuadran
+con el perímetro (ingresos, gastos, saldo, anclas de IRPF/IS). No descarga ni
+reescribe: los datos de AAPP se transcriben a mano desde Eurostat y la AEAT, así
+que para actualizar a un nuevo año se editan los JSON y se vuelve a validar.
 
 ## Notas metodológicas
 
-- Ingresos (recaudación/presupuesto) y gastos (presupuesto inicial) usan criterios
-  distintos: el saldo es una **aproximación**, no el déficit oficial.
-- El IRPF de la tabla de ingresos es la **parte estatal**; la simulación usa la
-  recaudación **nacional** bruta (120.280 M€) y reparte el efecto ~50/50 con las
-  CCAA.
+- Ingresos y gastos proceden de series de Eurostat con criterios homogéneos
+  (contabilidad nacional): el saldo base reproduce el déficit oficial de las AAPP.
+- El IRPF y el IS se cuentan **íntegros** (todas las administraciones): el cambio
+  simulado se traslada por completo al saldo (`stateDeltaShare` = 1.0).
+- En `gov_10a_exp` el reparto por subsector está consolidado por función (la suma
+  de subsectores coincide con el total de cada función); por eso "de lo cual CCAA /
+  Seg. Social" es fiable. La excepción es Servicios generales (intereses de deuda y
+  transferencias entre administraciones), donde el reparto por subsector no es fiable.
 - El IS no consolidado no refleja la cuota real de los grupos (modelo 220); se
   ancla a la recaudación.
 - Datos agrupados por tramo (no individuales) y sin respuesta de comportamiento:

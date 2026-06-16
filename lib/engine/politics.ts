@@ -30,8 +30,8 @@ export interface PoliticsResult {
 }
 
 /** Spending policy ids considered "social" / "security" for the leaning. */
-export const SOCIAL_POLICY_IDS = ["p21", "p31", "p32", "p25", "p22", "p23", "p24", "p26"];
-export const SECURITY_POLICY_IDS = ["p12", "p13", "p11"];
+export const SOCIAL_POLICY_IDS = ["pensiones", "desempleo", "social_otras", "salud", "educacion", "vivienda"];
+export const SECURITY_POLICY_IDS = ["defensa", "orden"];
 
 const clamp = (x: number, lo = -1.5, hi = 1.5) => Math.max(lo, Math.min(hi, x));
 

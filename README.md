@@ -1,10 +1,11 @@
-# Presupuestópolis
+# SimGob
 
-Simulador **divulgativo y no oficial** de los Presupuestos Generales del Estado
-(PGE) y de los impuestos en España, con estética retro de _management-sim_ de los
-90 (estilo SimCity 2000 / Theme Hospital). Mueve los tipos del **IRPF** y del
-**Impuesto sobre Sociedades** y observa el efecto sobre la recaudación, el saldo y
-quién gana o pierde por tramo de renta.
+Simulador **divulgativo y no oficial** del gasto y los ingresos de las
+**Administraciones Públicas** (Estado, CCAA, entidades locales y Seguridad Social)
+y de los impuestos en España, con estética retro de _management-sim_ de los 90.
+Mueve los tipos del **IRPF** y del **Impuesto sobre Sociedades**, reparte el gasto
+por funciones y observa el efecto sobre la recaudación, el saldo y quién gana o
+pierde por tramo de renta.
 
 > ⚠️ Proyecto **no oficial**, sin relación con la AEAT ni con el Gobierno. Todas
 > las cifras simuladas son **estimaciones ilustrativas** (datos agregados, sin
@@ -53,8 +54,8 @@ variación sobre la distribución por tramos (no la cifra absoluta desde cero).
 
 - **IRPF**: la escala se aplica sobre la base liquidable media de cada tramo
   (modelando el mínimo personal y familiar). Se calibra para que la base coincida
-  con la recaudación oficial y se aplica la misma calibración al escenario. El
-  IRPF se reparte ~50 % Estado / 50 % CCAA: al saldo del Estado llega la mitad.
+  con la recaudación oficial y se aplica la misma calibración al escenario. Como el
+  perímetro son las Administraciones Públicas, el IRPF cuenta íntegro (Estado + CCAA).
 - **IS**: anclado a la recaudación real; el tipo general escala proporcionalmente.
   Se muestra el tipo efectivo (≈ 22 %) frente al nominal (25 %).
 
@@ -63,25 +64,25 @@ Detalle completo y limitaciones en `/metodologia` y en
 
 ## Perímetro
 
-Perímetro PGE (criterio Civio): Estado + organismos autónomos + agencias +
-Seguridad Social + entidades con presupuesto limitativo. **No** incluye el gasto
-de CCAA ni entidades locales (por eso Sanidad y Educación salen "pequeñas" y
-Pensiones grande).
+Perímetro **Administraciones Públicas** (AAPP, sector S.13 de la contabilidad
+nacional): Estado, CCAA, entidades locales y Seguridad Social, consolidados. El
+gasto se clasifica por **función (COFOG, Eurostat)** en 10 áreas; cada una incluye
+lo que ejecutan las CCAA o la Seguridad Social, con una línea de "de lo cual lo
+ejecutan las CCAA / la Seguridad Social". Así Sanidad y Educación salen a tamaño
+real y las plantillas de país son directamente comparables.
 
 ## Roadmap
 
-- **v1 (este)**: IRPF + IS editables; resto de ingresos y todo el gasto en solo
-  lectura; tablero como navegación; capa dinámica de tablas y gráficos.
-- **P1**: edición de partidas de gasto, compartir escenario por URL, sonido y CRT,
-  versión en inglés.
-- **P2**: IVA por categorías, comparativa internacional (OCDE/Eurostat), desglose
-  por CCAA, galería de escenarios.
+- **Hecho**: IRPF + IS editables; edición del gasto por función; perímetro AAPP con
+  desglose CCAA/Seguridad Social; plantillas de país (Eurostat/OCDE); compartir
+  escenario por URL; perfil político; tutorial; CRT.
+- **Siguiente**: IVA por categorías, versión en inglés, sonido retro, pulido del
+  arte del tablero, galería de escenarios.
 
 ## Créditos y licencias
 
-- Estructura de datos de ingresos/gasto basada en el proyecto de código abierto
-  de **Civio** ([civio/presupuesto](https://github.com/civio/presupuesto)).
-- Fuentes oficiales: AEAT, Ministerio de Hacienda, INE.
+- Datos de gasto e ingresos de **Eurostat** (cuentas de las AAPP y clasificación
+  funcional COFOG), con anclas de **AEAT**, **INE** y **Seguridad Social**.
 - Fuentes tipográficas Press Start 2P y Silkscreen bajo SIL OFL 1.1
   (ver `public/fonts/LICENSE.md`).
 - Activos visuales 100 % originales; ninguna marca, sprite o nombre de juegos

@@ -2,7 +2,7 @@
   "baseYear": 2023,
   "officialRevenue": 120280,
   "personalMinimum": 5550,
-  "stateDeltaShare": 0.5,
+  "stateDeltaShare": 1.0,
   "scale": {
     "general": [
       { "threshold": 0, "rate": 0.19 },
@@ -37,7 +37,7 @@
     "Importes en millones de euros. Base liquidable general, base del ahorro y cuota líquida agregadas por tramo.",
     "La escala general combina el tramo estatal y la escala autonómica supletoria (= estatal × 2: 19/24/30/37/45/47 %). Los tipos reales variaron por CCAA en 2023.",
     "El mínimo personal y familiar general (5.550 €) se modela según la ley: tributa a la escala y se resta.",
-    "El IRPF se reparte aproximadamente al 50 % entre el Estado y las CCAA; en el saldo del Estado se refleja la mitad del cambio nacional.",
+    "El IRPF se contabiliza íntegro en el perímetro de las Administraciones Públicas (Estado + CCAA), así que el cambio nacional se traslada por completo al saldo.",
     "Datos agrupados por tramo (no individuales): el error es mayor en el tramo superior (cola larga). Sin respuesta de comportamiento."
   ]
 }

@@ -1,20 +1,38 @@
 {
   "baseYear": 2023,
-  "gdp": 1498324,
-  "totalRevenueOfficial": 400009.3,
-  "totalSpendingOfficial": 450721.5,
-  "officialDeficitAapp": 53556,
-  "officialDeficitAappPct": 3.6,
+  "gdp": 1497761,
+  "totalRevenueOfficial": 630198,
+  "totalSpendingOfficial": 680952,
+  "officialDeficitAapp": 50754,
+  "officialDeficitAappPct": 3.4,
   "publicDebt": 1574983,
-  "publicDebtPct": 105.1,
-  "perimeter": "Perímetro PGE (criterio Civio): Estado + organismos autónomos + agencias + Seguridad Social + entidades con presupuesto limitativo. No incluye el gasto ejecutado por CCAA ni entidades locales.",
-  "lastUpdated": "2026-06-15",
+  "publicDebtPct": 105.2,
+  "perimeter": "Perímetro Administraciones Públicas (AAPP, sector S.13 de la contabilidad nacional): Estado, Comunidades Autónomas, entidades locales y Seguridad Social, consolidados entre sí. Incluye todo el gasto, también el que ejecutan las CCAA (sanidad, educación) y la Seguridad Social (pensiones), no solo la parte estatal. Cifras de Eurostat para 2023.",
+  "lastUpdated": "2026-06-16",
   "sources": [
+    {
+      "id": "eurostat-cofog-2023",
+      "label": "Eurostat — Gasto público por función (COFOG), gov_10a_exp",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_exp/default/table?lang=en",
+      "note": "Gasto de las AAPP por función 2023: total 680.225 M€. Sanidad 98.630 (las CCAA ejecutan 92.287), Educación 62.532 (CCAA 56.688), Protección social 277.327 (Seguridad Social 222.385)."
+    },
+    {
+      "id": "eurostat-main-2023",
+      "label": "Eurostat — Ingresos y gastos de las AAPP, gov_10a_main",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/gov_10a_main/default/table?lang=en",
+      "note": "Ingresos totales AAPP 630.198 M€; gasto total 680.952 M€; capacidad/necesidad de financiación −50.754 M€ (≈ −3,4 % del PIB)."
+    },
+    {
+      "id": "eurostat-pib-2023",
+      "label": "Eurostat / INE — PIB a precios corrientes 2023 (nama_10_gdp)",
+      "url": "https://ec.europa.eu/eurostat/databrowser/view/nama_10_gdp/default/table?lang=en",
+      "note": "PIB nominal 2023 = 1.497.761 M€."
+    },
     {
       "id": "aeat-recaudacion-2023",
       "label": "AEAT — Informe Anual de Recaudación Tributaria 2023",
       "url": "https://sede.agenciatributaria.gob.es/Sede/estadisticas/recaudacion-tributaria/informe-anual/ejercicio-2023.html",
-      "note": "Ancla de recaudación real por figura: IRPF 120.280, IVA 83.909, IS 35.060, IIEE 20.757 M€. Total 271.935 M€."
+      "note": "Ancla de recaudación real por figura: IRPF 120.280 M€ e IS 35.060 M€ (a todas las administraciones)."
     },
     {
       "id": "aeat-irpf-declarantes-2023",
@@ -29,28 +47,10 @@
       "note": "Base imponible positiva 146.424 M€ y cuota líquida 32.142 M€ (último ejercicio con liquidación completa)."
     },
     {
-      "id": "civio-presupuesto",
-      "label": "Civio — ¿Dónde van mis impuestos? (PGE 2023)",
-      "url": "https://dondevanmisimpuestos.es/",
-      "note": "Estructura de ingresos (400.009 M€) y gastos por política (450.721 M€) del perímetro estatal. Datos abiertos."
-    },
-    {
-      "id": "civio-repo",
-      "label": "Civio — repositorio civio/presupuesto",
-      "url": "https://github.com/civio/presupuesto",
-      "note": "Pipeline de datos de código abierto. Atribución."
-    },
-    {
-      "id": "ine-pib-2023",
-      "label": "INE — Contabilidad Nacional, PIB 2023",
-      "url": "https://ine.es/dyngs/Prensa/CNA2023.htm",
-      "note": "PIB nominal a precios corrientes 2023 = 1.498.324 M€."
-    },
-    {
-      "id": "hacienda-deficit-2023",
+      "id": "igae-deficit-2023",
       "label": "Ministerio de Hacienda / IGAE — Déficit de las AAPP 2023",
       "url": "https://www.hacienda.gob.es/",
-      "note": "Déficit del conjunto de las Administraciones Públicas 2023 = 53.556 M€ (≈ 3,6 % del PIB)."
+      "note": "Déficit del conjunto de las Administraciones Públicas 2023 ≈ 3,4 % del PIB (consistente con Eurostat)."
     }
   ]
 }

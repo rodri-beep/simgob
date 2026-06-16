@@ -1,15 +1,74 @@
 {
   "buildings": [
-    { "id": "pensiones", "label": "Pensiones", "short": "Pensiones", "blurb": "La mayor partida del Estado: pensiones contributivas y no contributivas de la Seguridad Social." },
-    { "id": "hacienda", "label": "Hacienda y Transferencias", "short": "Hacienda", "blurb": "Transferencias a CCAA y entidades locales, AEAT y administración financiera." },
-    { "id": "desempleo", "label": "Prestaciones y Empleo", "short": "Prestaciones", "blurb": "Desempleo, otras prestaciones económicas, servicios sociales y fomento del empleo." },
-    { "id": "deuda", "label": "Deuda Pública", "short": "Deuda", "blurb": "Intereses de la deuda del Estado." },
-    { "id": "defensa", "label": "Defensa y Seguridad", "short": "Defensa", "blurb": "Defensa, seguridad ciudadana, instituciones penitenciarias, justicia y exterior." },
-    { "id": "infraestructuras", "label": "Infraestructuras", "short": "Infraest.", "blurb": "Carreteras, ferrocarril, obra pública y subvenciones al transporte." },
-    { "id": "sanidad", "label": "Sanidad", "short": "Sanidad", "blurb": "Parte estatal. El grueso lo ejecutan las CCAA (fuera del perímetro)." },
-    { "id": "educacion", "label": "Educación y Cultura", "short": "Educación", "blurb": "Parte estatal. El grueso de educación lo ejecutan las CCAA (fuera del perímetro)." },
-    { "id": "transicion", "label": "Industria y Energía", "short": "Industria", "blurb": "Industria, energía y transición energética." },
-    { "id": "moncloa", "label": "Servicios Generales", "short": "Serv. grales.", "blurb": "Alta dirección del Estado y servicios de carácter general." },
-    { "id": "otros", "label": "Otras políticas", "short": "Otras", "blurb": "I+D+i, agricultura, vivienda, comercio, turismo y resto de gasto económico." }
+    {
+      "id": "social",
+      "label": "Protección social",
+      "short": "P. social",
+      "blurb": "La mayor partida del sector público: pensiones, desempleo, dependencia, familia y servicios sociales. La paga sobre todo la Seguridad Social.",
+      "delegated": { "who": "la Seguridad Social", "amount": 222385 }
+    },
+    {
+      "id": "salud",
+      "label": "Sanidad",
+      "short": "Sanidad",
+      "blurb": "Gasto sanitario público total. La parte estatal es pequeña: el grueso lo ejecutan las Comunidades Autónomas con sus servicios de salud.",
+      "delegated": { "who": "las CCAA", "amount": 92287 }
+    },
+    {
+      "id": "educacion",
+      "label": "Educación",
+      "short": "Educación",
+      "blurb": "Gasto educativo público total. Igual que sanidad, lo ejecutan en su mayor parte las Comunidades Autónomas.",
+      "delegated": { "who": "las CCAA", "amount": 56688 }
+    },
+    {
+      "id": "general",
+      "label": "Servicios generales",
+      "short": "Serv. grales.",
+      "blurb": "Alta dirección, administración general, relaciones exteriores e intereses de la deuda pública. Mayoritariamente del Estado central.",
+      "delegated": null
+    },
+    {
+      "id": "economicos",
+      "label": "Asuntos económicos",
+      "short": "Económicos",
+      "blurb": "Infraestructuras y transporte, industria y energía, I+D+i, agricultura, empleo, comercio y turismo.",
+      "delegated": { "who": "CCAA y entidades locales", "amount": 42654 }
+    },
+    {
+      "id": "orden",
+      "label": "Orden público y seguridad",
+      "short": "Orden",
+      "blurb": "Policía, bomberos, justicia e instituciones penitenciarias. Una parte la ejecutan CCAA y ayuntamientos.",
+      "delegated": { "who": "CCAA y entidades locales", "amount": 12980 }
+    },
+    {
+      "id": "cultura",
+      "label": "Ocio, cultura y religión",
+      "short": "Cultura",
+      "blurb": "Cultura, deporte, patrimonio y medios de comunicación públicos. La ejecutan sobre todo ayuntamientos y CCAA.",
+      "delegated": { "who": "entidades locales y CCAA", "amount": 15618 }
+    },
+    {
+      "id": "medioambiente",
+      "label": "Medio ambiente",
+      "short": "M. amb.",
+      "blurb": "Gestión de residuos y aguas, protección de la biodiversidad. La ejecutan sobre todo ayuntamientos y CCAA.",
+      "delegated": { "who": "entidades locales y CCAA", "amount": 13018 }
+    },
+    {
+      "id": "defensa",
+      "label": "Defensa",
+      "short": "Defensa",
+      "blurb": "Fuerzas Armadas y defensa nacional. Competencia íntegramente del Estado central.",
+      "delegated": null
+    },
+    {
+      "id": "vivienda",
+      "label": "Vivienda y comunidad",
+      "short": "Vivienda",
+      "blurb": "Vivienda, urbanismo, alumbrado y abastecimiento de agua. La ejecutan casi por completo CCAA y ayuntamientos.",
+      "delegated": { "who": "CCAA y entidades locales", "amount": 7650 }
+    }
   ]
 }

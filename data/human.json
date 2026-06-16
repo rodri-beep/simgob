@@ -16,7 +16,7 @@
     "workReduction": { "max": 6498, "fullUpTo": 14047.5, "zeroFrom": 19747.5, "slope": 1.14 }
   },
   "anchors": {
-    "p21": {
+    "pensiones": {
       "count": 10111991,
       "baseMonthly": 1198.7,
       "payments": 14,
@@ -25,7 +25,7 @@
       "meanLabel": "pensión media",
       "note": "10.111.991 pensiones contributivas; pensión media del sistema 1.198,7 €/mes (14 pagas), dic. 2023. El recorte/aumento se reparte de forma lineal."
     },
-    "p25": {
+    "desempleo": {
       "count": 1774534,
       "baseMonthly": 958.6,
       "payments": 12,
