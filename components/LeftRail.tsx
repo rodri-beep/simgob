@@ -4,6 +4,7 @@ import { useSim } from "@/lib/store";
 import { buildings, buildingTotal } from "@/lib/data";
 import { BUILDING_COLORS } from "@/lib/buildingColors";
 import { formatM } from "@/lib/engine/format";
+import { track } from "@/lib/analytics";
 
 export function LeftRail() {
   const selected = useSim((s) => s.selectedBuilding);
@@ -31,7 +32,10 @@ export function LeftRail() {
       <button
         type="button"
         className="rail-btn"
-        onClick={() => setImpuestos(true)}
+        onClick={() => {
+          track("taxes_modal_opened");
+          setImpuestos(true);
+        }}
         title="Ajustar IRPF e Impuesto de Sociedades"
       >
         <span aria-hidden className="w-3 h-3 bg-amber bevel-out-thin shrink-0" />

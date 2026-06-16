@@ -20,6 +20,8 @@ pierde por tramo de renta.
 - **Zustand** para el estado del escenario.
 - Cálculo en **funciones puras** del cliente, con tests (**Vitest**).
 - Tablero **isométrico en SVG** con geometría 100 % original.
+- **PostHog** (nube UE) para analítica de tráfico y uso, solo en producción
+  (ver «Analítica» más abajo).
 
 ## Cómo ejecutar
 
@@ -31,6 +33,34 @@ npm run test       # tests del motor de cálculo
 npm run typecheck  # comprobación de tipos
 npm run ingest     # valida los datos contra las fuentes (ver data/README.md)
 ```
+
+## Analítica (PostHog)
+
+Para entender el tráfico y el uso, la app envía eventos a **PostHog** (nube UE).
+La clave de proyecto va incrustada (`lib/analytics.ts`): es una clave *de solo
+escritura*, pensada para vivir en el cliente, así que el sitio desplegado mide sin
+configuración extra.
+
+- **Solo en producción**: en `npm run dev` y en los tests no se envía nada
+  (`POSTHOG_ENABLED` exige `NODE_ENV=production`).
+- **Sin cookies de identidad**: `person_profiles: "identified_only"`; se cuenta el
+  tráfico anónimo sin crear un perfil por visitante.
+- **Proxy de primera parte**: el cliente apunta a `/ingest`, reescrito a
+  `eu.i.posthog.com` en `next.config.mjs`, para esquivar la mayoría de
+  bloqueadores. (En un despliegue 100 % estático sin _rewrites_, pon
+  `NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com`.)
+- **Páginas vistas**: se capturan por `pathname` (sin el token `?e=`), de modo que
+  compartir o ajustar un escenario no infla el recuento.
+
+Variables de entorno opcionales (ver `.env.example`): `NEXT_PUBLIC_POSTHOG_KEY`
+(cambiar de proyecto o poner `""` para desactivar), `NEXT_PUBLIC_POSTHOG_HOST`,
+`NEXT_PUBLIC_POSTHOG_UI_HOST`.
+
+Además de las páginas vistas y el _autocapture_ de clics, se registran eventos de
+uso: `taxes_modal_opened`, `tax_tab_selected`, `tax_adjusted`,
+`spending_adjusted`, `building_selected`, `country_template_loaded` /
+`country_template_reset`, `scenario_shared`, `help_opened` e
+`intro_completed` / `intro_skipped`.
 
 ## Estructura
 

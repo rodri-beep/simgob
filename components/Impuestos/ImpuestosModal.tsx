@@ -9,6 +9,7 @@ import { IrpfSimple } from "@/components/ControlPanel/IrpfSimple";
 import { IsSimple } from "@/components/ControlPanel/IsSimple";
 import { IrpfControls } from "@/components/ControlPanel/IrpfControls";
 import { IsControls } from "@/components/ControlPanel/IsControls";
+import { track } from "@/lib/analytics";
 
 export function ImpuestosModal() {
   const open = useSim((s) => s.impuestosOpen);
@@ -16,6 +17,11 @@ export function ImpuestosModal() {
   const active = useSim((s) => s.activeRevenue);
   const setActive = useSim((s) => s.setActiveRevenue);
   const [detail, setDetail] = useState(false);
+
+  const selectTax = (tax: "irpf" | "is") => {
+    if (tax !== active) track("tax_tab_selected", { tax });
+    setActive(tax);
+  };
 
   if (!open) return null;
 
@@ -28,7 +34,7 @@ export function ImpuestosModal() {
           type="button"
           className="btn-retro flex-1 text-[10px] justify-center flex"
           data-active={active === "irpf"}
-          onClick={() => setActive("irpf")}
+          onClick={() => selectTax("irpf")}
         >
           IRPF
         </button>
@@ -36,7 +42,7 @@ export function ImpuestosModal() {
           type="button"
           className="btn-retro flex-1 text-[10px] justify-center flex"
           data-active={active === "is"}
-          onClick={() => setActive("is")}
+          onClick={() => selectTax("is")}
         >
           Sociedades
         </button>

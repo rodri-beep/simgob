@@ -5,6 +5,7 @@ import { isData } from "@/lib/data";
 import { useSimResults } from "@/lib/useSimResults";
 import { RateSlider } from "./RateSlider";
 import { formatMDecimal, formatPct } from "@/lib/engine/format";
+import { trackDebounced } from "@/lib/analytics";
 
 export function IsSimple() {
   const nominal = useSim((s) => s.isNominalRate);
@@ -19,7 +20,10 @@ export function IsSimple() {
         base={isData.nominalRate}
         min={0}
         max={0.4}
-        onChange={setNominal}
+        onChange={(r) => {
+          setNominal(r);
+          trackDebounced("tax:is", "tax_adjusted", { tax: "is", mode: "nominal" });
+        }}
       />
 
       <div className="grid grid-cols-2 gap-1.5 mt-1 px-2">

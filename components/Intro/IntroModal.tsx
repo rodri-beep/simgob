@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSim } from "@/lib/store";
 import { Modal } from "@/components/ui/Modal";
+import { track } from "@/lib/analytics";
 
 const SEEN_KEY = "simgob:intro:v1";
 
@@ -92,12 +93,16 @@ export function IntroModal() {
     }
   }, [setIntro]);
 
-  const close = () => {
+  const close = (reason: "completed" | "skipped" = "skipped") => {
     try {
       localStorage.setItem(SEEN_KEY, "1");
     } catch {
       /* ignore */
     }
+    track(reason === "completed" ? "intro_completed" : "intro_skipped", {
+      step: step + 1,
+      total: STEPS.length,
+    });
     setIntro(false);
     setStep(0);
   };
@@ -111,7 +116,7 @@ export function IntroModal() {
   return (
     <Modal
       title="¿Cómo funciona?"
-      onClose={close}
+      onClose={() => close("skipped")}
       maxWidth="max-w-lg"
       right={
         <span className="font-chrome text-[9px] normal-case opacity-80">
@@ -147,7 +152,11 @@ export function IntroModal() {
 
       {/* nav */}
       <div className="flex items-center justify-between mt-3 gap-2">
-        <button type="button" onClick={close} className="btn-retro text-[10px]">
+        <button
+          type="button"
+          onClick={() => close("skipped")}
+          className="btn-retro text-[10px]"
+        >
           Saltar
         </button>
         <div className="flex gap-2">
@@ -160,7 +169,11 @@ export function IntroModal() {
             ◂ Anterior
           </button>
           {isLast ? (
-            <button type="button" onClick={close} className="btn-retro text-[10px] bg-amber/30">
+            <button
+              type="button"
+              onClick={() => close("completed")}
+              className="btn-retro text-[10px] bg-amber/30"
+            >
               ¡Empezar! ▸
             </button>
           ) : (

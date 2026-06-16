@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { CrtOverlay } from "@/components/CrtOverlay";
+import { PostHogProvider } from "./providers";
 
 const pixel = localFont({
   src: "../public/fonts/PressStart2P-Regular.ttf",
@@ -40,8 +41,10 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${pixel.variable} ${chrome.variable}`}>
       <body>
-        {children}
-        <CrtOverlay />
+        <PostHogProvider>
+          {children}
+          <CrtOverlay />
+        </PostHogProvider>
       </body>
     </html>
   );
