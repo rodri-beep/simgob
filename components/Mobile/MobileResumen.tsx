@@ -243,14 +243,22 @@ export function MobileResumen({
         ↗ Compartir mi plan
       </button>
 
-      {/* About / methodology — mirrors the desktop footer link. */}
+      {/* About / methodology — mirrors the desktop footer links. */}
       <div className="mt-4 pt-3 border-t border-bevel-dark/30 text-center">
-        <Link
-          href="/metodologia"
-          className="font-chrome uppercase text-[9px] tracking-wide text-teal-dark underline"
-        >
-          Metodología y fuentes
-        </Link>
+        <div className="flex justify-center gap-4">
+          <Link
+            href="/metodologia"
+            className="font-chrome uppercase text-[9px] tracking-wide text-teal-dark underline"
+          >
+            Metodología
+          </Link>
+          <Link
+            href="/faq"
+            className="font-chrome uppercase text-[9px] tracking-wide text-teal-dark underline"
+          >
+            Preguntas frecuentes
+          </Link>
+        </div>
         <p className="text-[9px] text-ink-soft/70 leading-relaxed mt-2">
           Proyecto no oficial · estimaciones ilustrativas · datos AAPP {meta.baseYear} · un proyecto
           de Desvent

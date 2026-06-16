@@ -31,6 +31,14 @@ export function Footer() {
           </Link>
           .
         </p>
+        <nav className="flex flex-wrap gap-x-3 gap-y-1 pt-1">
+          <Link href="/metodologia" className="underline font-chrome uppercase text-[8px] tracking-wide">
+            Metodología
+          </Link>
+          <Link href="/faq" className="underline font-chrome uppercase text-[8px] tracking-wide">
+            Preguntas frecuentes
+          </Link>
+        </nav>
         <p className="font-chrome uppercase text-[8px] tracking-wide text-ink-soft/80">
           SimGob · un proyecto de Desvent
         </p>

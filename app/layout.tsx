@@ -2,6 +2,16 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { PostHogProvider } from "./providers";
+import { JsonLd } from "@/components/JsonLd";
+import {
+  SITE_URL,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  SITE_KEYWORDS,
+  ORG_NAME,
+  siteJsonLd,
+} from "@/lib/seo";
 
 const pixel = localFont({
   src: "../public/fonts/PressStart2P-Regular.ttf",
@@ -19,11 +29,43 @@ const chrome = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "SimGob — Gobierna. Decide. Cuadra las cuentas.",
-  description:
-    "Simulador divulgativo (no oficial) de los Presupuestos Generales del Estado y los impuestos en España. Mueve el IRPF y el IS y mira el efecto sobre la recaudación y el saldo. Estimación ilustrativa.",
-  applicationName: "SimGob",
-  robots: { index: true, follow: true },
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_TITLE,
+    template: "%s — SimGob",
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: SITE_KEYWORDS,
+  authors: [{ name: ORG_NAME, url: SITE_URL }],
+  creator: ORG_NAME,
+  publisher: ORG_NAME,
+  alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "es_ES",
+    url: SITE_URL,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  category: "finance",
 };
 
 export const viewport: Viewport = {
@@ -40,6 +82,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${pixel.variable} ${chrome.variable}`}>
       <body>
+        <JsonLd data={siteJsonLd()} />
         <PostHogProvider>{children}</PostHogProvider>
       </body>
     </html>
