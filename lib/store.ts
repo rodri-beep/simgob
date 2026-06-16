@@ -24,6 +24,8 @@ interface SimState {
   introOpen: boolean;
   /** Which tax editor modal is open ("irpf"/"is" detail), or null. */
   editTax: "irpf" | "is" | null;
+  /** Last loaded country template id (for highlighting), or null. */
+  countryTemplate: string | null;
 
   // ---- Actions ----
   setIrpfGeneralRate: (index: number, rate: number) => void;
@@ -33,7 +35,10 @@ interface SimState {
   setIsNominalRate: (rate: number) => void;
   setIsMinimumRate: (rate: number) => void;
   setSpending: (id: string, amount: number) => void;
+  /** Replace all spending overrides at once (e.g. a country template). */
+  setAllSpending: (overrides: Record<string, number>) => void;
   resetSpendingLine: (id: string) => void;
+  setCountryTemplate: (id: string | null) => void;
   /** Apply a (partial) scenario, e.g. decoded from a shared URL. */
   applyScenario: (sc: Partial<Scenario>) => void;
   reset: () => void;
@@ -61,6 +66,7 @@ export const useSim = create<SimState>((set) => ({
   grossSalary: null,
   introOpen: false,
   editTax: null,
+  countryTemplate: null,
 
   setIrpfGeneralRate: (index, rate) =>
     set((s) => {
@@ -95,6 +101,8 @@ export const useSim = create<SimState>((set) => ({
       spendingOverrides: { ...s.spendingOverrides, [id]: Math.max(0, amount) },
     })),
 
+  setAllSpending: (overrides) => set({ spendingOverrides: { ...overrides } }),
+
   resetSpendingLine: (id) =>
     set((s) => {
       if (!(id in s.spendingOverrides)) return s;
@@ -102,6 +110,8 @@ export const useSim = create<SimState>((set) => ({
       delete next[id];
       return { spendingOverrides: next };
     }),
+
+  setCountryTemplate: (id) => set({ countryTemplate: id }),
 
   applyScenario: (sc) =>
     set((s) => ({
@@ -117,6 +127,7 @@ export const useSim = create<SimState>((set) => ({
       isNominalRate: baseIsNominal,
       isMinimumRate: baseIsMinimum,
       spendingOverrides: {},
+      countryTemplate: null,
     }),
 
   selectBuilding: (id) => set({ selectedBuilding: id }),

@@ -74,6 +74,83 @@ export interface ModelResult {
   balancePctGdp: number;
 }
 
+// ---- Country templates: apply a country's profile to the editable levers ----
+
+/** Our 6 board-level functions (the COFOG divisions fold into these). */
+export type BoardFunc = "social" | "salud" | "educacion" | "defensa" | "economicos" | "general";
+
+/** Which board function each building belongs to. */
+export const BUILDING_FUNCTION: Record<string, BoardFunc> = {
+  pensiones: "social",
+  desempleo: "social",
+  sanidad: "salud",
+  educacion: "educacion",
+  defensa: "defensa",
+  infraestructuras: "economicos",
+  transicion: "economicos",
+  otros: "economicos",
+  hacienda: "general",
+  moncloa: "general",
+  deuda: "general",
+};
+
+/** Fold the 10 COFOG shares of a country into our 6 board functions (sum ≈ 1). */
+export function foldCountry(country: CountryModel): Record<BoardFunc, number> {
+  const s = country.cofogShares;
+  return {
+    social: s.social,
+    salud: s.salud,
+    educacion: s.educacion + s.cultura,
+    defensa: s.defensa + s.orden,
+    economicos: s.economicos + s.medioambiente + s.vivienda,
+    general: s.general,
+  };
+}
+
+export interface PolicyLite {
+  id: string;
+  amount: number;
+  building: string;
+}
+
+/**
+ * Spending overrides that redistribute the SAME total spending by the country's
+ * folded COFOG structure (target per function = share × total, split across
+ * that function's policies proportionally to their base). Total is preserved.
+ */
+export function countrySpendingOverrides(
+  country: CountryModel,
+  policies: PolicyLite[],
+): Record<string, number> {
+  const fold = foldCountry(country);
+  const total = policies.reduce((a, p) => a + p.amount, 0);
+  const baseByFunc: Record<string, number> = {};
+  for (const p of policies) {
+    const f = BUILDING_FUNCTION[p.building] ?? "general";
+    baseByFunc[f] = (baseByFunc[f] ?? 0) + p.amount;
+  }
+  const out: Record<string, number> = {};
+  for (const p of policies) {
+    const f = BUILDING_FUNCTION[p.building] ?? "general";
+    const targetF = (fold[f] ?? 0) * total;
+    out[p.id] = baseByFunc[f] > 0 ? targetF * (p.amount / baseByFunc[f]) : 0;
+  }
+  return out;
+}
+
+/** Tax levers that scale toward a country's revenue level (vs Spain's). */
+export function countryTaxLevers(
+  country: CountryModel,
+  spainRevenuePctGdp: number,
+  baseAvgIrpfRate: number,
+): { irpfDelta: number; isNominal: number } {
+  const factor = spainRevenuePctGdp > 0 ? country.revenuePctGdp / spainRevenuePctGdp : 1;
+  return {
+    irpfDelta: baseAvgIrpfRate * (factor - 1),
+    isNominal: Math.min(0.5, Math.max(0, 0.25 * factor)),
+  };
+}
+
 /** Spain's own budget as a ModelResult (the baseline, real structure). */
 export function spainResult(aapp: AappBaseline): ModelResult {
   const spending = COFOG.map((c) => ({ id: c.id, value: aapp.cofog[c.id] ?? 0 }));
