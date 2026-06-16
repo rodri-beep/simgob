@@ -7,7 +7,11 @@ import { usePolitics } from "@/lib/usePolitics";
 import { meta } from "@/lib/data";
 import { encodeScenario } from "@/lib/share";
 import { renderShareCard, canvasToBlob, type ShareFormat } from "@/lib/shareCard";
+import { SITE_URL } from "@/lib/seo";
 import { track } from "@/lib/analytics";
+
+/** Brand host for the card CTA — always the canonical domain, never the (long) preview host. */
+const CARD_HOST = SITE_URL.replace(/^https?:\/\//, "");
 import { Modal } from "@/components/ui/Modal";
 import { EstimateBadge } from "@/components/ui/EstimateBadge";
 
@@ -56,8 +60,7 @@ export function ShareModal() {
     (async () => {
       try {
         const { profile: p, totals: t } = dataRef.current;
-        const host = window.location.host || "simgob";
-        const canvas = await renderShareCard({ profile: p, totals: t, gdp: meta.gdp, baseYear: meta.baseYear, host }, format);
+        const canvas = await renderShareCard({ profile: p, totals: t, gdp: meta.gdp, baseYear: meta.baseYear, host: CARD_HOST }, format);
         const blob = await canvasToBlob(canvas);
         if (cancelled) return;
         blobRef.current = blob;

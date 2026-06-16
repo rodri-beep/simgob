@@ -78,6 +78,7 @@ export async function renderShareCard(
   const root = getComputedStyle(document.documentElement);
   const pixel = root.getPropertyValue("--font-pixel").trim() || "monospace";
   const chrome = root.getPropertyValue("--font-chrome").trim() || "monospace";
+  const data = root.getPropertyValue("--font-data").trim() || SANS;
 
   const cx = W / 2;
 
@@ -122,7 +123,7 @@ export async function renderShareCard(
     } while (size > min);
     return size;
   };
-  const taglineFont = (size: number) => font(size, SANS, "italic 600");
+  const taglineFont = (size: number) => font(size, data, "600");
   const wrapLines = (s: string, maxW: number, size: number) => {
     ctx.font = taglineFont(size);
     const words = s.split(/\s+/);
@@ -166,36 +167,39 @@ export async function renderShareCard(
   text(`NO OFICIAL · ${d.baseYear}`, W - 36, 56, font(14, chrome), C.parchment, "right", "middle");
 
   // ---- hero: political identity (top block) ----
-  const eyebrowY = square ? 158 : 124;
+  const eyebrowY = square ? 178 : 124;
   ctext("TU PERFIL POLÍTICO", eyebrowY, font(square ? 16 : 14, chrome), C.inkSoft);
 
-  const emojiSize = square ? 184 : 90;
+  // The site renders the profile label in the chrome (Silkscreen) face, uppercase —
+  // match that here instead of a generic sans, sized to fit.
+  const name = d.profile.label.toUpperCase();
+  const emojiSize = square ? 150 : 76;
   if (square) {
     // emoji over name, both centered
-    ctext(d.profile.emoji, 300, font(emojiSize, SANS), C.ink, "middle");
-    const nameSize = fitSize(d.profile.label, SANS, "800", 92, 44, W - 2 * mx);
-    ctext(d.profile.label, 444, font(nameSize, SANS, "800"), C.ink, "middle");
+    ctext(d.profile.emoji, 318, font(emojiSize, data), C.ink, "middle");
+    const nameSize = fitSize(name, chrome, "700", 56, 28, W - 2 * mx);
+    ctext(name, 452, font(nameSize, chrome, "700"), C.ink, "middle");
   } else {
     // emoji + name on one centered row, aligned on a shared middle baseline
-    const heroCenterY = 190;
-    const gap = 24;
-    const emojiF = font(emojiSize, SANS);
+    const heroCenterY = 188;
+    const gap = 22;
+    const emojiF = font(emojiSize, data);
     ctx.font = emojiF;
     const ew = ctx.measureText(d.profile.emoji).width;
-    const nameSize = fitSize(d.profile.label, SANS, "800", 60, 34, W - 2 * mx - ew - gap);
-    const nameF = font(nameSize, SANS, "800");
+    const nameSize = fitSize(name, chrome, "700", 38, 22, W - 2 * mx - ew - gap);
+    const nameF = font(nameSize, chrome, "700");
     ctx.font = nameF;
-    const nw = ctx.measureText(d.profile.label).width;
+    const nw = ctx.measureText(name).width;
     const startX = cx - (ew + gap + nw) / 2;
     text(d.profile.emoji, startX, heroCenterY, emojiF, C.ink, "left", "middle");
-    text(d.profile.label, startX + ew + gap, heroCenterY, nameF, C.ink, "left", "middle");
+    text(name, startX + ew + gap, heroCenterY, nameF, C.ink, "left", "middle");
   }
 
   // tagline (quip) — auto-sized so it never overruns the budget strip below
-  const tagTopY = square ? 492 : 256;
+  const tagTopY = square ? 512 : 248;
   const tagLineH = square ? 40 : 30;
   const tagMaxW = W - 2 * (square ? 96 : 60);
-  const tagSize = fitTagline(d.profile.blurb, tagMaxW, square ? 32 : 24, square ? 22 : 16, square ? 2 : 1);
+  const tagSize = fitTagline(d.profile.blurb, tagMaxW, square ? 28 : 22, square ? 20 : 15, square ? 2 : 1);
   const tagLinesArr = wrapLines(d.profile.blurb, tagMaxW, tagSize);
   tagLinesArr.forEach((ln, i) => ctext(ln, tagTopY + i * tagLineH, taglineFont(tagSize), C.inkSoft));
   const lastTagY = tagTopY + (tagLinesArr.length - 1) * tagLineH;
@@ -250,29 +254,29 @@ export async function renderShareCard(
 
   const dividerY = chipsBottom + (square ? 34 : 22);
   const plEyebrowY = dividerY + (square ? 40 : 30);
-  const plLineY = plEyebrowY + (square ? 44 : 34);
-  const saldoLabelY = plLineY + (square ? 58 : 40);
-  const saldoY = saldoLabelY + (square ? 84 : 44);
-  const pibY = saldoY + (square ? 46 : 28);
-  const vsRealY = pibY + (square ? 36 : 18);
+  const plLineY = plEyebrowY + (square ? 42 : 32);
+  const saldoLabelY = plLineY + (square ? 54 : 38);
+  const saldoY = saldoLabelY + (square ? 60 : 40);
+  const pibY = saldoY + (square ? 40 : 26);
+  const vsRealY = pibY + (square ? 32 : 18);
 
   rect(mx, dividerY, W - 2 * mx, 2, C.bevelDark);
   ctext(`TU PRESUPUESTO · AAPP ${d.baseYear}`, plEyebrowY, font(square ? 15 : 13, chrome), C.inkSoft);
   ctext(
     `INGRESOS ${formatM(d.totals.revenue)}    ·    GASTOS ${formatM(d.totals.spending)}`,
     plLineY,
-    font(square ? 27 : 22, SANS, "700"),
+    font(square ? 24 : 20, data, "700"),
     C.ink,
   );
-  ctext(deficit ? "SALDO · DÉFICIT" : "SALDO · SUPERÁVIT", saldoLabelY, font(square ? 19 : 16, chrome), saldoColor);
-  ctext(formatM(d.totals.balance, { sign: true }), saldoY, font(square ? 90 : 46, SANS, "800"), saldoColor);
-  ctext(formatGdpPct(d.totals.balance, d.gdp).toUpperCase(), pibY, font(square ? 26 : 19, SANS, "700"), C.inkSoft);
+  ctext(deficit ? "SALDO · DÉFICIT" : "SALDO · SUPERÁVIT", saldoLabelY, font(square ? 18 : 15, chrome), saldoColor);
+  ctext(formatM(d.totals.balance, { sign: true }), saldoY, font(square ? 58 : 36, data, "800"), saldoColor);
+  ctext(formatGdpPct(d.totals.balance, d.gdp).toUpperCase(), pibY, font(square ? 22 : 17, data, "700"), C.inkSoft);
   if (hasDelta) {
     const good = d.totals.balanceDelta > 0;
     ctext(
       `${good ? "MEJORA" : "EMPEORA"} ${formatM(d.totals.balanceDelta, { sign: true })} VS. REAL`,
       vsRealY,
-      font(square ? 21 : 16, SANS, "700"),
+      font(square ? 18 : 15, data, "700"),
       good ? C.moss : C.brick,
     );
   }
