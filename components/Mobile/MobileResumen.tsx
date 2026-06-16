@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useSimResults } from "@/lib/useSimResults";
 import { usePolitics } from "@/lib/usePolitics";
 import { revenueLines, meta, human } from "@/lib/data";
@@ -241,6 +242,20 @@ export function MobileResumen({
       >
         ↗ Compartir mi plan
       </button>
+
+      {/* About / methodology — mirrors the desktop footer link. */}
+      <div className="mt-4 pt-3 border-t border-bevel-dark/30 text-center">
+        <Link
+          href="/metodologia"
+          className="font-chrome uppercase text-[9px] tracking-wide text-teal-dark underline"
+        >
+          Metodología y fuentes
+        </Link>
+        <p className="text-[9px] text-ink-soft/70 leading-relaxed mt-2">
+          Proyecto no oficial · estimaciones ilustrativas · datos AAPP {meta.baseYear} · un proyecto
+          de Desvent
+        </p>
+      </div>
     </div>
   );
 }

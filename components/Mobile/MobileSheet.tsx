@@ -25,6 +25,8 @@ import { IsSimple } from "@/components/ControlPanel/IsSimple";
 import { IrpfControls } from "@/components/ControlPanel/IrpfControls";
 import { IsControls } from "@/components/ControlPanel/IsControls";
 import { WinnersLosersChart } from "@/components/Dynamic/WinnersLosersChart";
+import { IrpfBracketTable } from "@/components/Dynamic/IrpfBracketTable";
+import { medianBracket, modalBracket } from "@/lib/engine/stories";
 import type { SheetState } from "./model";
 
 const INFO_NOTES: Record<string, string> = {
@@ -193,6 +195,8 @@ export function MobileSheet({
 function IrpfDetailSection() {
   const [open, setOpen] = useState(false);
   const { irpf } = useSimResults();
+  const median = medianBracket(irpfData.brackets);
+  const modal = modalBracket(irpfData.brackets);
   return (
     <>
       <button
@@ -205,8 +209,13 @@ function IrpfDetailSection() {
       </button>
       {open && (
         <div className="mt-2.5 border-t border-bevel-dark/30 pt-3 space-y-3">
+          <p className="text-[10px] text-ink-soft leading-snug px-0.5">
+            El <b>declarante mediano</b> declara <b>{median?.label}</b>; el tramo más numeroso es{" "}
+            <b>{modal?.label}</b>. Mueve los tipos para ver a quién afecta.
+          </p>
           <WinnersLosersChart brackets={irpf.brackets} />
-          <div className="border-t border-bevel-dark/30 pt-1">
+          <IrpfBracketTable />
+          <div className="border-t border-bevel-dark/30 pt-2">
             <IrpfControls />
           </div>
         </div>
