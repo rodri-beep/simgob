@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useSim } from "@/lib/store";
 import { buildings, buildingTotal } from "@/lib/data";
 import { BUILDING_COLORS } from "@/lib/buildingColors";
@@ -9,6 +8,7 @@ import { formatM } from "@/lib/engine/format";
 export function LeftRail() {
   const selected = useSim((s) => s.selectedBuilding);
   const select = useSim((s) => s.selectBuilding);
+  const setImpuestos = useSim((s) => s.setImpuestosOpen);
 
   const sorted = [...buildings].sort(
     (a, b) => buildingTotal(b.id) - buildingTotal(a.id),
@@ -17,7 +17,7 @@ export function LeftRail() {
   return (
     <nav className="panel p-1.5 flex flex-col gap-1">
       <div className="titlebar bg-teal-dark px-2 py-1 text-[9px] -m-1.5 mb-0.5">
-        Distritos de gasto
+        Menú
       </div>
       <button
         type="button"
@@ -28,6 +28,19 @@ export function LeftRail() {
         <span aria-hidden className="w-3 h-3 bg-parchment-dark bevel-out-thin" />
         Resumen
       </button>
+      <button
+        type="button"
+        className="rail-btn"
+        onClick={() => setImpuestos(true)}
+        title="Ajustar IRPF e Impuesto de Sociedades"
+      >
+        <span aria-hidden className="w-3 h-3 bg-amber bevel-out-thin shrink-0" />
+        <span className="truncate flex-1">Impuestos</span>
+      </button>
+
+      <div className="font-chrome uppercase text-[8px] text-ink-soft px-2 pt-1.5">
+        Gasto por área
+      </div>
       {sorted.map((b) => (
         <button
           key={b.id}
@@ -45,12 +58,6 @@ export function LeftRail() {
           <span className="truncate flex-1">{b.label}</span>
         </button>
       ))}
-      <Link
-        href="/metodologia"
-        className="rail-btn justify-center text-center mt-1 no-underline"
-      >
-        Metodología
-      </Link>
     </nav>
   );
 }

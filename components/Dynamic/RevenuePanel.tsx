@@ -2,7 +2,7 @@
 
 import { revenueLines, irpfData, isData } from "@/lib/data";
 import { useSimResults } from "@/lib/useSimResults";
-import { Panel } from "@/components/ui/Panel";
+import { CollapsiblePanel } from "@/components/ui/CollapsiblePanel";
 import { formatM, formatMDecimal } from "@/lib/engine/format";
 
 const categoryLabel: Record<string, string> = {
@@ -22,7 +22,10 @@ export function RevenuePanel() {
   };
 
   return (
-    <Panel title={`Ingresos · perímetro PGE ${irpfData.baseYear}`} bodyClassName="p-0">
+    <CollapsiblePanel
+      title={`Ingresos · perímetro PGE ${irpfData.baseYear}`}
+      subtitle="Detalle de los ingresos del Estado por tipo (impuestos, cotizaciones y otros)."
+    >
       <table className="w-full text-[11px] tnum">
         <tbody>
           {revenueLines.map((line) => {
@@ -69,6 +72,6 @@ export function RevenuePanel() {
           </tr>
         </tbody>
       </table>
-    </Panel>
+    </CollapsiblePanel>
   );
 }

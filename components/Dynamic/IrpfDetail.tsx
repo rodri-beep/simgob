@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useSimResults } from "@/lib/useSimResults";
 import { useSim } from "@/lib/store";
 import { irpfData, human } from "@/lib/data";
-import { Panel } from "@/components/ui/Panel";
+import { CollapsiblePanel } from "@/components/ui/CollapsiblePanel";
 import { EstimateBadge } from "@/components/ui/EstimateBadge";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { WinnersLosersChart } from "./WinnersLosersChart";
@@ -28,11 +28,12 @@ export function IrpfDetail() {
   const modal = modalBracket(irpfData.brackets);
 
   return (
-    <Panel
+    <CollapsiblePanel
       title="IRPF · recaudación y reparto"
+      subtitle="Quién paga el IRPF: recaudación, ganadores/perdedores y renta neta por tramo."
       right={<EstimateBadge />}
-      bodyClassName="space-y-3"
     >
+      <div className="space-y-3">
       <div className="grid grid-cols-3 gap-2">
         <div className="panel-inset px-2 py-1.5">
           <div className="font-chrome uppercase text-[8px] text-ink-soft">Recaudación nacional</div>
@@ -118,6 +119,7 @@ export function IrpfDetail() {
           Los tramos son de renta, no solo de salario.
         </p>
       </div>
-    </Panel>
+      </div>
+    </CollapsiblePanel>
   );
 }

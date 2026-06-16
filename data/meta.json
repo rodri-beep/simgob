@@ -5,6 +5,8 @@
   "totalSpendingOfficial": 450721.5,
   "officialDeficitAapp": 53556,
   "officialDeficitAappPct": 3.6,
+  "publicDebt": 1574983,
+  "publicDebtPct": 105.1,
   "perimeter": "Perímetro PGE (criterio Civio): Estado + organismos autónomos + agencias + Seguridad Social + entidades con presupuesto limitativo. No incluye el gasto ejecutado por CCAA ni entidades locales.",
   "lastUpdated": "2026-06-15",
   "sources": [

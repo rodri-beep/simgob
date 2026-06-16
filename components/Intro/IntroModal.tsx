@@ -33,7 +33,7 @@ const STEPS: Step[] = [
   {
     who: "asesora",
     title: "Tú decides los impuestos",
-    text: "En el panel de control mueve los tipos del IRPF y del Impuesto sobre Sociedades. Verás la recaudación y quién gana o pierde por tramo de renta.",
+    text: "Pulsa «Impuestos» en el menú para mover el IRPF y el Impuesto sobre Sociedades. Verás la recaudación y quién gana o pierde por tramo.",
   },
   {
     who: "asesor",
