@@ -16,7 +16,6 @@ export function ProfilePanel() {
           <div className="font-chrome uppercase text-[14px] text-ink leading-tight">
             {profile.label}
           </div>
-          <p className="text-[11px] text-ink-soft leading-snug mt-0.5">{profile.blurb}</p>
         </div>
       </div>
 

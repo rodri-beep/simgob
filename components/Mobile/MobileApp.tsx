@@ -54,8 +54,8 @@ export function MobileApp() {
     setTab("gastos");
     setSheet({ t: "spend", id });
   };
-  const share = () => {
-    track("scenario_shared", { dirty });
+  const share = (source: "appbar" | "resumen") => {
+    track("scenario_shared", { dirty, source });
     setShareOpen(true);
   };
 
@@ -83,6 +83,15 @@ export function MobileApp() {
             <span className="font-chrome uppercase text-[8.5px] tracking-wide bg-amber text-ink px-1.5 py-1 bevel-out-thin">
               ▲ Ilustrativa
             </span>
+            <button
+              type="button"
+              onClick={() => share("appbar")}
+              aria-label="Compartir mi plan"
+              title="Compartir mi plan: imagen + enlace"
+              className="font-chrome text-[13px] w-7 h-7 grid place-items-center bg-amber text-ink border border-bevel-dark bevel-out-thin cursor-pointer"
+            >
+              ↗
+            </button>
             <button
               type="button"
               onClick={() => {
@@ -130,7 +139,9 @@ export function MobileApp() {
 
         {/* Scrolling content — one task per screen. */}
         <div className="no-scrollbar flex-1 min-h-0 overflow-y-auto paper-bg">
-          {tab === "resumen" && <MobileResumen onSpendArea={openSpendArea} onShare={share} />}
+          {tab === "resumen" && (
+            <MobileResumen onSpendArea={openSpendArea} onShare={() => share("resumen")} />
+          )}
           {tab === "gastos" && (
             <MobileGastos onAdjust={(id) => setSheet({ t: "spend", id })} />
           )}

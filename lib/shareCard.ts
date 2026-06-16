@@ -101,27 +101,6 @@ export async function renderShareCard(d: ShareCardData): Promise<HTMLCanvasEleme
     } while (size > min);
     return size;
   };
-  const wrap = (s: string, x: number, y: number, maxW: number, lineH: number, fnt: string, color: string) => {
-    ctx.font = fnt;
-    ctx.fillStyle = color;
-    ctx.textAlign = "left";
-    const words = s.split(" ");
-    let line = "";
-    let yy = y;
-    for (const w of words) {
-      const test = line ? `${line} ${w}` : w;
-      if (ctx.measureText(test).width > maxW && line) {
-        ctx.fillText(line, x, yy);
-        line = w;
-        yy += lineH;
-      } else {
-        line = test;
-      }
-    }
-    if (line) ctx.fillText(line, x, yy);
-    return yy;
-  };
-
   ctx.textBaseline = "alphabetic";
 
   // ---- frame ----
@@ -158,18 +137,9 @@ export async function renderShareCard(d: ShareCardData): Promise<HTMLCanvasEleme
   const labelMaxW = dividerX - 24 - textX;
   const labelSize = fitSize(d.profile.label, SANS, "800", 34, 20, labelMaxW);
   text(d.profile.label, textX, bodyTop + 64, font(labelSize, SANS, "800"), C.ink);
-  const blurbLastY = wrap(
-    d.profile.blurb,
-    textX,
-    bodyTop + 98,
-    dividerX - 24 - textX,
-    27,
-    font(19, SANS),
-    C.inkSoft,
-  );
 
-  // reasons chips
-  let chipY = Math.max(bodyTop + 120, blurbLastY + 36);
+  // reasons chips (sit just under the label; the subtitle/blurb is omitted by design)
+  let chipY = bodyTop + 120;
   let chipX = 40;
   for (const r of d.profile.reasons.slice(0, 3)) {
     const label = r.toUpperCase();
