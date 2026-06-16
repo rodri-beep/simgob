@@ -80,9 +80,6 @@ export function MobileApp() {
             </span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="font-chrome uppercase text-[8.5px] tracking-wide bg-brick text-parchment px-1.5 py-1">
-              No oficial
-            </span>
             <span className="font-chrome uppercase text-[8.5px] tracking-wide bg-amber text-ink px-1.5 py-1 bevel-out-thin">
               ▲ Ilustrativa
             </span>

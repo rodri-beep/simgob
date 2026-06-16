@@ -105,7 +105,7 @@ real y las plantillas de país son directamente comparables.
 
 - **Hecho**: IRPF + IS editables; edición del gasto por función; perímetro AAPP con
   desglose CCAA/Seguridad Social; plantillas de país (Eurostat/OCDE); compartir
-  escenario por URL; perfil político; tutorial; CRT.
+  escenario por URL; perfil político; tutorial; versión móvil.
 - **Siguiente**: IVA por categorías, versión en inglés, sonido retro, pulido del
   arte del tablero, galería de escenarios.
 
