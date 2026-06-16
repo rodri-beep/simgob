@@ -134,6 +134,60 @@ input[type="range"].slider-retro::-moz-range-thumb {
     inset -2px -2px 0 0 var(--bevel-dark);
 }
 
+/* ---- Mobile app shell (the phone-first layout below lg) ---- */
+/* Dotted parchment paper, used inside the mobile scroll area (a different
+   element than <body>, which carries the same texture). */
+.paper-bg {
+  background-color: var(--parchment);
+  background-image:
+    radial-gradient(rgba(138, 127, 93, 0.16) 1px, transparent 1px),
+    radial-gradient(rgba(138, 127, 93, 0.1) 1px, transparent 1px);
+  background-size: 6px 6px, 6px 6px;
+  background-position: 0 0, 3px 3px;
+}
+/* Dark dotted backdrop behind the centered phone frame. */
+.phone-backdrop {
+  background-color: #1b2a22;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes sheet-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.anim-sheet-up {
+  animation: sheet-up 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.anim-sheet-fade {
+  animation: sheet-fade 0.18s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .anim-sheet-up,
+  .anim-sheet-fade {
+    animation: none;
+  }
+}
+
 /* ---- Optional CRT / scanline overlay (toggle) ---- */
 .crt-overlay {
   pointer-events: none;
