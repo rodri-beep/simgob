@@ -6,6 +6,7 @@ import { ProfilePanel } from "@/components/Politics/ProfilePanel";
 import { PLPanel } from "@/components/Economy/PLPanel";
 import { DistrictModal } from "@/components/Dynamic/DistrictModal";
 import { ImpuestosModal } from "@/components/Impuestos/ImpuestosModal";
+import { ShareModal } from "@/components/Share/ShareModal";
 import { RevenuePanel } from "@/components/Dynamic/RevenuePanel";
 import { BudgetColumnsChart } from "@/components/Dynamic/BudgetColumnsChart";
 import { TaxDetail } from "@/components/Dynamic/TaxDetail";
@@ -64,6 +65,7 @@ export default function Page() {
       {/* Modals over the city. */}
       <DistrictModal />
       <ImpuestosModal />
+      <ShareModal />
 
       {/* Keeps the scenario synced with the URL for sharing (no backend). */}
       <ScenarioUrlSync />

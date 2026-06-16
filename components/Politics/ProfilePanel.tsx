@@ -1,40 +1,10 @@
 "use client";
 
-import { useSim } from "@/lib/store";
-import { useSimResults } from "@/lib/useSimResults";
-import { irpfData, isData, spendingPolicies } from "@/lib/data";
-import {
-  classifyPolitics,
-  SOCIAL_POLICY_IDS,
-  SECURITY_POLICY_IDS,
-} from "@/lib/engine/politics";
+import { usePolitics } from "@/lib/usePolitics";
 import { Panel } from "@/components/ui/Panel";
 
-const baseById: Record<string, number> = Object.fromEntries(
-  spendingPolicies.map((p) => [p.id, p.amount]),
-);
-
 export function ProfilePanel() {
-  const { irpf, is, totals } = useSimResults();
-  const scale = useSim((s) => s.irpfScale);
-  const overrides = useSim((s) => s.spendingOverrides);
-
-  const baseGeneral = irpfData.scale.general;
-  const topRateDelta =
-    (scale.general[4].rate - baseGeneral[4].rate + (scale.general[5].rate - baseGeneral[5].rate)) / 2;
-
-  const deltaFor = (ids: string[]) =>
-    ids.reduce((a, id) => a + ((overrides[id] ?? baseById[id] ?? 0) - (baseById[id] ?? 0)), 0);
-
-  const profile = classifyPolitics({
-    taxDelta: irpf.delta + is.delta,
-    topRateDelta,
-    socialDelta: deltaFor(SOCIAL_POLICY_IDS),
-    securityDelta: deltaFor(SECURITY_POLICY_IDS),
-    totalSpendDelta: totals.spending - totals.baseSpending,
-    balance: totals.balance,
-    baseBalance: totals.baseBalance,
-  });
+  const profile = usePolitics();
 
   return (
     <Panel tone="teal" title="Tu perfil político">

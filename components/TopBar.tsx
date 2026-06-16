@@ -1,10 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { useSim, isDirty } from "@/lib/store";
 import { meta } from "@/lib/data";
-import { encodeScenario } from "@/lib/share";
 import { track } from "@/lib/analytics";
 
 export function TopBar() {
@@ -12,28 +10,12 @@ export function TopBar() {
   const toggleCrt = useSim((s) => s.toggleCrt);
   const reset = useSim((s) => s.reset);
   const setIntro = useSim((s) => s.setIntro);
+  const setShare = useSim((s) => s.setShareOpen);
   const dirty = useSim(isDirty);
-  const [copied, setCopied] = useState(false);
 
-  const share = async () => {
-    const s = useSim.getState();
-    const token = encodeScenario({
-      irpfScale: s.irpfScale,
-      isNominalRate: s.isNominalRate,
-      isMinimumRate: s.isMinimumRate,
-      spendingOverrides: s.spendingOverrides,
-    });
-    const url = new URL(window.location.href);
-    if (token) url.searchParams.set("e", token);
-    else url.searchParams.delete("e");
-    try {
-      await navigator.clipboard.writeText(url.toString());
-    } catch {
-      window.prompt("Copia el enlace del escenario:", url.toString());
-    }
+  const share = () => {
     track("scenario_shared", { dirty });
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1600);
+    setShare(true);
   };
 
   return (
@@ -79,11 +61,10 @@ export function TopBar() {
           <button
             type="button"
             onClick={share}
-            data-active={copied}
             className="btn-retro text-[9px] py-1"
-            title="Copiar un enlace con este escenario"
+            title="Compartir tu plan: imagen + enlace"
           >
-            {copied ? "✓ ¡Copiado!" : "↗ Compartir"}
+            ↗ Compartir
           </button>
           <button
             type="button"
