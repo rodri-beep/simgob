@@ -21,15 +21,11 @@ export default function Page() {
       <TopBar />
       <StatusBar />
 
-      <div className="grid lg:grid-cols-[330px_1fr] gap-2 sm:gap-3 items-start">
-        {/* Left: political profile, P/L summary and navigation menu. */}
-        <div className="flex flex-col gap-2 sm:gap-3">
-          <ProfilePanel />
-          <PLPanel />
-          <LeftRail />
-        </div>
+      <div className="grid lg:grid-cols-[190px_1fr_330px] gap-2 sm:gap-3 items-start">
+        {/* Left: navigation menu. */}
+        <LeftRail />
 
-        {/* The city. */}
+        {/* Center: the city. */}
         <div className="min-w-0">
           <Panel
             title="Mapa del gasto público · pulsa un edificio"
@@ -40,10 +36,16 @@ export default function Page() {
             }
             bodyClassName="p-0"
           >
-            <div className="h-[380px] sm:h-[460px] lg:h-[600px] overflow-hidden bevel-in">
+            <div className="h-[380px] sm:h-[460px] lg:h-[560px] overflow-hidden bevel-in">
               <IsometricBoard />
             </div>
           </Panel>
+        </div>
+
+        {/* Right: political profile (top) + P/L summary. */}
+        <div className="flex flex-col gap-2 sm:gap-3">
+          <ProfilePanel />
+          <PLPanel />
         </div>
       </div>
 
