@@ -4,9 +4,9 @@ import { meta, human } from "@/lib/data";
 import { Panel } from "@/components/ui/Panel";
 
 export const metadata: Metadata = {
-  title: "Metodología y fuentes — Presupuestópolis",
+  title: "Metodología y fuentes — SimGob",
   description:
-    "Cómo se calculan las cifras de Presupuestópolis: fuentes oficiales, perímetro, principio de cálculo y limitaciones.",
+    "Cómo se calculan las cifras de SimGob: fuentes oficiales, perímetro, principio de cálculo y limitaciones.",
 };
 
 function P({ children }: { children: React.ReactNode }) {
@@ -30,7 +30,7 @@ export default function Metodologia() {
       <Panel title="Qué es (y qué no es)">
         <div className="space-y-2">
           <P>
-            <b>Presupuestópolis</b> es un simulador <b>divulgativo y no oficial</b> de los
+            <b>SimGob</b> es un simulador <b>divulgativo y no oficial</b> de los
             Presupuestos Generales del Estado (PGE) y de dos impuestos. Permite mover los
             tipos del <b>IRPF</b> y del <b>Impuesto sobre Sociedades (IS)</b> y ajustar las
             <b> partidas de gasto</b>, y ver el efecto sobre la recaudación, el saldo y quién

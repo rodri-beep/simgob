@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSim } from "@/lib/store";
 import { Modal } from "@/components/ui/Modal";
 
-const SEEN_KEY = "presupuestopolis:intro:v1";
+const SEEN_KEY = "simgob:intro:v1";
 
 type Cast = "asesora" | "asesor";
 
@@ -22,7 +22,7 @@ const CAST: Record<Cast, { src: string; name: string; role: string; bg: string; 
 const STEPS: Step[] = [
   {
     who: "asesora",
-    title: "Bienvenido/a a Presupuestópolis",
+    title: "Bienvenido/a a SimGob",
     text: "Esta ciudad es el presupuesto del Estado (datos de 2023). Es un simulador divulgativo y no oficial: todas las cifras son estimaciones ilustrativas.",
   },
   {

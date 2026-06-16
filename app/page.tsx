@@ -21,12 +21,9 @@ export default function Page() {
       <TopBar />
       <StatusBar />
 
-      <div className="grid lg:grid-cols-[200px_1fr_320px] gap-2 sm:gap-3 items-start">
-        {/* Left: political profile (top) + navigation menu. */}
-        <div className="flex flex-col gap-2 sm:gap-3">
-          <ProfilePanel />
-          <LeftRail />
-        </div>
+      <div className="grid lg:grid-cols-[190px_1fr_330px] gap-2 sm:gap-3 items-start">
+        {/* Left: navigation menu. */}
+        <LeftRail />
 
         {/* Center: the city. */}
         <div className="min-w-0">
@@ -39,14 +36,15 @@ export default function Page() {
             }
             bodyClassName="p-0"
           >
-            <div className="h-[380px] sm:h-[460px] lg:h-[540px] overflow-hidden bevel-in">
+            <div className="h-[380px] sm:h-[460px] lg:h-[560px] overflow-hidden bevel-in">
               <IsometricBoard />
             </div>
           </Panel>
         </div>
 
-        {/* Right: P/L summary. */}
+        {/* Right: political profile (top) + P/L summary. */}
         <div className="flex flex-col gap-2 sm:gap-3">
+          <ProfilePanel />
           <PLPanel />
         </div>
       </div>

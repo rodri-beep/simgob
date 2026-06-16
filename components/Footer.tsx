@@ -9,7 +9,7 @@ export function Footer() {
       </div>
       <div className="p-3 text-[10px] text-ink-soft leading-snug space-y-2">
         <p>
-          <b>Presupuestópolis</b> es un simulador divulgativo y <b>no oficial</b>. Sin
+          <b>SimGob</b> es un simulador divulgativo y <b>no oficial</b>. Sin
           relación con la AEAT ni con el Gobierno de España. Todas las cifras simuladas
           son <b>estimaciones ilustrativas</b> con datos agregados (no individuales) y
           sin respuesta de comportamiento. Año base {meta.baseYear}.
@@ -29,6 +29,9 @@ export function Footer() {
             metodología
           </Link>
           .
+        </p>
+        <p className="font-chrome uppercase text-[8px] tracking-wide text-ink-soft/80">
+          SimGob · un proyecto de Desvent
         </p>
       </div>
     </footer>

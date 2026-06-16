@@ -19,10 +19,10 @@ const chrome = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Presupuestópolis — Simulación de los Presupuestos del Estado",
+  title: "SimGob — Gobierna. Decide. Cuadra las cuentas.",
   description:
     "Simulador divulgativo (no oficial) de los Presupuestos Generales del Estado y los impuestos en España. Mueve el IRPF y el IS y mira el efecto sobre la recaudación y el saldo. Estimación ilustrativa.",
-  applicationName: "Presupuestópolis",
+  applicationName: "SimGob",
   robots: { index: true, follow: true },
 };
 
