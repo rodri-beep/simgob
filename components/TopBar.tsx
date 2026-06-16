@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSim, isDirty } from "@/lib/store";
 import { meta } from "@/lib/data";
 import { encodeScenario } from "@/lib/share";
+import { track } from "@/lib/analytics";
 
 export function TopBar() {
   const crt = useSim((s) => s.crt);
@@ -30,6 +31,7 @@ export function TopBar() {
     } catch {
       window.prompt("Copia el enlace del escenario:", url.toString());
     }
+    track("scenario_shared", { dirty });
     setCopied(true);
     setTimeout(() => setCopied(false), 1600);
   };
@@ -94,7 +96,10 @@ export function TopBar() {
           </button>
           <button
             type="button"
-            onClick={() => setIntro(true)}
+            onClick={() => {
+              track("help_opened");
+              setIntro(true);
+            }}
             className="btn-retro text-[9px] py-1"
             title="Cómo funciona (tutorial)"
           >

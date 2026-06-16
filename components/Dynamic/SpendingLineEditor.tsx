@@ -10,6 +10,7 @@ import {
   perDay,
 } from "@/lib/engine/stories";
 import { formatM, formatMDecimal, formatPctValue, formatEur } from "@/lib/engine/format";
+import { trackDebounced } from "@/lib/analytics";
 
 export function SpendingLineEditor({ policy }: { policy: SpendingPolicy }) {
   const override = useSim((s) => s.spendingOverrides[policy.id]);
@@ -46,7 +47,12 @@ export function SpendingLineEditor({ policy }: { policy: SpendingPolicy }) {
           max={Math.max(base * 2, 1)}
           step={Math.max(base / 200, 0.1)}
           value={amount}
-          onChange={(e) => setSpending(policy.id, parseFloat(e.target.value))}
+          onChange={(e) => {
+            setSpending(policy.id, parseFloat(e.target.value));
+            trackDebounced(`spending:${policy.id}`, "spending_adjusted", {
+              policy: policy.id,
+            });
+          }}
           aria-label={`Ajustar ${policy.label}: ${formatM(amount)}`}
         />
         <span className="tnum font-data text-[10px] text-ink-soft w-10 text-right">

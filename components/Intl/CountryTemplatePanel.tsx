@@ -5,6 +5,7 @@ import { aappBaseline, countryModels, spendingPolicies, irpfData } from "@/lib/d
 import { countrySpendingOverrides, countryTaxLevers } from "@/lib/intl";
 import { Panel } from "@/components/ui/Panel";
 import { EstimateBadge } from "@/components/ui/EstimateBadge";
+import { track } from "@/lib/analytics";
 
 const SPAIN_REV_PCT = aappBaseline.totalRevenue / aappBaseline.gdp;
 const TOTAL_BASE = irpfData.brackets.reduce((a, b) => a + b.baseGeneral + b.baseSavings, 0);
@@ -18,7 +19,10 @@ export function CountryTemplatePanel() {
   const setCountryTemplate = useSim((s) => s.setCountryTemplate);
   const reset = useSim((s) => s.reset);
 
-  const loadSpain = () => reset();
+  const loadSpain = () => {
+    track("country_template_reset");
+    reset();
+  };
 
   const loadCountry = (id: string) => {
     const country = countryModels.find((c) => c.id === id);
@@ -28,6 +32,7 @@ export function CountryTemplatePanel() {
     setIrpfUniformRate(irpfDelta);
     setIsNominalRate(isNominal);
     setCountryTemplate(id);
+    track("country_template_loaded", { country: id });
   };
 
   return (

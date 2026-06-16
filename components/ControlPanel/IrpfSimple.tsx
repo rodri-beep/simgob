@@ -5,6 +5,7 @@ import { irpfData } from "@/lib/data";
 import { useSimResults } from "@/lib/useSimResults";
 import { TuPanel } from "@/components/Stories/TuPanel";
 import { formatM, formatMDecimal, formatPct } from "@/lib/engine/format";
+import { trackDebounced } from "@/lib/analytics";
 
 const TOTAL_BASE = irpfData.brackets.reduce(
   (a, b) => a + b.baseGeneral + b.baseSavings,
@@ -48,7 +49,10 @@ export function IrpfSimple() {
           max={0.12}
           step={0.005}
           value={delta}
-          onChange={(e) => setUniform(parseFloat(e.target.value))}
+          onChange={(e) => {
+            setUniform(parseFloat(e.target.value));
+            trackDebounced("tax:irpf", "tax_adjusted", { tax: "irpf", mode: "uniform" });
+          }}
           aria-label="Ajuste general del IRPF en puntos porcentuales"
         />
         {!uniform && (

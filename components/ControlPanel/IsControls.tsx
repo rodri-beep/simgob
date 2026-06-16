@@ -5,6 +5,7 @@ import { isData } from "@/lib/data";
 import { useSimResults } from "@/lib/useSimResults";
 import { RateSlider } from "./RateSlider";
 import { formatPct } from "@/lib/engine/format";
+import { trackDebounced } from "@/lib/analytics";
 
 export function IsControls() {
   const nominal = useSim((s) => s.isNominalRate);
@@ -21,7 +22,10 @@ export function IsControls() {
         base={isData.nominalRate}
         min={0}
         max={0.4}
-        onChange={setNominal}
+        onChange={(r) => {
+          setNominal(r);
+          trackDebounced("tax:is", "tax_adjusted", { tax: "is", mode: "nominal" });
+        }}
       />
       <RateSlider
         label="Tipo mínimo (grandes grupos)"
@@ -29,7 +33,10 @@ export function IsControls() {
         base={isData.minimumRate}
         min={0}
         max={0.3}
-        onChange={setMinimum}
+        onChange={(r) => {
+          setMinimum(r);
+          trackDebounced("tax:is", "tax_adjusted", { tax: "is", mode: "minimum" });
+        }}
       />
 
       <div className="mx-2 mt-2 panel-inset px-2 py-1.5 text-[10px] text-ink-soft leading-snug">

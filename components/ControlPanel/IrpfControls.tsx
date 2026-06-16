@@ -5,6 +5,7 @@ import { useSim } from "@/lib/store";
 import { irpfData } from "@/lib/data";
 import { RateSlider } from "./RateSlider";
 import { formatCount } from "@/lib/engine/format";
+import { trackDebounced } from "@/lib/analytics";
 
 function bracketLabel(thresholds: number[], i: number): string {
   const fmt = (n: number) => new Intl.NumberFormat("es-ES").format(n);
@@ -37,7 +38,10 @@ export function IrpfControls() {
           value={b.rate}
           base={irpfData.scale.general[i].rate}
           max={0.6}
-          onChange={(r) => setGeneral(i, r)}
+          onChange={(r) => {
+            setGeneral(i, r);
+            trackDebounced("tax:irpf", "tax_adjusted", { tax: "irpf", mode: "bracket" });
+          }}
         />
       ))}
 
@@ -61,7 +65,10 @@ export function IrpfControls() {
               value={b.rate}
               base={irpfData.scale.savings[i].rate}
               max={0.4}
-              onChange={(r) => setSavings(i, r)}
+              onChange={(r) => {
+                setSavings(i, r);
+                trackDebounced("tax:irpf", "tax_adjusted", { tax: "irpf", mode: "savings" });
+              }}
             />
           ))}
         </div>
