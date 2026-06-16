@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { meta, human } from "@/lib/data";
 import { Panel } from "@/components/ui/Panel";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Metodología y fuentes — SimGob",
+  title: "Metodología y fuentes",
   description:
-    "Cómo se calculan las cifras de SimGob: fuentes oficiales, perímetro, principio de cálculo y limitaciones.",
+    "Cómo se calculan las cifras de SimGob: fuentes oficiales (Eurostat, AEAT, INE, Seguridad Social), perímetro de las Administraciones Públicas, principio de cálculo y limitaciones declaradas.",
+  alternates: { canonical: "/metodologia" },
 };
 
 function P({ children }: { children: React.ReactNode }) {
@@ -16,6 +19,12 @@ function P({ children }: { children: React.ReactNode }) {
 export default function Metodologia() {
   return (
     <main className="max-w-[900px] mx-auto p-2 sm:p-4 flex flex-col gap-3">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "SimGob", path: "/" },
+          { name: "Metodología", path: "/metodologia" },
+        ])}
+      />
       <header className="panel">
         <div className="bg-teal-dark text-parchment px-3 py-2 flex items-center justify-between gap-3 flex-wrap">
           <h1 className="font-pixel text-parchment text-[13px] pixel-title">
@@ -181,9 +190,12 @@ export default function Metodologia() {
         </div>
       </Panel>
 
-      <div className="text-center py-2">
+      <div className="text-center py-2 flex flex-wrap items-center justify-center gap-2">
         <Link href="/" className="btn-retro text-[10px] no-underline">
           ← Volver al simulador
+        </Link>
+        <Link href="/faq" className="btn-retro text-[10px] no-underline">
+          Preguntas frecuentes
         </Link>
       </div>
     </main>

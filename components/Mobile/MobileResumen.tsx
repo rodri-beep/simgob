@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSimResults } from "@/lib/useSimResults";
 import { usePolitics } from "@/lib/usePolitics";
 import { revenueLines, meta, human } from "@/lib/data";
+import { REPO_URL } from "@/lib/seo";
 import { formatM, formatPctValue, formatEur } from "@/lib/engine/format";
 import { useAreas, MAX_BASE, signNum } from "./model";
 import type { BuildingId } from "@/lib/engine/types";
@@ -243,14 +244,36 @@ export function MobileResumen({
         ↗ Compartir mi plan
       </button>
 
-      {/* About / methodology — mirrors the desktop footer link. */}
+      {/* About / methodology — mirrors the desktop footer links. */}
       <div className="mt-4 pt-3 border-t border-bevel-dark/30 text-center">
-        <Link
-          href="/metodologia"
-          className="font-chrome uppercase text-[9px] tracking-wide text-teal-dark underline"
-        >
-          Metodología y fuentes
-        </Link>
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+          <Link
+            href="/guias"
+            className="font-chrome uppercase text-[9px] tracking-wide text-teal-dark underline"
+          >
+            Guías
+          </Link>
+          <Link
+            href="/metodologia"
+            className="font-chrome uppercase text-[9px] tracking-wide text-teal-dark underline"
+          >
+            Metodología
+          </Link>
+          <Link
+            href="/faq"
+            className="font-chrome uppercase text-[9px] tracking-wide text-teal-dark underline"
+          >
+            Preguntas frecuentes
+          </Link>
+          <a
+            href={REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-chrome uppercase text-[9px] tracking-wide text-teal-dark underline"
+          >
+            GitHub
+          </a>
+        </div>
         <p className="text-[9px] text-ink-soft/70 leading-relaxed mt-2">
           Proyecto no oficial · estimaciones ilustrativas · datos AAPP {meta.baseYear} · un proyecto
           de Desvent

@@ -1,5 +1,9 @@
 # SimGob
 
+**▶ Pruébalo en [simgob.com](https://simgob.com)** · [Preguntas frecuentes](https://simgob.com/faq) · [Metodología](https://simgob.com/metodologia)
+
+[![SimGob — simulador del presupuesto y los impuestos de España](https://simgob.com/opengraph-image)](https://simgob.com)
+
 Simulador **divulgativo y no oficial** del gasto y los ingresos de las
 **Administraciones Públicas** (Estado, CCAA, entidades locales y Seguridad Social)
 y de los impuestos en España, con estética retro de _management-sim_ de los 90.
