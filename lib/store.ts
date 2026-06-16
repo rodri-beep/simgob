@@ -17,7 +17,6 @@ interface SimState {
   // ---- UI state (not part of the simulation) ----
   selectedBuilding: BuildingId | null;
   activeRevenue: "irpf" | "is";
-  crt: boolean;
   /** "¿y a ti?" personal gross annual salary (€), or null if not entered. */
   grossSalary: number | null;
   /** Whether the "¿cómo funciona?" walkthrough is open. */
@@ -46,7 +45,6 @@ interface SimState {
   reset: () => void;
   selectBuilding: (id: BuildingId | null) => void;
   setActiveRevenue: (which: "irpf" | "is") => void;
-  toggleCrt: () => void;
   setGrossSalary: (gross: number | null) => void;
   setIntro: (open: boolean) => void;
   setImpuestosOpen: (open: boolean) => void;
@@ -65,7 +63,6 @@ export const useSim = create<SimState>((set) => ({
 
   selectedBuilding: null,
   activeRevenue: "irpf",
-  crt: false,
   grossSalary: null,
   introOpen: false,
   impuestosOpen: false,
@@ -136,7 +133,6 @@ export const useSim = create<SimState>((set) => ({
 
   selectBuilding: (id) => set({ selectedBuilding: id }),
   setActiveRevenue: (which) => set({ activeRevenue: which }),
-  toggleCrt: () => set((s) => ({ crt: !s.crt })),
   setGrossSalary: (gross) =>
     set({ grossSalary: gross == null ? null : Math.max(0, gross) }),
   setIntro: (open) => set({ introOpen: open }),

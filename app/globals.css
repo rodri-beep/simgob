@@ -188,23 +188,6 @@ input[type="range"].slider-retro::-moz-range-thumb {
   }
 }
 
-/* ---- Optional CRT / scanline overlay (toggle) ---- */
-.crt-overlay {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.07) 0px,
-      rgba(0, 0, 0, 0.07) 1px,
-      transparent 1px,
-      transparent 3px
-    );
-  mix-blend-mode: multiply;
-}
-
 /* Number "blip" feedback when a counter updates. */
 @keyframes counter-blip {
   0% {

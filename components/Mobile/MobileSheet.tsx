@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useSim } from "@/lib/store";
 import { useSimResults } from "@/lib/useSimResults";
 import {
@@ -21,6 +22,11 @@ import {
 import { SpendingLineEditor } from "@/components/Dynamic/SpendingLineEditor";
 import { IrpfSimple } from "@/components/ControlPanel/IrpfSimple";
 import { IsSimple } from "@/components/ControlPanel/IsSimple";
+import { IrpfControls } from "@/components/ControlPanel/IrpfControls";
+import { IsControls } from "@/components/ControlPanel/IsControls";
+import { WinnersLosersChart } from "@/components/Dynamic/WinnersLosersChart";
+import { IrpfBracketTable } from "@/components/Dynamic/IrpfBracketTable";
+import { medianBracket, modalBracket } from "@/lib/engine/stories";
 import type { SheetState } from "./model";
 
 const INFO_NOTES: Record<string, string> = {
@@ -94,6 +100,7 @@ export function MobileSheet({
     body = (
       <div className="mt-3">
         <IrpfSimple />
+        <IrpfDetailSection />
       </div>
     );
   } else if (sheet.t === "is") {
@@ -106,6 +113,7 @@ export function MobileSheet({
     body = (
       <div className="mt-3">
         <IsSimple />
+        <IsDetailSection />
       </div>
     );
   } else {
@@ -175,6 +183,65 @@ export function MobileSheet({
           {body}
         </div>
       </div>
+    </>
+  );
+}
+
+/**
+ * Collapsible "by-tramo / detail" block for the IRPF sheet — restores the full
+ * desktop power on mobile: the winners/losers-by-bracket chart and the
+ * per-bracket escala editor (general + savings). Calm by default.
+ */
+function IrpfDetailSection() {
+  const [open, setOpen] = useState(false);
+  const { irpf } = useSimResults();
+  const median = medianBracket(irpfData.brackets);
+  const modal = modalBracket(irpfData.brackets);
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        data-active={open}
+        className="btn-retro w-full mt-3 text-[10px] py-2 justify-center flex"
+      >
+        {open ? "▾ Ocultar tramos y detalle" : "▸ Editar por tramo / ver detalle"}
+      </button>
+      {open && (
+        <div className="mt-2.5 border-t border-bevel-dark/30 pt-3 space-y-3">
+          <p className="text-[10px] text-ink-soft leading-snug px-0.5">
+            El <b>declarante mediano</b> declara <b>{median?.label}</b>; el tramo más numeroso es{" "}
+            <b>{modal?.label}</b>. Mueve los tipos para ver a quién afecta.
+          </p>
+          <WinnersLosersChart brackets={irpf.brackets} />
+          <IrpfBracketTable />
+          <div className="border-t border-bevel-dark/30 pt-2">
+            <IrpfControls />
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+/** Collapsible IS detail — adds the minimum-rate lever and the effective-rate note. */
+function IsDetailSection() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        data-active={open}
+        className="btn-retro w-full mt-3 text-[10px] py-2 justify-center flex"
+      >
+        {open ? "▾ Ocultar detalle" : "▸ Tipo mínimo / detalle"}
+      </button>
+      {open && (
+        <div className="mt-2.5 border-t border-bevel-dark/30 pt-3">
+          <IsControls />
+        </div>
+      )}
     </>
   );
 }

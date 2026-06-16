@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { CrtOverlay } from "@/components/CrtOverlay";
 import { PostHogProvider } from "./providers";
 
 const pixel = localFont({
@@ -41,10 +40,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${pixel.variable} ${chrome.variable}`}>
       <body>
-        <PostHogProvider>
-          {children}
-          <CrtOverlay />
-        </PostHogProvider>
+        <PostHogProvider>{children}</PostHogProvider>
       </body>
     </html>
   );

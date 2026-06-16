@@ -1,29 +1,19 @@
 "use client";
 
-import { useMemo } from "react";
 import { useSimResults } from "@/lib/useSimResults";
-import { useSim } from "@/lib/store";
-import { irpfData, human } from "@/lib/data";
+import { irpfData } from "@/lib/data";
 import { CollapsiblePanel } from "@/components/ui/CollapsiblePanel";
 import { EstimateBadge } from "@/components/ui/EstimateBadge";
 import { AnimatedNumber } from "@/components/ui/AnimatedNumber";
 import { WinnersLosersChart } from "./WinnersLosersChart";
-import { bracketPersonas, medianBracket, modalBracket } from "@/lib/engine/stories";
-import { formatM, formatMDecimal, formatEur, formatPctValue } from "@/lib/engine/format";
+import { IrpfBracketTable } from "./IrpfBracketTable";
+import { medianBracket, modalBracket } from "@/lib/engine/stories";
+import { formatM, formatMDecimal } from "@/lib/engine/format";
 
 export function IrpfDetail() {
   const { irpf } = useSimResults();
-  const scale = useSim((s) => s.irpfScale);
   const stateEffect = irpfData.stateDeltaShare * irpf.delta;
 
-  const personas = useMemo(
-    () => bracketPersonas(irpfData.brackets, scale, human.netSalaryModel),
-    [scale],
-  );
-  const personaById = useMemo(
-    () => Object.fromEntries(personas.map((p) => [p.id, p])),
-    [personas],
-  );
   const median = medianBracket(irpfData.brackets);
   const modal = modalBracket(irpfData.brackets);
 
@@ -75,50 +65,7 @@ export function IrpfDetail() {
 
       <WinnersLosersChart brackets={irpf.brackets} />
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-[10px] tnum border-collapse">
-          <thead>
-            <tr className="font-chrome uppercase text-[8px] text-ink-soft text-right">
-              <th className="text-left font-normal py-1">Tramo de renta</th>
-              <th className="font-normal">% decl.</th>
-              <th className="font-normal">Renta neta</th>
-              <th className="font-normal">Δ / declarante</th>
-            </tr>
-          </thead>
-          <tbody>
-            {irpf.brackets.map((b) => {
-              const p = personaById[b.id];
-              const perMonth = b.deltaPerDeclaranteEur / 12;
-              return (
-                <tr key={b.id} className="text-right border-t border-bevel-dark/20">
-                  <td className="text-left py-0.5 font-data">{b.label}</td>
-                  <td className="text-ink-soft">{p ? formatPctValue(p.share * 100, 1) : "—"}</td>
-                  <td className="text-ink">
-                    {p ? `${formatEur(p.netMonthly)}/mes` : "—"}
-                  </td>
-                  <td
-                    className={
-                      b.verdict === "loser"
-                        ? "text-brick"
-                        : b.verdict === "winner"
-                          ? "text-moss"
-                          : "text-ink-soft"
-                    }
-                  >
-                    {b.verdict === "neutral"
-                      ? "—"
-                      : `${formatEur(b.deltaPerDeclaranteEur, { sign: true })}/año (${formatEur(perMonth, { sign: true })}/mes)`}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <p className="text-[8px] text-ink-soft/80 mt-1">
-          Renta neta: cálculo aproximado para la renta media del tramo (soltero, solo trabajo, 12 pagas).
-          Los tramos son de renta, no solo de salario.
-        </p>
-      </div>
+      <IrpfBracketTable />
       </div>
     </CollapsiblePanel>
   );

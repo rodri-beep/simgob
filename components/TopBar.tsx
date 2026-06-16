@@ -6,8 +6,6 @@ import { meta } from "@/lib/data";
 import { track } from "@/lib/analytics";
 
 export function TopBar() {
-  const crt = useSim((s) => s.crt);
-  const toggleCrt = useSim((s) => s.toggleCrt);
   const reset = useSim((s) => s.reset);
   const setIntro = useSim((s) => s.setIntro);
   const setShare = useSim((s) => s.setShareOpen);
@@ -43,12 +41,6 @@ export function TopBar() {
           <span className="font-chrome uppercase text-[9px] bg-teal px-2 py-1 bevel-out-thin">
             Año base {meta.baseYear}
           </span>
-          <span
-            title="Proyecto no oficial. Sin relación con la AEAT ni con el Gobierno."
-            className="font-chrome uppercase text-[9px] bg-brick text-parchment px-2 py-1 bevel-out-thin"
-          >
-            No oficial
-          </span>
           <button
             type="button"
             onClick={reset}
@@ -65,15 +57,6 @@ export function TopBar() {
             title="Compartir tu plan: imagen + enlace"
           >
             ↗ Compartir
-          </button>
-          <button
-            type="button"
-            onClick={toggleCrt}
-            data-active={crt}
-            className="btn-retro text-[9px] py-1"
-            title="Activar/desactivar el filtro CRT (scanlines)"
-          >
-            CRT
           </button>
           <button
             type="button"
