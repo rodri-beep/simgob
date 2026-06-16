@@ -9,6 +9,7 @@ import { TaxEditModal } from "@/components/Dynamic/TaxEditModal";
 import { RevenuePanel } from "@/components/Dynamic/RevenuePanel";
 import { BudgetColumnsChart } from "@/components/Dynamic/BudgetColumnsChart";
 import { TaxDetail } from "@/components/Dynamic/TaxDetail";
+import { CountryTemplatePanel } from "@/components/Intl/CountryTemplatePanel";
 import { Footer } from "@/components/Footer";
 import { Panel } from "@/components/ui/Panel";
 import { ScenarioUrlSync } from "@/components/ScenarioUrlSync";
@@ -42,6 +43,7 @@ export default function Page() {
         </div>
 
         <div className="flex flex-col gap-2 sm:gap-3">
+          <CountryTemplatePanel />
           <ControlPanel />
           <ProfilePanel />
         </div>

@@ -1,0 +1,59 @@
+{
+  "year": 2023,
+  "source": "Eurostat COFOG (gov_10a_exp) y agregados (gov_10a_main); OCDE Revenue Statistics 2024 (tax-to-GDP). EE. UU.: OCDE National Accounts + IMF WEO.",
+  "aapp": {
+    "year": 2023,
+    "gdp": 1497761,
+    "totalExpenditure": 680952,
+    "totalRevenue": 630198,
+    "cofog": {
+      "general": 84784,
+      "defensa": 13987,
+      "orden": 27443,
+      "economicos": 74958,
+      "medioambiente": 14640,
+      "vivienda": 7643,
+      "salud": 98624,
+      "cultura": 18729,
+      "educacion": 63040,
+      "social": 277104
+    }
+  },
+  "countries": [
+    {
+      "id": "suecia", "label": "Suecia", "flag": "🇸🇪", "year": 2023,
+      "revenuePctGdp": 0.491, "expenditurePctGdp": 0.500, "taxToGdp": 0.414,
+      "cofogShares": { "general": 0.105, "defensa": 0.037, "orden": 0.028, "economicos": 0.101, "medioambiente": 0.012, "vivienda": 0.016, "salud": 0.148, "cultura": 0.028, "educacion": 0.146, "social": 0.379 }
+    },
+    {
+      "id": "dinamarca", "label": "Dinamarca", "flag": "🇩🇰", "year": 2023,
+      "revenuePctGdp": 0.508, "expenditurePctGdp": 0.474, "taxToGdp": 0.434,
+      "cofogShares": { "general": 0.124, "defensa": 0.038, "orden": 0.019, "economicos": 0.062, "medioambiente": 0.009, "vivienda": 0.004, "salud": 0.175, "cultura": 0.032, "educacion": 0.118, "social": 0.417 }
+    },
+    {
+      "id": "alemania", "label": "Alemania", "flag": "🇩🇪", "year": 2023,
+      "revenuePctGdp": 0.457, "expenditurePctGdp": 0.481, "taxToGdp": 0.381,
+      "cofogShares": { "general": 0.126, "defensa": 0.023, "orden": 0.033, "economicos": 0.120, "medioambiente": 0.012, "vivienda": 0.010, "salud": 0.155, "cultura": 0.021, "educacion": 0.093, "social": 0.407 }
+    },
+    {
+      "id": "francia", "label": "Francia", "flag": "🇫🇷", "year": 2023,
+      "revenuePctGdp": 0.515, "expenditurePctGdp": 0.569, "taxToGdp": 0.438,
+      "cofogShares": { "general": 0.109, "defensa": 0.032, "orden": 0.030, "economicos": 0.111, "medioambiente": 0.018, "vivienda": 0.023, "salud": 0.156, "cultura": 0.026, "educacion": 0.088, "social": 0.411 }
+    },
+    {
+      "id": "italia", "label": "Italia", "flag": "🇮🇹", "year": 2023,
+      "revenuePctGdp": 0.465, "expenditurePctGdp": 0.536, "taxToGdp": 0.428,
+      "cofogShares": { "general": 0.138, "defensa": 0.022, "orden": 0.032, "economicos": 0.108, "medioambiente": 0.017, "vivienda": 0.080, "salud": 0.121, "cultura": 0.015, "educacion": 0.073, "social": 0.393 }
+    },
+    {
+      "id": "ue27", "label": "Media UE-27", "flag": "🇪🇺", "year": 2023,
+      "revenuePctGdp": 0.455, "expenditurePctGdp": 0.489, "taxToGdp": 0.399,
+      "cofogShares": { "general": 0.120, "defensa": 0.027, "orden": 0.035, "economicos": 0.118, "medioambiente": 0.016, "vivienda": 0.024, "salud": 0.149, "cultura": 0.024, "educacion": 0.096, "social": 0.392 }
+    },
+    {
+      "id": "eeuu", "label": "EE. UU.", "flag": "🇺🇸", "year": 2023,
+      "revenuePctGdp": 0.299, "expenditurePctGdp": 0.371, "taxToGdp": 0.252,
+      "cofogShares": { "general": 0.174, "defensa": 0.077, "orden": 0.046, "economicos": 0.085, "medioambiente": 0.0, "vivienda": 0.012, "salud": 0.256, "cultura": 0.007, "educacion": 0.142, "social": 0.201 }
+    }
+  ]
+}

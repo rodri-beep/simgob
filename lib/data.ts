@@ -5,6 +5,7 @@ import irpfJson from "@/data/irpf.json";
 import isJson from "@/data/is.json";
 import buildingsJson from "@/data/buildings.json";
 import humanJson from "@/data/human.json";
+import intlJson from "@/data/intl.json";
 
 import type {
   DatasetMeta,
@@ -16,6 +17,7 @@ import type {
   HumanData,
   BeneficiaryAnchor,
 } from "./engine/types";
+import type { AappBaseline, CountryModel } from "./intl";
 
 export const meta = metaJson as unknown as DatasetMeta & { provisional?: boolean };
 export const revenueLines = (revenueJson.lines as unknown) as RevenueLine[];
@@ -24,6 +26,8 @@ export const irpfData = irpfJson as unknown as IrpfData;
 export const isData = isJson as unknown as IsData;
 export const buildings = (buildingsJson.buildings as unknown) as BoardBuilding[];
 export const human = humanJson as unknown as HumanData;
+export const aappBaseline = intlJson.aapp as unknown as AappBaseline;
+export const countryModels = intlJson.countries as unknown as CountryModel[];
 
 /** Beneficiary anchor for a spending policy, or undefined (→ universal anchors). */
 export function anchorFor(policyId: string): BeneficiaryAnchor | undefined {
