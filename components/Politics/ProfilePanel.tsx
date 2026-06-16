@@ -2,6 +2,7 @@
 
 import { usePolitics } from "@/lib/usePolitics";
 import { Panel } from "@/components/ui/Panel";
+import { ProfileIcon } from "./ProfileIcon";
 
 export function ProfilePanel() {
   const profile = usePolitics();
@@ -9,9 +10,7 @@ export function ProfilePanel() {
   return (
     <Panel tone="teal" title="Tu perfil político">
       <div className="flex items-center gap-3">
-        <span aria-hidden className="text-[34px] leading-none">
-          {profile.emoji}
-        </span>
+        <ProfileIcon id={profile.id} emoji={profile.emoji} size={40} className="shrink-0" />
         <div className="min-w-0">
           <div className="font-chrome uppercase text-[14px] text-ink leading-tight">
             {profile.label}

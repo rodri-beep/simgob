@@ -7,6 +7,7 @@ import { revenueLines, meta, human } from "@/lib/data";
 import { REPO_URL } from "@/lib/seo";
 import { formatM, formatPctValue, formatEur } from "@/lib/engine/format";
 import { useAreas, MAX_BASE, signNum } from "./model";
+import { ProfileIcon } from "@/components/Politics/ProfileIcon";
 import type { BuildingId } from "@/lib/engine/types";
 
 const CITY_BG = "linear-gradient(#bcd6e2,#cfe0d2)";
@@ -92,9 +93,7 @@ export function MobileResumen({
           Tu perfil político
         </div>
         <div className="px-3 py-2.5 flex gap-3 items-start">
-          <span aria-hidden className="text-[32px] leading-none">
-            {profile.emoji}
-          </span>
+          <ProfileIcon id={profile.id} emoji={profile.emoji} size={38} className="shrink-0" />
           <div className="min-w-0">
             <div className="font-chrome uppercase text-[13px] leading-tight">{profile.label}</div>
             {profile.reasons.length > 0 && (

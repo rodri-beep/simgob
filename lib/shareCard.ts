@@ -80,6 +80,16 @@ export async function renderShareCard(
   const chrome = root.getPropertyValue("--font-chrome").trim() || "monospace";
   const data = root.getPropertyValue("--font-data").trim() || SANS;
 
+  // Optional pixel-art sprite for the profile (public/profiles/<id>.png). Falls
+  // back to the emoji glyph when the asset is absent, so it upgrades automatically.
+  const iconImg = await new Promise<HTMLImageElement | null>((resolve) => {
+    if (typeof Image === "undefined") return resolve(null);
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = `/profiles/${d.profile.id}.png`;
+  });
+
   const cx = W / 2;
 
   // ---- primitives ----
@@ -173,25 +183,44 @@ export async function renderShareCard(
   // The site renders the profile label in the chrome (Silkscreen) face, uppercase —
   // match that here instead of a generic sans, sized to fit.
   const name = d.profile.label.toUpperCase();
+  const iconSize = square ? 168 : 88;
   const emojiSize = square ? 150 : 76;
+
+  /** Draw the pixel sprite (crisp, nearest-neighbour) centred at (px,py); returns its width. */
+  const drawSprite = (img: HTMLImageElement, px: number, py: number, h: number) => {
+    const ar = img.width && img.height ? img.width / img.height : 1;
+    const w = h * ar;
+    const prev = ctx.imageSmoothingEnabled;
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(img, px - w / 2, py - h / 2, w, h);
+    ctx.imageSmoothingEnabled = prev;
+    return w;
+  };
+  /** Width the hero glyph (sprite or emoji) will occupy, for row centring. */
+  const heroGlyphWidth = () => {
+    if (iconImg) return iconSize * (iconImg.width && iconImg.height ? iconImg.width / iconImg.height : 1);
+    ctx.font = font(emojiSize, data);
+    return ctx.measureText(d.profile.emoji).width;
+  };
+
   if (square) {
-    // emoji over name, both centered
-    ctext(d.profile.emoji, 318, font(emojiSize, data), C.ink, "middle");
+    // sprite/emoji over name, both centered
+    if (iconImg) drawSprite(iconImg, cx, 312, iconSize);
+    else ctext(d.profile.emoji, 318, font(emojiSize, data), C.ink, "middle");
     const nameSize = fitSize(name, chrome, "700", 56, 28, W - 2 * mx);
     ctext(name, 452, font(nameSize, chrome, "700"), C.ink, "middle");
   } else {
-    // emoji + name on one centered row, aligned on a shared middle baseline
+    // sprite/emoji + name on one centered row, aligned on a shared middle line
     const heroCenterY = 188;
     const gap = 22;
-    const emojiF = font(emojiSize, data);
-    ctx.font = emojiF;
-    const ew = ctx.measureText(d.profile.emoji).width;
+    const ew = heroGlyphWidth();
     const nameSize = fitSize(name, chrome, "700", 38, 22, W - 2 * mx - ew - gap);
     const nameF = font(nameSize, chrome, "700");
     ctx.font = nameF;
     const nw = ctx.measureText(name).width;
     const startX = cx - (ew + gap + nw) / 2;
-    text(d.profile.emoji, startX, heroCenterY, emojiF, C.ink, "left", "middle");
+    if (iconImg) drawSprite(iconImg, startX + ew / 2, heroCenterY, iconSize);
+    else text(d.profile.emoji, startX, heroCenterY, font(emojiSize, data), C.ink, "left", "middle");
     text(name, startX + ew + gap, heroCenterY, nameF, C.ink, "left", "middle");
   }
 
@@ -260,25 +289,22 @@ export async function renderShareCard(
   const pibY = saldoY + (square ? 40 : 26);
   const vsRealY = pibY + (square ? 32 : 18);
 
+  // Budget figures use the chrome (Silkscreen) face too, for one cohesive retro
+  // card. Silkscreen is wide, so fit the long lines to width.
   rect(mx, dividerY, W - 2 * mx, 2, C.bevelDark);
-  ctext(`TU PRESUPUESTO · AAPP ${d.baseYear}`, plEyebrowY, font(square ? 15 : 13, chrome), C.inkSoft);
-  ctext(
-    `INGRESOS ${formatM(d.totals.revenue)}    ·    GASTOS ${formatM(d.totals.spending)}`,
-    plLineY,
-    font(square ? 24 : 20, data, "700"),
-    C.ink,
-  );
-  ctext(deficit ? "SALDO · DÉFICIT" : "SALDO · SUPERÁVIT", saldoLabelY, font(square ? 18 : 15, chrome), saldoColor);
-  ctext(formatM(d.totals.balance, { sign: true }), saldoY, font(square ? 58 : 36, data, "800"), saldoColor);
-  ctext(formatGdpPct(d.totals.balance, d.gdp).toUpperCase(), pibY, font(square ? 22 : 17, data, "700"), C.inkSoft);
+  ctext(`TU PRESUPUESTO · AAPP ${d.baseYear}`, plEyebrowY, font(square ? 14 : 12, chrome), C.inkSoft);
+
+  const plLine = `INGRESOS ${formatM(d.totals.revenue)}   ·   GASTOS ${formatM(d.totals.spending)}`;
+  ctext(plLine, plLineY, font(fitSize(plLine, chrome, "400", square ? 20 : 16, square ? 12 : 10, W - 2 * mx), chrome), C.ink);
+
+  ctext(deficit ? "SALDO · DÉFICIT" : "SALDO · SUPERÁVIT", saldoLabelY, font(square ? 17 : 14, chrome), saldoColor);
+  const saldoStr = formatM(d.totals.balance, { sign: true });
+  ctext(saldoStr, saldoY, font(fitSize(saldoStr, chrome, "700", square ? 50 : 32, square ? 28 : 18, W - 2 * mx), chrome, "700"), saldoColor);
+  ctext(formatGdpPct(d.totals.balance, d.gdp).toUpperCase(), pibY, font(square ? 18 : 14, chrome), C.inkSoft);
   if (hasDelta) {
     const good = d.totals.balanceDelta > 0;
-    ctext(
-      `${good ? "MEJORA" : "EMPEORA"} ${formatM(d.totals.balanceDelta, { sign: true })} VS. REAL`,
-      vsRealY,
-      font(square ? 18 : 15, data, "700"),
-      good ? C.moss : C.brick,
-    );
+    const vsReal = `${good ? "MEJORA" : "EMPEORA"} ${formatM(d.totals.balanceDelta, { sign: true })} VS. REAL`;
+    ctext(vsReal, vsRealY, font(fitSize(vsReal, chrome, "400", square ? 15 : 12, square ? 11 : 9, W - 2 * mx), chrome), good ? C.moss : C.brick);
   }
 
   // ---- footer: the "¿y tú?" challenge CTA ----
