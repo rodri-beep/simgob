@@ -40,16 +40,17 @@ export function TopBar() {
         <div className="flex items-center gap-3">
           <span
             aria-hidden
-            className="inline-grid place-items-center w-8 h-8 bg-amber text-teal-dark bevel-out font-pixel text-[12px]"
+            className="inline-grid place-items-center w-8 h-8 bg-amber text-teal-dark bevel-out font-pixel text-[10px]"
           >
-            €
+            SG
           </span>
           <div className="leading-tight">
-            <h1 className="pixel-title font-pixel text-parchment text-[12px] sm:text-[15px]">
-              PRESUPUESTÓPOLIS
+            <h1 className="pixel-title font-pixel text-[13px] sm:text-[16px]">
+              <span className="text-parchment">SIM</span>
+              <span className="text-amber">GOB</span>
             </h1>
             <p className="font-chrome uppercase text-amber text-[9px] sm:text-[10px] tracking-wide">
-              Simulación de los Presupuestos del Estado
+              Gobierna · Decide · Cuadra las cuentas
             </p>
           </div>
         </div>

@@ -14,20 +14,24 @@ const base: PoliticsInput = {
 const id = (i: Partial<PoliticsInput>) => classifyPolitics({ ...base, ...i }).id;
 
 describe("classifyPolitics", () => {
-  it("untouched base → centrista", () => {
-    expect(id({})).toBe("centrista");
+  it("untouched base → socialista (Spain is already centre-left)", () => {
+    expect(id({})).toBe("socialista");
   });
 
-  it("raise top rates a lot + big social → comunista", () => {
-    expect(id({ taxDelta: 30000, topRateDelta: 0.15, socialDelta: 30000, totalSpendDelta: 30000 })).toBe("comunista");
+  it("maxing taxes + top rates + social → comunista (extreme only)", () => {
+    expect(id({ taxDelta: 40000, topRateDelta: 0.2, socialDelta: 30000, totalSpendDelta: 40000 })).toBe("comunista");
   });
 
-  it("moderate tax raise + some social → socialista", () => {
-    expect(id({ taxDelta: 10000, socialDelta: 5000, totalSpendDelta: 5000 })).toBe("socialista");
+  it("taxing/spending merely more (France/Germany level) stays socialista", () => {
+    expect(id({ taxDelta: 20000, topRateDelta: 0.04, socialDelta: 5000, totalSpendDelta: 15000 })).toBe("socialista");
   });
 
-  it("cut taxes + shrink the state → liberal", () => {
-    expect(id({ taxDelta: -15000, totalSpendDelta: -30000 })).toBe("liberal");
+  it("cut taxes + shrink the state hard → liberal", () => {
+    expect(id({ taxDelta: -25000, socialDelta: -12000, totalSpendDelta: -50000 })).toBe("liberal");
+  });
+
+  it("a moderate trim toward balance → centrista", () => {
+    expect(id({ taxDelta: -10000, socialDelta: -6000, totalSpendDelta: -12000 })).toBe("centrista");
   });
 
   it("cut social + boost defense/security → turbofacha", () => {
@@ -38,8 +42,8 @@ describe("classifyPolitics", () => {
     expect(id({ taxDelta: -25000, balance: -80000, baseBalance: -50000 })).toBe("populista");
   });
 
-  it("mild tax cut, no shrinking → conservador", () => {
-    expect(id({ taxDelta: -8000, totalSpendDelta: -2000 })).toBe("conservador");
+  it("a big tax cut without shrinking the state → conservador", () => {
+    expect(id({ taxDelta: -24000, totalSpendDelta: -4000 })).toBe("conservador");
   });
 
   it("always returns reasons", () => {

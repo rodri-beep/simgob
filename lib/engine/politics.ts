@@ -76,33 +76,29 @@ export function classifyPolitics(i: PoliticsInput): PoliticsResult {
   const security = clamp(i.securityDelta / 8000);
   const stateSize = clamp(i.totalSpendDelta / 40000);
   const deficitDelta = i.balance - i.baseBalance;
-  const leaning = tax + 0.7 * prog + social; // >0 = izquierda
+  // Spain's status quo is already a sizeable welfare state with a deficit, so
+  // the real "centre" is left of zero: the untouched base reads as Socialista.
+  // You must trim toward balance to be Centrista, and cut hard to be liberal.
+  // "Comunista peligroso" is reserved for genuinely extreme settings — taxing/
+  // spending merely like France or Germany stays Socialista.
+  const BASELINE_LEANING = 0.55;
+  const leaning = BASELINE_LEANING + tax + 0.7 * prog + social; // >0 = izquierda
 
   const reasons = buildReasons({ tax, prog, social, security, stateSize, deficitDelta });
+  if (reasons.length === 0) reasons.push("España ya parte de un Estado social amplio");
   const withReasons = (key: string): PoliticsResult => ({ ...PROFILES[key], reasons });
-
-  // Near the official base → centrist.
-  if (
-    Math.abs(tax) < 0.1 &&
-    Math.abs(social) < 0.1 &&
-    Math.abs(prog) < 0.12 &&
-    Math.abs(security) < 0.25 &&
-    Math.abs(stateSize) < 0.1
-  ) {
-    return withReasons("centrista");
-  }
 
   // Far-right / populist flavors take priority over the generic axis.
   if (security > 0.35 && social < -0.2) return withReasons("turbofacha");
   if (tax < -0.3 && deficitDelta < -20000) return withReasons("populista");
 
-  // Left axis.
-  if (leaning >= 1.2) return withReasons("comunista");
+  // Left axis (baseline already sits in "socialista").
+  if (leaning >= 3.2) return withReasons("comunista");
   if (leaning >= 0.3) return withReasons("socialista");
 
   // Right axis.
-  if (leaning <= -0.3) {
-    if (tax < -0.2 && stateSize < -0.2) return withReasons("liberal");
+  if (leaning <= -0.5) {
+    if (tax < -0.35 && stateSize < -0.35) return withReasons("liberal");
     return withReasons("conservador");
   }
 
