@@ -3,7 +3,7 @@ import type { IrpfResult } from "./irpf";
 import type { IsResult } from "./is";
 
 export interface BudgetTotals {
-  /** Total revenue under the current scenario, in M€ (PGE perimeter). */
+  /** Total revenue under the current scenario, in M€ (AAPP perimeter). */
   revenue: number;
   /** Total revenue in the base (official) scenario, in M€. */
   baseRevenue: number;
@@ -18,7 +18,7 @@ export interface BudgetTotals {
   balanceDelta: number;
 }
 
-/** Fraction of each tax's national change that accrues to the State perimeter. */
+/** Fraction of each tax's national change that accrues to the perimeter. */
 export interface StateShares {
   irpf: number;
   is: number;
@@ -26,13 +26,12 @@ export interface StateShares {
 
 /**
  * Combine the read-only revenue lines with the simulated IRPF and IS figures and
- * the (static, v1) spending to produce the status-bar totals.
+ * the spending to produce the status-bar totals.
  *
- * The budget is on the PGE perimeter (Civio): the IRPF and IS revenue LINES hold
- * the State's share. The simulation runs on the GROSS NATIONAL figures, so we
- * feed only the State's share of each national delta into the balance
- * (`stateDeltaShare`): the combined IRPF scale splits ~50/50 with the CCAA,
- * while IS is a State tax (share 1.0).
+ * The budget is on the AAPP (general government) perimeter: the IRPF and IS
+ * revenue LINES hold the full national collection, and the whole national delta
+ * of each tax flows into the balance (`stateDeltaShare` = 1.0 for both, since
+ * the perimeter already includes the State and the CCAA).
  */
 export function computeTotals(
   revenueLines: RevenueLine[],

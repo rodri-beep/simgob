@@ -23,12 +23,12 @@ const STEPS: Step[] = [
   {
     who: "asesora",
     title: "Bienvenido/a a SimGob",
-    text: "Esta ciudad es el presupuesto del Estado (datos de 2023). Es un simulador divulgativo y no oficial: todas las cifras son estimaciones ilustrativas.",
+    text: "Esta ciudad es el gasto de todas las Administraciones Públicas (Estado, CCAA, ayuntamientos y Seguridad Social), datos de 2023. Es un simulador divulgativo y no oficial: todas las cifras son estimaciones ilustrativas.",
   },
   {
     who: "asesor",
     title: "La ciudad es el gasto",
-    text: "Cada edificio es una política de gasto y su altura —por plantas— indica cuánto se gasta. Pulsa un edificio para recortar o ampliar sus partidas.",
+    text: "Cada edificio es una función de gasto y su altura —por plantas— indica cuánto se gasta. Sanidad y Educación salen a tamaño real porque incluyen lo que ejecutan las CCAA. Pulsa un edificio para recortar o ampliar.",
   },
   {
     who: "asesora",

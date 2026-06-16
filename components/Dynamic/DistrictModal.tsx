@@ -24,6 +24,11 @@ export function DistrictModal() {
   const changed = Math.abs(delta) > 0.05;
   const pctOfSpending = (total / meta.totalSpendingOfficial) * 100;
 
+  // "De lo cual ejecutan las CCAA / la Seguridad Social…" — the chunk of this
+  // function that is NOT run by the central State (base reference).
+  const delegated = building?.delegated;
+  const delegatedPct = delegated && baseTotal > 0 ? (delegated.amount / baseTotal) * 100 : 0;
+
   return (
     <Modal
       title={building?.label ?? selected}
@@ -55,6 +60,16 @@ export function DistrictModal() {
             )}
           </div>
         </div>
+
+        {delegated && (
+          <div className="panel-inset px-2 py-1.5 text-[10px] text-ink-soft leading-snug">
+            De este gasto, ≈{" "}
+            <b className="tnum font-data text-ink">{formatM(delegated.amount)}</b>{" "}
+            ({formatPctValue(delegatedPct, 0)}) lo ejecuta{" "}
+            <b className="text-ink">{delegated.who}</b>, no la Administración central.
+            Aquí lo ves al tamaño real porque estamos en el perímetro de todas las AAPP.
+          </div>
+        )}
 
         <div className="space-y-1.5">
           {policies.map((p) => (

@@ -23,8 +23,8 @@ export function RevenuePanel() {
 
   return (
     <CollapsiblePanel
-      title={`Ingresos · perímetro PGE ${irpfData.baseYear}`}
-      subtitle="Detalle de los ingresos del Estado por tipo (impuestos, cotizaciones y otros)."
+      title={`Ingresos · Administraciones Públicas ${irpfData.baseYear}`}
+      subtitle="Detalle de los ingresos públicos por tipo (impuestos, cotizaciones y otros), todas las administraciones."
     >
       <table className="w-full text-[11px] tnum">
         <tbody>

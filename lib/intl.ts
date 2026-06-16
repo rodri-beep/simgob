@@ -76,64 +76,35 @@ export interface ModelResult {
 
 // ---- Country templates: apply a country's profile to the editable levers ----
 
-/** Our 6 board-level functions (the COFOG divisions fold into these). */
-export type BoardFunc = "social" | "salud" | "educacion" | "defensa" | "economicos" | "general";
-
-/** Which board function each building belongs to. */
-export const BUILDING_FUNCTION: Record<string, BoardFunc> = {
-  pensiones: "social",
-  desempleo: "social",
-  sanidad: "salud",
-  educacion: "educacion",
-  defensa: "defensa",
-  infraestructuras: "economicos",
-  transicion: "economicos",
-  otros: "economicos",
-  hacienda: "general",
-  moncloa: "general",
-  deuda: "general",
-};
-
-/** Fold the 10 COFOG shares of a country into our 6 board functions (sum ≈ 1). */
-export function foldCountry(country: CountryModel): Record<BoardFunc, number> {
-  const s = country.cofogShares;
-  return {
-    social: s.social,
-    salud: s.salud,
-    educacion: s.educacion + s.cultura,
-    defensa: s.defensa + s.orden,
-    economicos: s.economicos + s.medioambiente + s.vivienda,
-    general: s.general,
-  };
-}
-
 export interface PolicyLite {
   id: string;
   amount: number;
+  /** Board function this policy belongs to (a COFOG id). */
   building: string;
 }
 
 /**
  * Spending overrides that redistribute the SAME total spending by the country's
- * folded COFOG structure (target per function = share × total, split across
- * that function's policies proportionally to their base). Total is preserved.
+ * COFOG structure (target per function = share × total, split across that
+ * function's policies proportionally to their base). Total is preserved.
+ *
+ * Because the board's buildings ARE the COFOG functions now, the country's
+ * shares map onto them directly — no folding needed.
  */
 export function countrySpendingOverrides(
   country: CountryModel,
   policies: PolicyLite[],
 ): Record<string, number> {
-  const fold = foldCountry(country);
+  const shares = country.cofogShares;
   const total = policies.reduce((a, p) => a + p.amount, 0);
   const baseByFunc: Record<string, number> = {};
   for (const p of policies) {
-    const f = BUILDING_FUNCTION[p.building] ?? "general";
-    baseByFunc[f] = (baseByFunc[f] ?? 0) + p.amount;
+    baseByFunc[p.building] = (baseByFunc[p.building] ?? 0) + p.amount;
   }
   const out: Record<string, number> = {};
   for (const p of policies) {
-    const f = BUILDING_FUNCTION[p.building] ?? "general";
-    const targetF = (fold[f] ?? 0) * total;
-    out[p.id] = baseByFunc[f] > 0 ? targetF * (p.amount / baseByFunc[f]) : 0;
+    const targetF = (shares[p.building as CofogId] ?? 0) * total;
+    out[p.id] = baseByFunc[p.building] > 0 ? targetF * (p.amount / baseByFunc[p.building]) : 0;
   }
   return out;
 }

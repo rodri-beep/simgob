@@ -61,7 +61,7 @@ export function CountryTemplatePanel() {
       </div>
       <p className="text-[8px] text-ink-soft/80 leading-snug mt-2">
         Estimación ilustrativa. Estructura de gasto por función (COFOG, Eurostat) e ingresos por su
-        presión fiscal (OCDE), nivel Administraciones Públicas. Es un perímetro distinto al PGE.
+        presión fiscal (OCDE), en el mismo perímetro que usa el simulador: Administraciones Públicas.
       </p>
     </Panel>
   );

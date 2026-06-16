@@ -69,8 +69,8 @@ export function IrpfControls() {
 
       <div className="px-2 pt-2 text-[9px] text-ink-soft leading-snug">
         Base: {formatCount(irpfData.brackets.reduce((a, b) => a + b.declarantes, 0))}{" "}
-        declaraciones (IRPF 2023). El IRPF se reparte ~50 % Estado / 50 % CCAA:
-        en el saldo del Estado se refleja la mitad del cambio.
+        declaraciones (IRPF 2023). En el perímetro de las Administraciones Públicas el
+        IRPF cuenta íntegro (Estado + CCAA): el cambio se traslada por completo al saldo.
       </div>
     </div>
   );

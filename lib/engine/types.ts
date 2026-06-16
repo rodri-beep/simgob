@@ -111,18 +111,22 @@ export interface SpendingPolicy {
   description?: string;
 }
 
+/**
+ * Board buildings are the 10 COFOG functions of general government (AAPP).
+ * They match the `CofogId` set in lib/intl.ts (same string values), so country
+ * templates map onto them directly.
+ */
 export type BuildingId =
-  | "moncloa"
-  | "hacienda"
-  | "pensiones"
-  | "sanidad"
+  | "social"
+  | "salud"
   | "educacion"
+  | "general"
+  | "economicos"
+  | "orden"
   | "defensa"
-  | "infraestructuras"
-  | "desempleo"
-  | "transicion"
-  | "deuda"
-  | "otros";
+  | "cultura"
+  | "medioambiente"
+  | "vivienda";
 
 export interface BoardBuilding {
   id: BuildingId;
@@ -131,6 +135,12 @@ export interface BoardBuilding {
   short: string;
   /** Short blurb shown when entering the district. */
   blurb: string;
+  /**
+   * Dominant administration that EXECUTES this function's spending when it is
+   * NOT the central State (e.g. CCAA for health/education, Social Security for
+   * pensions). `null` = mostly central. Amount in M€ (base reference).
+   */
+  delegated?: { who: string; amount: number } | null;
 }
 
 export interface DatasetMeta {

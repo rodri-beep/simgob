@@ -15,16 +15,17 @@ export function Footer() {
           sin respuesta de comportamiento. Año base {meta.baseYear}.
         </p>
         <p>
-          Datos de fuentes públicas (AEAT, Hacienda, INE) y de{" "}
+          Perímetro: conjunto de las Administraciones Públicas (Estado, CCAA, entidades
+          locales y Seguridad Social). Datos de fuentes públicas:{" "}
           <a
             className="underline"
-            href="https://github.com/civio/presupuesto"
+            href="https://ec.europa.eu/eurostat/databrowser/view/gov_10a_exp/default/table?lang=en"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Civio · ¿Dónde van mis impuestos?
+            Eurostat
           </a>
-          . Detalle y limitaciones en la{" "}
+          , AEAT, INE y Seguridad Social. Detalle y limitaciones en la{" "}
           <Link href="/metodologia" className="underline">
             metodología
           </Link>

@@ -30,11 +30,12 @@ export default function Metodologia() {
       <Panel title="Qué es (y qué no es)">
         <div className="space-y-2">
           <P>
-            <b>SimGob</b> es un simulador <b>divulgativo y no oficial</b> de los
-            Presupuestos Generales del Estado (PGE) y de dos impuestos. Permite mover los
-            tipos del <b>IRPF</b> y del <b>Impuesto sobre Sociedades (IS)</b> y ajustar las
-            <b> partidas de gasto</b>, y ver el efecto sobre la recaudación, el saldo y quién
-            gana o pierde por tramo de renta. No tiene relación con la AEAT ni con el Gobierno.
+            <b>SimGob</b> es un simulador <b>divulgativo y no oficial</b> del gasto y los
+            ingresos del conjunto de las <b>Administraciones Públicas</b> y de dos impuestos.
+            Permite mover los tipos del <b>IRPF</b> y del <b>Impuesto sobre Sociedades (IS)</b>
+            y ajustar las <b>funciones de gasto</b>, y ver el efecto sobre la recaudación, el
+            saldo y quién gana o pierde por tramo de renta. No tiene relación con la AEAT ni con
+            el Gobierno.
           </P>
           <P>
             No es un microsimulador oficial: no usa microdatos individuales (EUROMOD / IEF-AEAT)
@@ -47,12 +48,21 @@ export default function Metodologia() {
 
       <Panel title="Perímetro (qué entra y qué no)">
         <P>{meta.perimeter}</P>
-        <div className="mt-2">
+        <div className="mt-2 space-y-2">
           <P>
-            Consecuencia a tener en cuenta: <b>Sanidad</b> y <b>Educación</b> aparecen
-            &ldquo;pequeñas&rdquo; porque aquí solo se ve la parte estatal; el grueso lo
-            ejecutan las Comunidades Autónomas (fuera del perímetro). <b>Pensiones</b> sale
-            grande porque la Seguridad Social sí está dentro.
+            A diferencia de mirar solo los Presupuestos Generales del Estado, aquí
+            <b> Sanidad</b> (≈ 98.600 M€) y <b>Educación</b> (≈ 62.500 M€) aparecen a su
+            tamaño real, porque incluimos lo que ejecutan las Comunidades Autónomas (más del
+            90 % en ambos casos). En cada función verás una línea de &ldquo;de lo cual lo
+            ejecutan las CCAA / la Seguridad Social&rdquo;, para que se entienda quién gestiona
+            cada euro aunque cuente en el total.
+          </P>
+          <P>
+            El gasto se clasifica por <b>función (COFOG, Eurostat)</b> en 10 grandes áreas. La
+            suma de funciones según Eurostat es 680.225 M€; el total de gasto de las AAPP
+            (680.952 M€) lleva un pequeño ajuste de conciliación (≈ 0,7 mil M€, dentro de la
+            diferencia habitual entre las dos series de Eurostat) imputado a Servicios
+            generales, para que el saldo cuadre con el déficit oficial.
           </P>
         </div>
       </Panel>
@@ -72,8 +82,9 @@ export default function Metodologia() {
             la recaudación oficial ({"k = recaudación / cuota modelada"}) y aplicamos la
             misma calibración al escenario. Comparamos base y escenario para obtener la
             Δrecaudación y los ganadores/perdedores por tramo. La base general y la del
-            ahorro se tratan por separado. El IRPF se reparte ~50 % Estado / 50 % CCAA: en
-            el saldo del Estado se refleja la mitad del cambio nacional.
+            ahorro se tratan por separado. Como el perímetro son las Administraciones
+            Públicas (Estado + CCAA), el IRPF cuenta íntegro: el cambio nacional se traslada
+            por completo al saldo.
           </P>
           <P>
             <b>IS.</b> Anclamos a la recaudación real del Informe Anual (35.060 M€), no a la
@@ -89,10 +100,10 @@ export default function Metodologia() {
       <Panel title="Año base y actualización">
         <P>
           Todo el escenario base está anclado al ejercicio fiscal <b>{meta.baseYear}</b>,
-          coherente entre gasto (PGE), IRPF (estadística de declarantes), IS (cuentas
-          anuales) y recaudación real (Informe Anual). El año está parametrizado para
-          facilitar futuras actualizaciones cuando se publiquen nuevos presupuestos o
-          estadísticas.
+          coherente entre gasto (Eurostat COFOG), ingresos (Eurostat), IRPF (estadística de
+          declarantes), IS (cuentas anuales) y recaudación real (Informe Anual). El año está
+          parametrizado para facilitar futuras actualizaciones cuando se publiquen nuevos
+          datos.
         </P>
       </Panel>
 
@@ -129,8 +140,9 @@ export default function Metodologia() {
           <li>Datos agrupados por tramo (no individuales): mayor error en el tramo superior (cola larga).</li>
           <li>Sin respuesta de comportamiento (elasticidades, deslocalización, economía sumergida).</li>
           <li>El IS no consolidado no refleja la cuota real de los grupos; se ancla a la recaudación.</li>
-          <li>Ingresos (recaudación / presupuesto) y gastos (presupuesto inicial) usan criterios distintos: el saldo es una aproximación. El déficit real de las AAPP en 2023 fue de {new Intl.NumberFormat("es-ES").format(meta.officialDeficitAapp)} M€ (≈ {meta.officialDeficitAappPct} % del PIB).</li>
-          <li>Son editables el IRPF, el IS y las partidas de gasto; el resto de ingresos es de solo lectura. El gasto solo afecta al saldo (sin efectos de segundo orden: recortar una partida no cambia la recaudación).</li>
+          <li>El saldo base reproduce el déficit oficial de las AAPP en 2023: {new Intl.NumberFormat("es-ES").format(meta.officialDeficitAapp)} M€ (≈ {meta.officialDeficitAappPct} % del PIB). Ingresos y gastos proceden de series de Eurostat con criterios homogéneos (contabilidad nacional).</li>
+          <li>Dentro de Protección social, separamos Pensiones y Desempleo (con datos de la Seguridad Social y el SEPE) y agrupamos el resto en &ldquo;otras prestaciones y servicios sociales&rdquo;.</li>
+          <li>Son editables el IRPF, el IS y las funciones de gasto; el resto de ingresos es de solo lectura. El gasto solo afecta al saldo (sin efectos de segundo orden: recortar una partida no cambia la recaudación).</li>
         </ul>
       </Panel>
 
@@ -161,8 +173,10 @@ export default function Metodologia() {
             <i> Silkscreen</i> bajo licencia SIL Open Font License.
           </P>
           <P>
-            Estructura de datos de gasto e ingresos basada en el proyecto de código abierto
-            de <b>Civio</b> (¿Dónde van mis impuestos? / civio/presupuesto), con atribución.
+            Datos de gasto e ingresos de <b>Eurostat</b> (cuentas de las Administraciones
+            Públicas y clasificación funcional COFOG), con anclas de recaudación, distribución
+            por tramos y magnitudes humanas de la <b>AEAT</b>, el <b>INE</b> y la
+            <b> Seguridad Social</b>.
           </P>
         </div>
       </Panel>

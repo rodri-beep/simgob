@@ -79,7 +79,7 @@ export function IrpfSimple() {
           >
             {formatMDecimal(stateEffect, { sign: true })}
           </div>
-          <div className="text-[8px] text-ink-soft">≈ 50 % al Estado</div>
+          <div className="text-[8px] text-ink-soft">íntegro (AAPP)</div>
         </div>
       </div>
 

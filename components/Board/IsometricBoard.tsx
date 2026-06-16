@@ -19,17 +19,16 @@ interface Plot {
 
 // Hand-placed city blocks (footprint in tile units). Layout, not simulation.
 const POSITIONS: Omit<Plot, "color">[] = [
-  { id: "moncloa", x: 0.3, y: 0.3, w: 1.5, d: 1.5 },
-  { id: "hacienda", x: 2.5, y: 0.3, w: 1.5, d: 1.5 },
-  { id: "pensiones", x: 4.7, y: 0.3, w: 1.5, d: 1.5 },
-  { id: "sanidad", x: 0.3, y: 2.5, w: 1.5, d: 1.5 },
-  { id: "educacion", x: 2.5, y: 2.5, w: 1.5, d: 1.5 },
-  { id: "infraestructuras", x: 4.7, y: 2.5, w: 1.5, d: 1.5 },
-  { id: "transicion", x: 0.3, y: 4.7, w: 1.5, d: 1.5 },
-  { id: "desempleo", x: 2.5, y: 4.7, w: 1.5, d: 1.5 },
-  { id: "defensa", x: 4.7, y: 4.7, w: 1.5, d: 1.5 },
-  { id: "deuda", x: 1.4, y: 6.9, w: 1.5, d: 1.5 },
-  { id: "otros", x: 3.6, y: 6.9, w: 1.5, d: 1.5 },
+  { id: "social", x: 0.3, y: 0.3, w: 1.5, d: 1.5 },
+  { id: "salud", x: 2.5, y: 0.3, w: 1.5, d: 1.5 },
+  { id: "educacion", x: 4.7, y: 0.3, w: 1.5, d: 1.5 },
+  { id: "general", x: 0.3, y: 2.5, w: 1.5, d: 1.5 },
+  { id: "economicos", x: 2.5, y: 2.5, w: 1.5, d: 1.5 },
+  { id: "orden", x: 4.7, y: 2.5, w: 1.5, d: 1.5 },
+  { id: "defensa", x: 0.3, y: 4.7, w: 1.5, d: 1.5 },
+  { id: "cultura", x: 2.5, y: 4.7, w: 1.5, d: 1.5 },
+  { id: "medioambiente", x: 4.7, y: 4.7, w: 1.5, d: 1.5 },
+  { id: "vivienda", x: 2.5, y: 6.9, w: 1.5, d: 1.5 },
 ];
 
 const PLOTS: Plot[] = POSITIONS.map((p) => ({ ...p, color: BUILDING_COLORS[p.id] }));
