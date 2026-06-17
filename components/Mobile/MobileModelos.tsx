@@ -306,7 +306,7 @@ function StructureColumn({
         {title}
       </div>
       <div
-        className="flex-none h-[40vh] min-h-[300px] flex flex-col gap-px"
+        className="flex-none h-[40vh] min-h-[300px] flex flex-col justify-end gap-px"
         style={{
           border: `1px solid ${outlined ? "rgba(138,127,93,.55)" : "rgba(138,127,93,.35)"}`,
           boxShadow: outlined ? "0 0 0 1px rgba(224,154,45,.5)" : undefined,
