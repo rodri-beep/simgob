@@ -55,6 +55,10 @@ export function MobileModelos() {
     });
   };
 
+  // Chart scale: % (each column re-normalises to 100% of what's shown) or
+  // absolute M€ on a shared scale (so one category's real size is comparable).
+  const [mode, setMode] = useState<"pct" | "abs">("pct");
+
   const loadSpain = () => {
     track("country_template_reset");
     reset();
@@ -81,6 +85,14 @@ export function MobileModelos() {
   );
 
   const amountById = Object.fromEntries(areas.map((a) => [a.id, a.amount]));
+
+  // Denominators: per-column visible total in % mode; the shared max in € mode
+  // (so the taller column = more, and a single category is directly comparable).
+  const esTotal = visibleIds.reduce((a, id) => a + baseAmountOf(id), 0);
+  const coTotal = visibleIds.reduce((a, id) => a + (amountById[id] ?? 0), 0);
+  const sharedMax = Math.max(esTotal, coTotal, 1);
+  const esDenom = mode === "pct" ? esTotal : sharedMax;
+  const coDenom = mode === "pct" ? coTotal : sharedMax;
 
   return (
     <div className="p-3.5">
@@ -118,8 +130,26 @@ export function MobileModelos() {
 
       {/* España real vs scenario — 100% structure, side by side. */}
       <div className="mt-3.5 bg-panel bevel-out border border-bevel-dark/40">
-        <div className="bg-teal-dark text-parchment font-chrome uppercase text-[10px] tracking-wide px-2.5 py-1.5">
-          Cómo se reparte el gasto · 100 %
+        <div className="bg-teal-dark text-parchment font-chrome uppercase text-[10px] tracking-wide px-2.5 py-1.5 flex items-center justify-between gap-2">
+          <span>Cómo se reparte el gasto</span>
+          <span className="flex gap-0.5">
+            {(["pct", "abs"] as const).map((m) => (
+              <button
+                key={m}
+                type="button"
+                onClick={() => {
+                  setMode(m);
+                  track("compare_chart_mode", { mode: m });
+                }}
+                aria-pressed={mode === m}
+                className={`font-chrome text-[10px] px-2 py-0.5 border border-teal cursor-pointer ${
+                  mode === m ? "bg-amber text-ink" : "bg-teal text-parchment"
+                }`}
+              >
+                {m === "pct" ? "%" : "M€"}
+              </button>
+            ))}
+          </span>
         </div>
         <div className="p-3">
           <div className="flex gap-3 items-stretch">
@@ -132,6 +162,8 @@ export function MobileModelos() {
               titleColor="#4a4636"
               amountOf={baseAmountOf}
               ids={visibleIds}
+              denom={esDenom}
+              mode={mode}
               outlined={false}
             />
             <StructureColumn
@@ -139,6 +171,8 @@ export function MobileModelos() {
               titleColor="#194c4c"
               amountOf={(id) => amountById[id] ?? 0}
               ids={visibleIds}
+              denom={coDenom}
+              mode={mode}
               outlined
             />
           </div>
@@ -169,9 +203,13 @@ export function MobileModelos() {
           </div>
           <div className="flex items-center justify-between gap-2 mt-2">
             <span className="text-[9.5px] text-ink-soft/80 leading-snug">
-              {hidden.size > 0
-                ? `Mostrando ${visibleIds.length} de ${ORDERED_BUILDINGS.length} · 100 % de lo visible`
-                : "Toca una categoría para enfocar la comparación"}
+              {mode === "abs"
+                ? `Importes en M€ · misma escala${
+                    hidden.size > 0 ? ` · ${visibleIds.length}/${ORDERED_BUILDINGS.length}` : ""
+                  }`
+                : hidden.size > 0
+                  ? `Mostrando ${visibleIds.length} de ${ORDERED_BUILDINGS.length} · 100 % de lo visible`
+                  : "Toca una categoría para enfocar la comparación"}
             </span>
             {hidden.size > 0 && (
               <button
@@ -246,16 +284,19 @@ function StructureColumn({
   titleColor,
   amountOf,
   ids,
+  denom,
+  mode,
   outlined,
 }: {
   title: ReactNode;
   titleColor: string;
   amountOf: (id: BuildingId) => number;
   ids: BuildingId[];
+  /** Divisor for each segment's height: the column's visible total (%) or the shared max (€). */
+  denom: number;
+  mode: "pct" | "abs";
   outlined: boolean;
 }) {
-  // Re-normalise to the visible total so the column always fills (100% of shown).
-  const total = ids.reduce((a, id) => a + amountOf(id), 0);
   return (
     <div className="flex-1 flex flex-col">
       <div
@@ -272,20 +313,21 @@ function StructureColumn({
         }}
       >
         {ids.map((id) => {
-          const share = total > 0 ? amountOf(id) / total : 0;
+          const amount = amountOf(id);
+          const h = denom > 0 ? amount / denom : 0; // fraction of the container height
           const color = BUILDING_COLORS[id];
           return (
             <div
               key={id}
               className="flex items-center justify-center overflow-hidden transition-[height] duration-300 ease-out"
-              style={{ height: `${(share * 100).toFixed(2)}%`, background: color }}
+              style={{ height: `${(h * 100).toFixed(2)}%`, background: color }}
             >
-              {share >= 0.07 && (
+              {h >= 0.07 && (
                 <span
-                  className="text-[8.5px] font-bold whitespace-nowrap"
+                  className="text-[8.5px] font-bold whitespace-nowrap px-1"
                   style={{ color: txtColor(color) }}
                 >
-                  {Math.round(share * 100)}%
+                  {mode === "pct" ? `${Math.round(h * 100)}%` : Math.round(amount).toLocaleString("es-ES")}
                 </span>
               )}
             </div>
