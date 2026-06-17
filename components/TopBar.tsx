@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useSim, isDirty } from "@/lib/store";
 import { meta } from "@/lib/data";
@@ -10,10 +11,16 @@ export function TopBar() {
   const setIntro = useSim((s) => s.setIntro);
   const setShare = useSim((s) => s.setShareOpen);
   const dirty = useSim(isDirty);
+  const [justReset, setJustReset] = useState(false);
 
   const share = () => {
     track("scenario_shared", { dirty, source: "desktop" });
     setShare(true);
+  };
+  const doReset = () => {
+    reset();
+    setJustReset(true);
+    window.setTimeout(() => setJustReset(false), 1100);
   };
 
   return (
@@ -43,12 +50,12 @@ export function TopBar() {
           </span>
           <button
             type="button"
-            onClick={reset}
-            data-active={dirty}
+            onClick={doReset}
+            data-active={dirty || justReset}
             className="btn-retro text-[9px] py-1"
             title="Volver al escenario oficial (deshacer todos los cambios)"
           >
-            ↺ Escenario real
+            {justReset ? "✓ Hecho" : "↺ Escenario real"}
           </button>
           <button
             type="button"

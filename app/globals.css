@@ -210,6 +210,29 @@ input[type="range"].slider-retro::-moz-range-thumb {
   }
 }
 
+/* Gentle amber "tap me" pulse for the primary first-run call to action.
+   Uses outline (not box-shadow) so it never clobbers a bevel. */
+@keyframes hint-pulse {
+  0%,
+  100% {
+    outline: 2px solid rgba(224, 154, 45, 0);
+    outline-offset: 2px;
+  }
+  50% {
+    outline: 2px solid rgba(224, 154, 45, 0.95);
+    outline-offset: 2px;
+  }
+}
+.anim-hint-pulse {
+  animation: hint-pulse 1.7s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-hint-pulse {
+    animation: none;
+  }
+}
+
 /* ---- Isometric board ---- */
 .iso-bld {
   cursor: pointer;
