@@ -1,22 +1,14 @@
 "use client";
 
 import { useSim } from "@/lib/store";
-import { aappBaseline, countryModels, spendingPolicies, irpfData } from "@/lib/data";
-import { countrySpendingOverrides, countryTaxLevers } from "@/lib/intl";
+import { countryModels } from "@/lib/data";
+import { loadCountryScenario } from "@/lib/firstMoves";
 import { Panel } from "@/components/ui/Panel";
 import { EstimateBadge } from "@/components/ui/EstimateBadge";
 import { track } from "@/lib/analytics";
 
-const SPAIN_REV_PCT = aappBaseline.totalRevenue / aappBaseline.gdp;
-const TOTAL_BASE = irpfData.brackets.reduce((a, b) => a + b.baseGeneral + b.baseSavings, 0);
-const BASE_AVG_IRPF = irpfData.officialRevenue / TOTAL_BASE;
-
 export function CountryTemplatePanel() {
   const active = useSim((s) => s.countryTemplate);
-  const setAllSpending = useSim((s) => s.setAllSpending);
-  const setIrpfUniformRate = useSim((s) => s.setIrpfUniformRate);
-  const setIsNominalRate = useSim((s) => s.setIsNominalRate);
-  const setCountryTemplate = useSim((s) => s.setCountryTemplate);
   const reset = useSim((s) => s.reset);
 
   const loadSpain = () => {
@@ -25,13 +17,7 @@ export function CountryTemplatePanel() {
   };
 
   const loadCountry = (id: string) => {
-    const country = countryModels.find((c) => c.id === id);
-    if (!country) return;
-    setAllSpending(countrySpendingOverrides(country, spendingPolicies));
-    const { irpfDelta, isNominal } = countryTaxLevers(country, SPAIN_REV_PCT, BASE_AVG_IRPF);
-    setIrpfUniformRate(irpfDelta);
-    setIsNominalRate(isNominal);
-    setCountryTemplate(id);
+    if (!loadCountryScenario(id)) return;
     track("country_template_loaded", { country: id });
   };
 

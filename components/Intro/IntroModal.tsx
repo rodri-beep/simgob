@@ -1,90 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSim } from "@/lib/store";
 import { Modal } from "@/components/ui/Modal";
 import { track } from "@/lib/analytics";
+import { FIRST_MOVES, runFirstMove, type FirstMove } from "@/lib/firstMoves";
 
+/** Shared with the phone walkthrough so we never double-onboard a user. */
 const SEEN_KEY = "simgob:intro:v1";
 
-type Cast = "asesora" | "asesor";
-
-interface Step {
-  who: Cast;
-  title: string;
-  text: string;
-}
-
-const CAST: Record<Cast, { src: string; name: string; role: string; bg: string; fg: string }> = {
-  asesora: { src: "/characters/asesora.webp", name: "Elena", role: "Asesora", bg: "#54633f", fg: "#f3ecd4" },
-  asesor: { src: "/characters/asesor.webp", name: "Diego", role: "Hacienda", bg: "#226b6b", fg: "#f3ecd4" },
-};
-
-const STEPS: Step[] = [
-  {
-    who: "asesora",
-    title: "Bienvenido/a a SimGob",
-    text: "Esta ciudad es el gasto de todas las Administraciones Públicas (Estado, CCAA, ayuntamientos y Seguridad Social), datos de 2023. Es un simulador divulgativo y no oficial: todas las cifras son estimaciones ilustrativas.",
-  },
-  {
-    who: "asesor",
-    title: "La ciudad es el gasto",
-    text: "Cada edificio es una función de gasto y su altura —por plantas— indica cuánto se gasta. Sanidad y Educación salen a tamaño real porque incluyen lo que ejecutan las CCAA. Pulsa un edificio para recortar o ampliar.",
-  },
-  {
-    who: "asesora",
-    title: "Tú decides los impuestos",
-    text: "Pulsa «Impuestos» en el menú para mover el IRPF y el Impuesto sobre Sociedades. Verás la recaudación y quién gana o pierde por tramo.",
-  },
-  {
-    who: "asesor",
-    title: "Vigila el saldo",
-    text: "Arriba están Ingresos, Gastos y el Saldo (déficit o superávit) y su % del PIB. Se recalcula al instante con cada cambio.",
-  },
-  {
-    who: "asesora",
-    title: "De números a personas",
-    text: "Cada cifra se traduce en historias: la pensión media, tu sueldo neto… Escribe tu salario en «¿y a ti?» y te lo cuento.",
-  },
-  {
-    who: "asesor",
-    title: "Comparte tu plan",
-    text: "¿Te convence tu presupuesto? Pulsa «Compartir» para copiar un enlace con tu escenario. ¡Toma el mando!",
-  },
-];
-
-function Portrait({ who }: { who: Cast }) {
-  const c = CAST[who];
-  const [err, setErr] = useState(false);
-  return (
-    <div className="shrink-0 w-24 h-24 sm:w-32 sm:h-32 bevel-out border border-bevel-dark/50 overflow-hidden bg-parchment-dark">
-      {err ? (
-        <div
-          className="w-full h-full grid place-items-center"
-          style={{ backgroundColor: c.bg, color: c.fg }}
-        >
-          <span className="font-pixel text-[20px]">{c.name[0]}</span>
-        </div>
-      ) : (
-        // eslint-disable-next-line @next/next/no-img-element -- small static avatar with onError fallback
-        <img
-          src={c.src}
-          alt={`${c.name}, ${c.role}`}
-          onError={() => setErr(true)}
-          className="w-full h-full object-cover"
-          style={{ imageRendering: "pixelated" }}
-        />
-      )}
-    </div>
-  );
-}
-
+/**
+ * Desktop first run — an action-first chooser. Picking a move applies the first
+ * scenario and, for tax moves, opens the Impuestos modal so the effect is right
+ * there. Auto-opens on first visit; reopened from "? Cómo funciona".
+ */
 export function IntroModal() {
   const open = useSim((s) => s.introOpen);
   const setIntro = useSim((s) => s.setIntro);
-  const [step, setStep] = useState(0);
 
-  // Auto-open on first visit.
   useEffect(() => {
     try {
       if (!localStorage.getItem(SEEN_KEY)) setIntro(true);
@@ -93,99 +26,73 @@ export function IntroModal() {
     }
   }, [setIntro]);
 
-  const close = (reason: "completed" | "skipped" = "skipped") => {
+  if (!open) return null;
+
+  const markSeen = () => {
     try {
       localStorage.setItem(SEEN_KEY, "1");
     } catch {
       /* ignore */
     }
-    track(reason === "completed" ? "intro_completed" : "intro_skipped", {
-      step: step + 1,
-      total: STEPS.length,
-    });
-    setIntro(false);
-    setStep(0);
   };
 
-  if (!open) return null;
-
-  const s = STEPS[step];
-  const c = CAST[s.who];
-  const isLast = step === STEPS.length - 1;
+  const pick = (m: FirstMove) => {
+    markSeen();
+    runFirstMove(m, "desktop");
+    setIntro(false);
+    if (m.desktopRevenue) {
+      const s = useSim.getState();
+      s.setActiveRevenue(m.desktopRevenue);
+      s.setImpuestosOpen(true);
+    }
+  };
+  const skip = () => {
+    markSeen();
+    track("intro_skipped", { surface: "desktop", mode: "first_move" });
+    setIntro(false);
+  };
 
   return (
-    <Modal
-      title="¿Cómo funciona?"
-      onClose={() => close("skipped")}
-      maxWidth="max-w-lg"
-      right={
-        <span className="font-chrome text-[9px] normal-case opacity-80">
-          {step + 1}/{STEPS.length}
-        </span>
-      }
-    >
-      <div className="flex gap-3 items-start">
-        <Portrait who={s.who} />
-        <div className="min-w-0 flex-1">
-          <div className="font-chrome uppercase text-[9px] text-ink-soft">
-            {c.name} · {c.role}
-          </div>
-          <h3 className="font-chrome uppercase text-[13px] text-ink mt-0.5 leading-snug">
-            {s.title}
-          </h3>
-          <p className="text-[12px] text-ink-soft leading-relaxed mt-2">{s.text}</p>
-        </div>
-      </div>
+    <Modal title="Empieza a gobernar" onClose={skip} maxWidth="max-w-lg">
+      <p className="text-[12px] text-ink-soft leading-relaxed">
+        SimGob es el presupuesto de las Administraciones Públicas (2023). Mueve las palancas —
+        impuestos y gasto— y mira al instante el efecto sobre el saldo.{" "}
+        <b className="text-ink">Elige tu primera jugada:</b>
+      </p>
 
-      {/* progress dots */}
-      <div className="flex justify-center gap-1.5 mt-3">
-        {STEPS.map((_, i) => (
+      <div className="mt-3 flex flex-col gap-2">
+        {FIRST_MOVES.map((m, i) => (
           <button
-            key={i}
+            key={m.id}
             type="button"
-            aria-label={`Paso ${i + 1}`}
-            onClick={() => setStep(i)}
-            className={`w-2.5 h-2.5 bevel-out-thin ${i === step ? "bg-amber" : "bg-parchment-dark"}`}
-          />
+            onClick={() => pick(m)}
+            className={`w-full text-left bg-panel bevel-out border border-bevel-dark/50 px-3 py-2.5 cursor-pointer flex items-center gap-3 ${
+              i === 0 ? "anim-hint-pulse" : ""
+            }`}
+          >
+            <span aria-hidden className="text-[24px] leading-none shrink-0">
+              {m.emoji}
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block font-chrome uppercase text-[11px] text-ink leading-tight">
+                {m.label}
+              </span>
+              <span className="block text-[11px] text-ink-soft leading-snug mt-0.5">{m.sub}</span>
+            </span>
+            <span aria-hidden className="font-chrome text-[14px] text-amber shrink-0">
+              ▸
+            </span>
+          </button>
         ))}
       </div>
 
-      {/* nav */}
-      <div className="flex items-center justify-between mt-3 gap-2">
-        <button
-          type="button"
-          onClick={() => close("skipped")}
-          className="btn-retro text-[10px]"
-        >
-          Saltar
+      <div className="flex items-center justify-between mt-3">
+        <button type="button" onClick={skip} className="btn-retro text-[10px]">
+          Explorar por mi cuenta
         </button>
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => setStep((v) => Math.max(0, v - 1))}
-            disabled={step === 0}
-            className="btn-retro text-[10px] disabled:opacity-40"
-          >
-            ◂ Anterior
-          </button>
-          {isLast ? (
-            <button
-              type="button"
-              onClick={() => close("completed")}
-              className="btn-retro text-[10px] bg-amber/30"
-            >
-              ¡Empezar! ▸
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setStep((v) => Math.min(STEPS.length - 1, v + 1))}
-              className="btn-retro text-[10px]"
-            >
-              Siguiente ▸
-            </button>
-          )}
-        </div>
+        <span className="font-chrome uppercase text-[8px] text-ink-soft/70">
+          No oficial · estimación ilustrativa
+        </span>
       </div>
     </Modal>
   );

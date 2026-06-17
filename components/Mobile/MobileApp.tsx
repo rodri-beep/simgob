@@ -31,6 +31,7 @@ const TABS: { id: MobileTab; label: string }[] = [
 export function MobileApp() {
   const [tab, setTab] = useState<MobileTab>("resumen");
   const [sheet, setSheet] = useState<SheetState>(null);
+  const [justReset, setJustReset] = useState(false);
 
   const { totals } = useSimResults();
   const dirty = useSim(isDirty);
@@ -57,6 +58,11 @@ export function MobileApp() {
   const share = (source: "appbar" | "resumen") => {
     track("scenario_shared", { dirty, source });
     setShareOpen(true);
+  };
+  const doReset = () => {
+    reset();
+    setJustReset(true);
+    window.setTimeout(() => setJustReset(false), 1100);
   };
 
   return (
@@ -128,11 +134,14 @@ export function MobileApp() {
           </div>
           <button
             type="button"
-            onClick={reset}
+            onClick={doReset}
             title="Volver al escenario real"
-            className="flex-none font-chrome text-[12px] w-8 h-8 bg-teal text-parchment border border-teal-dark cursor-pointer bevel-out-thin"
+            aria-label="Volver al escenario real"
+            className={`flex-none font-chrome text-[12px] w-8 h-8 border cursor-pointer bevel-out-thin transition-colors ${
+              justReset ? "bg-amber text-ink border-bevel-dark" : "bg-teal text-parchment border-teal-dark"
+            }`}
           >
-            ↺
+            {justReset ? "✓" : "↺"}
           </button>
         </div>
         <div className="flex-none h-[3px] bg-teal w-full" />
@@ -175,8 +184,14 @@ export function MobileApp() {
         {/* Adjustment sheet over the app. */}
         {sheet && <MobileSheet sheet={sheet} onClose={() => setSheet(null)} />}
 
-        {/* Phone-native onboarding (auto on first visit; "?" to reopen). */}
-        <MobileIntro />
+        {/* Phone-native onboarding (auto on first visit; "?" to reopen). Picking a
+            first move lands the user on the relevant tab with the scenario applied. */}
+        <MobileIntro
+          onPick={(t) => {
+            if (t) setTab(t);
+            setIntro(false);
+          }}
+        />
       </div>
     </div>
   );
