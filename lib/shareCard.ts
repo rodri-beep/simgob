@@ -186,12 +186,13 @@ export async function renderShareCard(
   const iconSize = square ? 168 : 88;
   const emojiSize = square ? 150 : 76;
 
-  /** Draw the pixel sprite (crisp, nearest-neighbour) centred at (px,py); returns its width. */
+  /** Draw the profile sprite (smooth downscale) centred at (px,py); returns its width. */
   const drawSprite = (img: HTMLImageElement, px: number, py: number, h: number) => {
     const ar = img.width && img.height ? img.width / img.height : 1;
     const w = h * ar;
     const prev = ctx.imageSmoothingEnabled;
-    ctx.imageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
     ctx.drawImage(img, px - w / 2, py - h / 2, w, h);
     ctx.imageSmoothingEnabled = prev;
     return w;

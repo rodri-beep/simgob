@@ -5,7 +5,8 @@ import { useState } from "react";
 /**
  * Profile icon: a pixel-art sprite from `public/profiles/<id>.png`, falling back
  * to the emoji glyph when the asset is missing. `size` is the rendered height in
- * px (width scales to keep the sprite's aspect ratio); pixels stay crisp.
+ * px (width scales to keep the sprite's aspect ratio); the high-res sprites are
+ * downscaled smoothly.
  */
 export function ProfileIcon({
   id,
@@ -36,7 +37,7 @@ export function ProfileIcon({
       aria-hidden
       onError={() => setFailed(true)}
       className={className}
-      style={{ height: size, width: "auto", imageRendering: "pixelated", display: "block" }}
+      style={{ height: size, width: "auto", display: "block" }}
     />
   );
 }
