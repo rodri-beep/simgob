@@ -78,6 +78,11 @@ export function baseShareOf(id: string, baseSpending: number): number {
   return baseSpending > 0 ? (baseByBuilding[id] ?? 0) / baseSpending : 0;
 }
 
+/** España's real base spend for a function (M€). */
+export function baseAmountOf(id: string): number {
+  return baseByBuilding[id] ?? 0;
+}
+
 /** Per-building aggregation under the current scenario, ordered by base spend. */
 export function useAreas(): { areas: AreaVM[]; totalSpending: number } {
   const overrides = useSim((s) => s.spendingOverrides);
