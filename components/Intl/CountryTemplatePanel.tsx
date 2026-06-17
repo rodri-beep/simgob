@@ -11,6 +11,8 @@ import { track } from "@/lib/analytics";
 export function CountryTemplatePanel() {
   const active = useSim((s) => s.countryTemplate);
   const reset = useSim((s) => s.reset);
+  const setCompareCountry = useSim((s) => s.setCompareCountry);
+  const activeCountry = countryModels.find((c) => c.id === active);
 
   const loadSpain = () => {
     track("country_template_reset");
@@ -50,6 +52,19 @@ export function CountryTemplatePanel() {
           </button>
         ))}
       </div>
+      {activeCountry && (
+        <button
+          type="button"
+          onClick={() => {
+            track("compare_opened", { country: activeCountry.id, surface: "desktop" });
+            setCompareCountry(activeCountry.id);
+          }}
+          className="btn-retro text-[10px] py-1 mt-2 w-full justify-center flex bg-amber/30"
+          title={`Imagen comparativa España vs ${activeCountry.label}`}
+        >
+          ↗ Comparar España vs {activeCountry.label}
+        </button>
+      )}
       <p className="text-[8px] text-ink-soft/80 leading-snug mt-2">
         Estimación ilustrativa. Estructura de gasto por función (COFOG, Eurostat) e ingresos por su
         presión fiscal (OCDE), en el mismo perímetro que usa el simulador: Administraciones Públicas.

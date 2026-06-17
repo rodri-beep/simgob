@@ -25,6 +25,8 @@ interface SimState {
   impuestosOpen: boolean;
   /** Whether the "Compartir" (share card) modal is open. */
   shareOpen: boolean;
+  /** Country id being compared against Spain (opens the compare modal), or null. */
+  compareCountry: string | null;
   /** Last loaded country template id (for highlighting), or null. */
   countryTemplate: string | null;
 
@@ -49,6 +51,7 @@ interface SimState {
   setIntro: (open: boolean) => void;
   setImpuestosOpen: (open: boolean) => void;
   setShareOpen: (open: boolean) => void;
+  setCompareCountry: (id: string | null) => void;
 }
 
 const baseIrpfScale = irpfData.scale;
@@ -67,6 +70,7 @@ export const useSim = create<SimState>((set) => ({
   introOpen: false,
   impuestosOpen: false,
   shareOpen: false,
+  compareCountry: null,
   countryTemplate: null,
 
   setIrpfGeneralRate: (index, rate) =>
@@ -138,6 +142,7 @@ export const useSim = create<SimState>((set) => ({
   setIntro: (open) => set({ introOpen: open }),
   setImpuestosOpen: (open) => set({ impuestosOpen: open }),
   setShareOpen: (open) => set({ shareOpen: open }),
+  setCompareCountry: (id) => set({ compareCountry: id }),
 }));
 
 /** Average uniform shift (pp, as a fraction) of the general scale vs base. */

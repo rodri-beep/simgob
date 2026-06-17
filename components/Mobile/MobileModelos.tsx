@@ -33,6 +33,7 @@ export function MobileModelos() {
   const setIrpfUniformRate = useSim((s) => s.setIrpfUniformRate);
   const setIsNominalRate = useSim((s) => s.setIsNominalRate);
   const setCountryTemplate = useSim((s) => s.setCountryTemplate);
+  const setCompareCountry = useSim((s) => s.setCompareCountry);
   const reset = useSim((s) => s.reset);
 
   const { totals } = useSimResults();
@@ -86,6 +87,19 @@ export function MobileModelos() {
           />
         ))}
       </div>
+
+      {activeCountry && (
+        <button
+          type="button"
+          onClick={() => {
+            track("compare_opened", { country: activeCountry.id, surface: "mobile" });
+            setCompareCountry(activeCountry.id);
+          }}
+          className="btn-retro text-[11px] py-2.5 mt-2.5 w-full justify-center flex items-center gap-2 bg-amber/30"
+        >
+          ↗ Comparar España vs {activeCountry.label}
+        </button>
+      )}
 
       {/* España real vs scenario — 100% structure, side by side. */}
       <div className="mt-3.5 bg-panel bevel-out border border-bevel-dark/40">

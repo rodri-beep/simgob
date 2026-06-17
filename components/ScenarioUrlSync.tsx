@@ -3,16 +3,22 @@
 import { useEffect } from "react";
 import { useSim } from "@/lib/store";
 import { encodeScenario, decodeScenario } from "@/lib/share";
+import { loadCountryScenario } from "@/lib/firstMoves";
 
 /** Keeps the scenario in sync with the URL (`?e=`), with no backend. */
 export function ScenarioUrlSync() {
-  // On mount: hydrate from the URL.
+  // On mount: hydrate from the URL. `?e=` (a full scenario) wins; otherwise a
+  // `?modelo=` deep link (from the "España vs país" share) loads that country.
   useEffect(() => {
-    const token = new URLSearchParams(window.location.search).get("e");
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("e");
     if (token) {
       const sc = decodeScenario(token);
       if (sc) useSim.getState().applyScenario(sc);
+      return;
     }
+    const modelo = params.get("modelo");
+    if (modelo) loadCountryScenario(modelo);
   }, []);
 
   // On change: write a debounced token to the URL (replaceState, no history spam).
