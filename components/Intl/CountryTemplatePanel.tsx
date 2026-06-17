@@ -5,6 +5,7 @@ import { countryModels } from "@/lib/data";
 import { loadCountryScenario } from "@/lib/firstMoves";
 import { Panel } from "@/components/ui/Panel";
 import { EstimateBadge } from "@/components/ui/EstimateBadge";
+import { Flag } from "@/components/ui/Flag";
 import { track } from "@/lib/analytics";
 
 export function CountryTemplatePanel() {
@@ -32,9 +33,9 @@ export function CountryTemplatePanel() {
           type="button"
           onClick={loadSpain}
           data-active={active === null}
-          className="btn-retro text-[10px] py-1"
+          className="btn-retro text-[10px] py-1 inline-flex items-center gap-1.5"
         >
-          🇪🇸 España
+          <Flag country="es" size={11} /> España
         </button>
         {countryModels.map((c) => (
           <button
@@ -42,11 +43,10 @@ export function CountryTemplatePanel() {
             type="button"
             onClick={() => loadCountry(c.id)}
             data-active={active === c.id}
-            className="btn-retro text-[10px] py-1"
+            className="btn-retro text-[10px] py-1 inline-flex items-center gap-1.5"
             title={`Repartir el gasto e impuestos como ${c.label}`}
           >
-            {c.flag ? `${c.flag} ` : ""}
-            {c.label}
+            <Flag country={c.id} size={11} /> {c.label}
           </button>
         ))}
       </div>
