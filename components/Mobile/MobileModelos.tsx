@@ -15,7 +15,9 @@ import { countrySpendingOverrides, countryTaxLevers } from "@/lib/intl";
 import { BUILDING_COLORS } from "@/lib/buildingColors";
 import { formatPct } from "@/lib/engine/format";
 import { track } from "@/lib/analytics";
+import { Flag } from "@/components/ui/Flag";
 import { useAreas, baseShareOf, ORDERED_BUILDINGS, txtColor } from "./model";
+import type { ReactNode } from "react";
 
 const SPAIN_REV_PCT = aappBaseline.totalRevenue / aappBaseline.gdp;
 const TOTAL_BASE = irpfData.brackets.reduce((a, b) => a + b.baseGeneral + b.baseSavings, 0);
@@ -31,6 +33,7 @@ export function MobileModelos() {
   const setIrpfUniformRate = useSim((s) => s.setIrpfUniformRate);
   const setIsNominalRate = useSim((s) => s.setIsNominalRate);
   const setCountryTemplate = useSim((s) => s.setCountryTemplate);
+  const setCompareCountry = useSim((s) => s.setCompareCountry);
   const reset = useSim((s) => s.reset);
 
   const { totals } = useSimResults();
@@ -54,9 +57,13 @@ export function MobileModelos() {
 
   const spainActive = active === null && !dirty;
   const activeCountry = countryModels.find((c) => c.id === active);
-  const cmpLabel = activeCountry
-    ? `${activeCountry.flag ?? ""} ${activeCountry.label}`.trim()
-    : "Tu escenario";
+  const cmpTitle: ReactNode = activeCountry ? (
+    <span className="inline-flex items-center gap-1">
+      <Flag country={activeCountry.id} size={10} /> {activeCountry.label}
+    </span>
+  ) : (
+    "Tu escenario"
+  );
 
   const amountById = Object.fromEntries(areas.map((a) => [a.id, a.amount]));
 
@@ -69,16 +76,30 @@ export function MobileModelos() {
 
       {/* Country chips. */}
       <div className="grid grid-cols-2 gap-2">
-        <Chip label="🇪🇸 España" active={spainActive} onClick={loadSpain} />
+        <Chip flagId="es" label="España" active={spainActive} onClick={loadSpain} />
         {countryModels.map((c) => (
           <Chip
             key={c.id}
-            label={`${c.flag ? c.flag + " " : ""}${c.label}`}
+            flagId={c.id}
+            label={c.label}
             active={active === c.id}
             onClick={() => loadCountry(c.id)}
           />
         ))}
       </div>
+
+      {activeCountry && (
+        <button
+          type="button"
+          onClick={() => {
+            track("compare_opened", { country: activeCountry.id, surface: "mobile" });
+            setCompareCountry(activeCountry.id);
+          }}
+          className="btn-retro text-[11px] py-2.5 mt-2.5 w-full justify-center flex items-center gap-2 bg-amber/30"
+        >
+          ↗ Comparar España vs {activeCountry.label}
+        </button>
+      )}
 
       {/* España real vs scenario — 100% structure, side by side. */}
       <div className="mt-3.5 bg-panel bevel-out border border-bevel-dark/40">
@@ -88,13 +109,17 @@ export function MobileModelos() {
         <div className="p-3">
           <div className="flex gap-3 items-stretch">
             <StructureColumn
-              title="🇪🇸 España real"
+              title={
+                <span className="inline-flex items-center gap-1">
+                  <Flag country="es" size={10} /> España real
+                </span>
+              }
               titleColor="#4a4636"
               shareOf={(id) => baseShareOf(id, totals.baseSpending)}
               outlined={false}
             />
             <StructureColumn
-              title={cmpLabel}
+              title={cmpTitle}
               titleColor="#194c4c"
               shareOf={(id) => (totalSpending > 0 ? (amountById[id] ?? 0) / totalSpending : 0)}
               outlined
@@ -145,10 +170,12 @@ export function MobileModelos() {
 }
 
 function Chip({
+  flagId,
   label,
   active,
   onClick,
 }: {
+  flagId?: string;
   label: string;
   active: boolean;
   onClick: () => void;
@@ -157,9 +184,10 @@ function Chip({
     <button
       type="button"
       onClick={onClick}
-      className="font-chrome uppercase text-[10.5px] tracking-wide px-1.5 py-2.5 cursor-pointer border border-bevel-dark/50 text-ink"
+      className="font-chrome uppercase text-[10.5px] tracking-wide px-1.5 py-2.5 cursor-pointer border border-bevel-dark/50 text-ink flex items-center justify-center gap-1.5"
       style={{ background: active ? "#e09a2d" : "#e7dec3", boxShadow: active ? BEVEL_OUT : BEVEL_IN }}
     >
+      {flagId && <Flag country={flagId} size={12} />}
       {label}
     </button>
   );
@@ -172,7 +200,7 @@ function StructureColumn({
   shareOf,
   outlined,
 }: {
-  title: string;
+  title: ReactNode;
   titleColor: string;
   shareOf: (id: (typeof ORDERED_BUILDINGS)[number]) => number;
   outlined: boolean;

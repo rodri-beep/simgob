@@ -72,7 +72,7 @@ export const FIRST_MOVES: FirstMove[] = [
   },
   {
     id: "suecia",
-    emoji: "🇸🇪",
+    emoji: "🌍",
     label: "Gobierna como Suecia",
     sub: "Su estructura de gasto y sus impuestos",
     tab: "resumen",
