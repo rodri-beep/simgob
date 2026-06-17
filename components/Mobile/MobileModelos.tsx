@@ -16,8 +16,9 @@ import { BUILDING_COLORS } from "@/lib/buildingColors";
 import { formatPct } from "@/lib/engine/format";
 import { track } from "@/lib/analytics";
 import { Flag } from "@/components/ui/Flag";
-import { useAreas, baseShareOf, ORDERED_BUILDINGS, txtColor } from "./model";
-import type { ReactNode } from "react";
+import { useAreas, baseAmountOf, ORDERED_BUILDINGS, txtColor } from "./model";
+import { useState, type ReactNode } from "react";
+import type { BuildingId } from "@/lib/engine/types";
 
 const SPAIN_REV_PCT = aappBaseline.totalRevenue / aappBaseline.gdp;
 const TOTAL_BASE = irpfData.brackets.reduce((a, b) => a + b.baseGeneral + b.baseSavings, 0);
@@ -37,8 +38,22 @@ export function MobileModelos() {
   const reset = useSim((s) => s.reset);
 
   const { totals } = useSimResults();
-  const { areas, totalSpending } = useAreas();
+  const { areas } = useAreas();
   const profile = usePolitics();
+
+  // Focus filter: hide/show functions in the comparison chart; the visible ones
+  // re-normalise to fill the column (100% of what's shown).
+  const [hidden, setHidden] = useState<Set<BuildingId>>(new Set());
+  const visibleIds = ORDERED_BUILDINGS.filter((id) => !hidden.has(id));
+  const toggle = (id: BuildingId) => {
+    track("compare_filter_toggled", { id });
+    setHidden((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else if (ORDERED_BUILDINGS.length - next.size > 1) next.add(id); // keep ≥1 visible
+      return next;
+    });
+  };
 
   const loadSpain = () => {
     track("country_template_reset");
@@ -115,26 +130,58 @@ export function MobileModelos() {
                 </span>
               }
               titleColor="#4a4636"
-              shareOf={(id) => baseShareOf(id, totals.baseSpending)}
+              amountOf={baseAmountOf}
+              ids={visibleIds}
               outlined={false}
             />
             <StructureColumn
               title={cmpTitle}
               titleColor="#194c4c"
-              shareOf={(id) => (totalSpending > 0 ? (amountById[id] ?? 0) / totalSpending : 0)}
+              amountOf={(id) => amountById[id] ?? 0}
+              ids={visibleIds}
               outlined
             />
           </div>
           <div className="flex flex-wrap gap-x-3 gap-y-1.5 mt-3">
-            {ORDERED_BUILDINGS.map((id) => (
-              <span key={id} className="flex items-center gap-1.5 text-[10px] text-ink-soft">
-                <span
-                  className="w-[9px] h-[9px] flex-none border border-black/20"
-                  style={{ background: BUILDING_COLORS[id] }}
-                />
-                {buildingById(id)?.short ?? id}
-              </span>
-            ))}
+            {ORDERED_BUILDINGS.map((id) => {
+              const off = hidden.has(id);
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => toggle(id)}
+                  aria-pressed={!off}
+                  className={`flex items-center gap-1.5 text-[10px] cursor-pointer ${
+                    off ? "text-ink-soft/45" : "text-ink-soft"
+                  }`}
+                >
+                  <span
+                    className="w-[11px] h-[11px] flex-none border border-black/20"
+                    style={{
+                      background: off ? "transparent" : BUILDING_COLORS[id],
+                      boxShadow: off ? `inset 0 0 0 2px ${BUILDING_COLORS[id]}` : undefined,
+                    }}
+                  />
+                  <span className={off ? "line-through" : ""}>{buildingById(id)?.short ?? id}</span>
+                </button>
+              );
+            })}
+          </div>
+          <div className="flex items-center justify-between gap-2 mt-2">
+            <span className="text-[9.5px] text-ink-soft/80 leading-snug">
+              {hidden.size > 0
+                ? `Mostrando ${visibleIds.length} de ${ORDERED_BUILDINGS.length} · 100 % de lo visible`
+                : "Toca una categoría para enfocar la comparación"}
+            </span>
+            {hidden.size > 0 && (
+              <button
+                type="button"
+                onClick={() => setHidden(new Set())}
+                className="font-chrome uppercase text-[9px] text-teal cursor-pointer shrink-0"
+              >
+                Ver todas
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -197,14 +244,18 @@ function Chip({
 function StructureColumn({
   title,
   titleColor,
-  shareOf,
+  amountOf,
+  ids,
   outlined,
 }: {
   title: ReactNode;
   titleColor: string;
-  shareOf: (id: (typeof ORDERED_BUILDINGS)[number]) => number;
+  amountOf: (id: BuildingId) => number;
+  ids: BuildingId[];
   outlined: boolean;
 }) {
+  // Re-normalise to the visible total so the column always fills (100% of shown).
+  const total = ids.reduce((a, id) => a + amountOf(id), 0);
   return (
     <div className="flex-1 flex flex-col">
       <div
@@ -220,13 +271,13 @@ function StructureColumn({
           boxShadow: outlined ? "0 0 0 1px rgba(224,154,45,.5)" : undefined,
         }}
       >
-        {ORDERED_BUILDINGS.map((id) => {
-          const share = shareOf(id);
+        {ids.map((id) => {
+          const share = total > 0 ? amountOf(id) / total : 0;
           const color = BUILDING_COLORS[id];
           return (
             <div
               key={id}
-              className="flex items-center justify-center overflow-hidden"
+              className="flex items-center justify-center overflow-hidden transition-[height] duration-300 ease-out"
               style={{ height: `${(share * 100).toFixed(2)}%`, background: color }}
             >
               {share >= 0.07 && (
